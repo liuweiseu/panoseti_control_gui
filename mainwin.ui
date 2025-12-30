@@ -11,117 +11,154 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>PANOSETI Viewer</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="1">
      <widget class="QFrame" name="frame_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>1</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="frameShape">
        <enum>QFrame::Shape::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Shadow::Raised</enum>
       </property>
-      <widget class="QFrame" name="frame">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>531</width>
-         <height>321</height>
-        </rect>
+      <layout class="QFormLayout" name="formLayout">
+       <property name="labelAlignment">
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
-       <property name="frameShape">
-        <enum>QFrame::Shape::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Shadow::Raised</enum>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <widget class="QPushButton" name="pushButton">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QPlainTextEdit" name="plainTextEdit">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>350</y>
-         <width>531</width>
-         <height>291</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>0</y>
-         <width>71</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Operations</string>
-       </property>
-      </widget>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Configs</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QFrame" name="frame">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <widget class="QPushButton" name="reboot">
+            <property name="text">
+             <string>Reboot</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="mask_config">
+            <property name="text">
+             <string>MaskConfig</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="maroc_config">
+            <property name="text">
+             <string>MarocConfig</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QPushButton" name="cal_ph">
+            <property name="text">
+             <string>CalibratePH</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Logs</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QPlainTextEdit" name="plainTextEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>2</horstretch>
+           <verstretch>2</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
     <item row="0" column="0">
      <widget class="QFrame" name="frame_3">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>1</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="frameShape">
        <enum>QFrame::Shape::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Shadow::Raised</enum>
       </property>
-      <widget class="QWidget" name="">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>30</y>
-         <width>551</width>
-         <height>601</height>
-        </rect>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QWidget" name="widget" native="true"/>
-        </item>
-        <item row="0" column="1">
-         <widget class="QWidget" name="widget_2" native="true"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QWidget" name="widget_3" native="true"/>
-        </item>
-        <item row="1" column="1">
-         <widget class="QWidget" name="widget_4" native="true"/>
-        </item>
-       </layout>
-      </widget>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QWidget" name="widget" native="true">
+           <layout class="QGridLayout" name="gridLayout_5"/>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QWidget" name="widget_2" native="true">
+           <layout class="QGridLayout" name="gridLayout_6"/>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QWidget" name="widget_3" native="true">
+           <layout class="QGridLayout" name="gridLayout_7"/>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QWidget" name="widget_4" native="true">
+           <layout class="QGridLayout" name="gridLayout_8"/>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>
   </widget>
-  <action name="actions1">
-   <property name="text">
-    <string>s1</string>
-   </property>
-   <property name="shortcut">
-    <string>Meta+S</string>
-   </property>
-  </action>
-  <action name="actionss">
-   <property name="text">
-    <string>ss</string>
-   </property>
-  </action>
  </widget>
  <resources/>
  <connections/>
