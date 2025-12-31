@@ -34,7 +34,7 @@ class DataConfigOp(object):
     def set_run_type(self, txt):
         logger = logging.getLogger('DATA-CONFIG-GEN.set_run_type')
         logger.debug(f'Set Run Type to {txt}.')
-        self.ui.setText(txt)
+        self.ui.run_type.setText(txt)
     
     def get_detector_overvoltage(self):
         logger = logging.getLogger('DATA-CONFIG-GEN.get_detector_overvoltage')
@@ -126,14 +126,14 @@ class DataConfigOp(object):
 
     def get_mov_mode_enable(self):
         logger = logging.getLogger('DATA-CONFIG-GEN.get_mov_mode_enable')
-        status = self.ui.movie_mode_enable.isChecked()
+        status = self.ui.mov_mode_enable.isChecked()
         logger.debug(f'The MOV Mode status is {status}.')
         return status
     
     def set_mov_mode_enable(self, status):
         logger = logging.getLogger('DATA-CONFIG-GEN.set_mov_mode_enable')
         logger.debug(f'Set  MOV Mode status to {status}.')
-        self.ui.movie_mode_enable.setChecked(status)
+        self.ui.mov_mode_enable.setChecked(status)
     
     def get_mov_integration_time(self):
         logger = logging.getLogger('DATA-CONFIG-GEN.get_mov_integration_time')
@@ -261,7 +261,7 @@ class DataConfigOp(object):
             if 'any_trigger' in pconfig:
                 self.set_ph_any_trigger(True)
                 self.set_ph_group_frames_status(True)
-                if pconfig['any_trigger']['group_ph_frame']:
+                if pconfig['any_trigger']['group_ph_frames']:
                     self.set_ph_group_frames(True)
                 else:
                     self.set_ph_group_frames(False)
@@ -337,4 +337,6 @@ class DataConfigOp(object):
     # ------------------------------------------------------------------------
     def setup_signal_functions(self):
         self.ui.ph_mode_enable.clicked.connect(self.PHModeEnable_StautsChanged)
+        self.ui.mov_mode_enable.clicked.connect(self.MOVModeEnable_StatusChanged)
+        self.ui.ph_any_trigger_enable.clicked.connect(self.AnyTrigger_StatusChanged)
     

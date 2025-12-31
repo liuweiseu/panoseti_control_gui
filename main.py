@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow
 from mainwin import Ui_MainWindow
-from data_config_op import DataConfigWin
+from data_config_op import DataConfigWin, DataConfigOp
 from data_config_widget import Ui_Form
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -12,6 +12,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def open_data_config(self):
         if not hasattr(self, "data_config_win"):
             self.data_config_win = DataConfigWin()
+        self.data_config_op = DataConfigOp(self.data_config_win)
+        self.data_config_op.setup_signal_functions()
         self.data_config_win.show()
 
 

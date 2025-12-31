@@ -184,7 +184,7 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QComboBox" name="detector_overvoltage_2">
+        <widget class="QComboBox" name="detector_overvoltage">
          <item>
           <property name="text">
            <string>2V</string>
@@ -198,14 +198,14 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="run_type_2">
+        <widget class="QLineEdit" name="run_type">
          <property name="text">
           <string>eng-test</string>
          </property>
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QDoubleSpinBox" name="max_file_size_2">
+        <widget class="QDoubleSpinBox" name="max_file_size">
          <property name="maximum">
           <double>9999.000000000000000</double>
          </property>
@@ -239,7 +239,7 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QDoubleSpinBox" name="gain_2">
+        <widget class="QDoubleSpinBox" name="gain">
          <property name="maximum">
           <double>9999.000000000000000</double>
          </property>
@@ -255,7 +255,7 @@
      </widget>
     </item>
     <item row="1" column="2">
-     <widget class="QCheckBox" name="movie_mode_enable">
+     <widget class="QCheckBox" name="mov_mode_enable">
       <property name="text">
        <string>Movie Mode</string>
       </property>
