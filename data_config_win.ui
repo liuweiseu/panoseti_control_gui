@@ -98,7 +98,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>PE Threshold</string>
+           <string>Pe Threshold</string>
           </property>
          </widget>
         </item>
@@ -240,7 +240,7 @@
          </widget>
         </item>
         <item row="4" column="1">
-         <widget class="QDoubleSpinBox" name="max_file_size_2">
+         <widget class="QDoubleSpinBox" name="gain">
           <property name="maximum">
            <double>9999.000000000000000</double>
           </property>
@@ -283,12 +283,12 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>PE Threshold</string>
+           <string>Pe Threshold</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QDoubleSpinBox" name="mov_intergration_time">
+         <widget class="QDoubleSpinBox" name="mov_integration_time">
           <property name="maximum">
            <double>9999.000000000000000</double>
           </property>
