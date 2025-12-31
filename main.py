@@ -8,7 +8,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
 
-        self.pushButton.clicked.connect(self.open_dialog)
+        #self.pushButton.clicked.connect(self.open_dialog)
 
     def open_dialog(self):
         dlg = MyDialog(self)

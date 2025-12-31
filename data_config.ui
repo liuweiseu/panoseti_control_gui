@@ -36,6 +36,9 @@
        <property name="text">
         <string>PH Mode</string>
        </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item row="1" column="4">
@@ -46,7 +49,7 @@
       </widget>
      </item>
      <item row="2" column="0" colspan="2">
-      <widget class="QFrame" name="frame_4">
+      <widget class="QFrame" name="ph_frame">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>2</horstretch>
@@ -115,6 +118,9 @@
         </item>
         <item row="2" column="1">
          <widget class="QCheckBox" name="ph_group_frame_enable">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="text">
            <string>Group PH Frames</string>
           </property>
@@ -150,6 +156,9 @@
          <horstretch>3</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="text">
+        <string>data_config.json</string>
        </property>
       </widget>
      </item>
@@ -254,7 +263,10 @@
       </widget>
      </item>
      <item row="2" column="2" colspan="2">
-      <widget class="QFrame" name="frame_2">
+      <widget class="QFrame" name="mov_frame">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>2</horstretch>
