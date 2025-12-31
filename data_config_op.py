@@ -13,10 +13,10 @@ class DataConfigWin(QWidget):
         self.ui.setupUi(self)
 
 class DataConfigOp(object):
-    def __init__(self, winobj, src_config='data_config.json'):
+    def __init__(self, win, src_config='data_config.json'):
         create_logger('data_config_gen.log', 'DATA-CONFIG-GEN', 'a')
-        self.win = winobj
-        self.ui = winobj.ui
+        self.win = win
+        self.ui = win.ui
         self.src_config = src_config
         if self.src_config is not None:
             self.load_config()
@@ -92,7 +92,7 @@ class DataConfigOp(object):
         threshold = self.ui.ph_pe_threshold.setValue(threshold)
 
     def get_ph_pixel_trigger_mode(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_pixel_trigger_mode')
+        logger = logging.getLogger('DATA-CONFIG-GEN.get_ph_pixel_trigger_mode')
         triggermode = self.ui.ph_trigger_mode.currentText()
         logger.debug(f'The trigger mode is {triggermode}.')
         return triggermode
@@ -155,7 +155,7 @@ class DataConfigOp(object):
     def set_mov_ph_threshold(self, threshold):
         logger = logging.getLogger('DATA-CONFIG-GEN.get_mov_ph_threshold')
         logger.debug(f'Set MOV PH Threshold to {threshold}.')
-        self.ui.mov_ph_threshold.setVale(threshold)
+        self.ui.mov_ph_threshold.setValue(threshold)
     
     def get_mov_sample_bits(self):
         logger = logging.getLogger('DATA-CONFIG-GEN.get_mov_sample_bits')
@@ -234,6 +234,7 @@ class DataConfigOp(object):
         self.set_gain(config['gain'])
         # check if mov mode is enabled
         if 'image' in config:
+            self.set_mov_mode_enable(True)
             self.set_mov_frame(True)
             iconfig = config['image']
             # set integration time
@@ -243,9 +244,11 @@ class DataConfigOp(object):
             # set sample size
             self.set_mov_sample_bits(iconfig['quabo_sample_size'])
         else:
+            self.set_mov_mode_enable(False)
             self.set_mov_frame(False)
         # check if ph mode is enabled
         if 'pulse_height':
+            self.set_ph_mode_enable(True)
             self.set_ph_frame(True)
             pconfig = config['pulse_height']
             # set ph threshold
@@ -268,6 +271,9 @@ class DataConfigOp(object):
             else:
                 self.set_ph_any_trigger(False)
                 self.set_ph_group_frames_status(False)
+        else:
+            self.set_ph_mode_enable(False)
+            self.set_ph_frame(False)
     
     def collect_config(self):
         config = {}
@@ -285,15 +291,16 @@ class DataConfigOp(object):
             config['image']['quabo_sample_size'] = self.get_mov_sample_bits()
         # check if ph mode is enabled
         if self.get_ph_mode_enable():
-            config['pulse_height']['pe_thredhold'] = self.get_ph_pe_threshold()
+            config['pulse_height'] = {}
+            config['pulse_height']['pe_threshold'] = self.get_ph_pe_threshold()
             ptm = self.get_ph_pixel_trigger_mode()
-            if ptm == '1 Pixel Tirgger':
+            if ptm == '1 Pixel Trigger':
                 config['pulse_height']['two_pixel_trigger'] = 0
                 config['pulse_height']['three_pixel_trigger'] = 0
-            elif ptm == '2 Pixel Tirgger':
+            elif ptm == '2 Pixels Trigger':
                 config['pulse_height']['two_pixel_trigger'] = 1
                 config['pulse_height']['three_pixel_trigger'] = 0
-            elif ptm == '3 Pixel Tirgger':
+            elif ptm == '3 Pixels Trigger':
                 config['pulse_height']['two_pixel_trigger'] = 0
                 config['pulse_height']['three_pixel_trigger'] = 1
             if self.get_ph_any_trigger():
@@ -332,6 +339,13 @@ class DataConfigOp(object):
             self.set_ph_group_frames_status(True)
         else:
             self.set_ph_group_frames_status(False)
+    
+    def on_ok_clicked(self):
+        self.collect_config()
+        self.win.close()
+
+    def on_cancel_clicked(self):
+        self.win.close()
     # ------------------------------------------------------------------------
     # Setup signal function
     # ------------------------------------------------------------------------
@@ -339,4 +353,6 @@ class DataConfigOp(object):
         self.ui.ph_mode_enable.clicked.connect(self.PHModeEnable_StautsChanged)
         self.ui.mov_mode_enable.clicked.connect(self.MOVModeEnable_StatusChanged)
         self.ui.ph_any_trigger_enable.clicked.connect(self.AnyTrigger_StatusChanged)
+        self.ui.data_config_button.accepted.connect(self.on_ok_clicked)
+        self.ui.data_config_button.rejected.connect(self.on_cancel_clicked)
     

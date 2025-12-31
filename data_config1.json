@@ -1,0 +1,11 @@
+{
+    "run_type": "obs-test",
+    "detector_overvoltage": 2,
+    "gain": 60.0,
+    "image": {
+        "integration_time_usec": 5000.0,
+        "pe_threshold": 10.0,
+        "quabo_sample_size": 16
+    },
+    "max_file_size_mb": 100.0
+}

@@ -118,3 +118,511 @@ DEBUG - 2025-12-30 21:12:16,398 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV 
 DEBUG - 2025-12-30 21:12:16,398 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
 DEBUG - 2025-12-30 21:12:16,398 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
 DEBUG - 2025-12-30 21:12:16,398 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+INFO - 2025-12-30 21:15:28,487 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:15:28,487 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:15:28,487 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:15:28,488 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:15:28,488 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:15:28,488 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100MB.
+DEBUG - 2025-12-30 21:15:28,488 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.
+DEBUG - 2025-12-30 21:15:28,488 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2025-12-30 21:15:28,488 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:15:28,488 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-30 21:15:28,488 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 2 Pixel Trigger.
+DEBUG - 2025-12-30 21:15:28,488 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:15:28,488 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:15:28,488 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to True.
+INFO - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100MB.
+DEBUG - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.
+DEBUG - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 2 Pixel Trigger.
+DEBUG - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:16:00,555 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to True.
+INFO - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100MB.
+DEBUG - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.
+DEBUG - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 2 Pixel Trigger.
+DEBUG - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:17:42,838 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to True.
+INFO - 2025-12-30 21:17:46,820 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:17:46,820 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:17:46,820 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:17:46,821 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:17:46,821 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:17:46,821 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100MB.
+DEBUG - 2025-12-30 21:17:46,821 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.
+DEBUG - 2025-12-30 21:17:46,821 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2025-12-30 21:17:46,821 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:17:46,821 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-30 21:17:46,821 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 2 Pixel Trigger.
+DEBUG - 2025-12-30 21:17:46,821 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:17:46,821 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:17:46,821 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:17:52,276 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:17:52,276 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:17:52,277 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:17:52,277 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:17:53,530 - DATA-CONFIG-GEN.get_run_type - Run Typs is obs-test.
+DEBUG - 2025-12-30 21:17:53,531 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2025-12-30 21:17:53,531 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:17:53,531 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:17:53,531 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:17:53,531 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 10.0.
+DEBUG - 2025-12-30 21:17:53,531 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 16.
+DEBUG - 2025-12-30 21:17:53,531 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:17:53,532 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+INFO - 2025-12-30 21:18:28,315 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:18:28,315 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:18:28,315 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:18:28,315 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:18:28,316 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:18:28,316 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100MB.
+DEBUG - 2025-12-30 21:18:28,316 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.
+DEBUG - 2025-12-30 21:18:28,316 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2025-12-30 21:18:28,316 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:18:28,316 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-30 21:18:28,316 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 2 Pixel Trigger.
+DEBUG - 2025-12-30 21:18:28,316 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:18:28,316 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:18:28,316 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:18:30,147 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:18:30,148 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:18:30,148 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:18:30,148 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:18:31,218 - DATA-CONFIG-GEN.get_run_type - Run Typs is obs-test.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 10.0.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 16.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is True.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:18:31,219 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+DEBUG - 2025-12-30 21:18:31,231 - DATA-CONFIG-GEN.get_run_type - Run Typs is obs-test.
+DEBUG - 2025-12-30 21:18:31,231 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2025-12-30 21:18:31,231 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:18:31,231 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:18:31,231 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:18:31,231 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 10.0.
+DEBUG - 2025-12-30 21:18:31,232 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 16.
+DEBUG - 2025-12-30 21:18:31,232 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:18:31,232 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-30 21:18:31,232 - DATA-CONFIG-GEN.get_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:18:31,232 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:18:31,232 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is True.
+DEBUG - 2025-12-30 21:18:31,232 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:18:31,232 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+INFO - 2025-12-30 21:19:39,320 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:19:39,320 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:19:39,320 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:19:39,321 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:19:39,321 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:19:39,321 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100.0MB.
+DEBUG - 2025-12-30 21:19:39,321 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-30 21:19:39,321 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:19:39,321 - DATA-CONFIG-GEN.set_mov_integration_time - Set Integration Time to 5000.0 usec.
+DEBUG - 2025-12-30 21:19:39,321 - DATA-CONFIG-GEN.get_mov_ph_threshold - Set MOV PH Threshold to 10.0.
+INFO - 2025-12-30 21:19:58,905 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:19:58,905 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:19:58,905 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:19:58,906 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:19:58,906 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:19:58,906 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100.0MB.
+DEBUG - 2025-12-30 21:19:58,906 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-30 21:19:58,906 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:19:58,906 - DATA-CONFIG-GEN.set_mov_integration_time - Set Integration Time to 5000.0 usec.
+DEBUG - 2025-12-30 21:19:58,906 - DATA-CONFIG-GEN.get_mov_ph_threshold - Set MOV PH Threshold to 10.0.
+DEBUG - 2025-12-30 21:19:58,906 - DATA-CONFIG-GEN.set_mov_sample_bits - Set MOV Sample Bits it 16.
+DEBUG - 2025-12-30 21:19:58,906 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+INFO - 2025-12-30 21:20:47,634 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:20:47,634 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:20:47,635 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:20:47,635 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:20:47,635 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:20:47,635 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100.0MB.
+DEBUG - 2025-12-30 21:20:47,635 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-30 21:20:47,635 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:20:47,635 - DATA-CONFIG-GEN.set_mov_integration_time - Set Integration Time to 5000.0 usec.
+DEBUG - 2025-12-30 21:20:47,635 - DATA-CONFIG-GEN.get_mov_ph_threshold - Set MOV PH Threshold to 10.0.
+DEBUG - 2025-12-30 21:20:47,635 - DATA-CONFIG-GEN.set_mov_sample_bits - Set MOV Sample Bits it 16.
+DEBUG - 2025-12-30 21:20:47,635 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:20:47,635 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+INFO - 2025-12-30 21:24:07,849 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:24:07,849 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100.0MB.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_mov_integration_time - Set Integration Time to 5000.0 usec.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.get_mov_ph_threshold - Set MOV PH Threshold to 10.0.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_mov_sample_bits - Set MOV Sample Bits it 16.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 3 Pixel Trigger.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:24:07,850 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:24:16,067 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is False.
+DEBUG - 2025-12-30 21:24:16,068 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to False.
+DEBUG - 2025-12-30 21:24:16,068 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is False.
+DEBUG - 2025-12-30 21:24:16,068 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to False.
+DEBUG - 2025-12-30 21:24:17,135 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:24:17,135 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:24:17,135 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:24:17,136 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:24:19,573 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:24:19,573 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:24:19,573 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:24:19,573 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:24:20,325 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2025-12-30 21:24:20,325 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2025-12-30 21:24:20,326 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2025-12-30 21:24:20,326 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2025-12-30 21:24:20,895 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:24:20,896 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:24:20,896 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:24:20,896 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:24:24,316 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is False.
+DEBUG - 2025-12-30 21:24:24,316 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to False.
+DEBUG - 2025-12-30 21:24:24,316 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is False.
+DEBUG - 2025-12-30 21:24:24,316 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to False.
+DEBUG - 2025-12-30 21:24:26,265 - DATA-CONFIG-GEN.get_run_type - Run Typs is obs-test.
+DEBUG - 2025-12-30 21:24:26,265 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2025-12-30 21:24:26,265 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:24:26,265 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:24:26,265 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:24:26,265 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 10.0.
+DEBUG - 2025-12-30 21:24:26,265 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 16.
+DEBUG - 2025-12-30 21:24:26,265 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is False.
+DEBUG - 2025-12-30 21:24:26,265 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:24:26,265 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config1.json.
+DEBUG - 2025-12-30 21:24:26,279 - DATA-CONFIG-GEN.get_run_type - Run Typs is obs-test.
+DEBUG - 2025-12-30 21:24:26,280 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2025-12-30 21:24:26,280 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:24:26,280 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:24:26,280 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:24:26,280 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 10.0.
+DEBUG - 2025-12-30 21:24:26,280 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 16.
+DEBUG - 2025-12-30 21:24:26,280 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is False.
+DEBUG - 2025-12-30 21:24:26,280 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:24:26,280 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config1.json.
+INFO - 2025-12-30 21:24:57,649 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100.0MB.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_mov_integration_time - Set Integration Time to 5000.0 usec.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.get_mov_ph_threshold - Set MOV PH Threshold to 10.0.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_mov_sample_bits - Set MOV Sample Bits it 16.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 3 Pixel Trigger.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:24:57,650 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:25:05,104 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:25:05,105 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:25:05,105 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:25:05,105 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:25:06,623 - DATA-CONFIG-GEN.get_run_type - Run Typs is obs-test.
+DEBUG - 2025-12-30 21:25:06,624 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2025-12-30 21:25:06,624 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:25:06,624 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:25:06,624 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:25:06,624 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 10.0.
+DEBUG - 2025-12-30 21:25:06,624 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 16.
+DEBUG - 2025-12-30 21:25:06,624 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:25:06,624 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-30 21:25:06,625 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:25:06,625 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:25:06,625 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is True.
+DEBUG - 2025-12-30 21:25:06,625 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:25:06,625 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_run_type - Run Typs is obs-test.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 10.0.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 16.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is True.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:25:06,641 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+INFO - 2025-12-30 21:25:08,749 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100.0MB.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_mov_integration_time - Set Integration Time to 5000.0 usec.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.get_mov_ph_threshold - Set MOV PH Threshold to 10.0.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_mov_sample_bits - Set MOV Sample Bits it 16.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:25:08,750 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to True.
+INFO - 2025-12-30 21:25:17,244 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:25:17,244 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:25:17,244 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:25:17,244 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100.0MB.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_mov_integration_time - Set Integration Time to 5000.0 usec.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.get_mov_ph_threshold - Set MOV PH Threshold to 10.0.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_mov_sample_bits - Set MOV Sample Bits it 16.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:25:17,245 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:26:19,479 - DATA-CONFIG-GEN.get_run_type - Run Typs is obs-test.
+DEBUG - 2025-12-30 21:26:19,480 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2025-12-30 21:26:19,480 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:26:19,480 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2025-12-30 21:26:19,480 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:26:19,480 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-30 21:26:19,480 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:26:19,480 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:26:19,480 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is True.
+DEBUG - 2025-12-30 21:26:19,480 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:26:19,480 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+DEBUG - 2025-12-30 21:26:19,488 - DATA-CONFIG-GEN.get_run_type - Run Typs is obs-test.
+DEBUG - 2025-12-30 21:26:19,488 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2025-12-30 21:26:19,488 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:26:19,488 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2025-12-30 21:26:19,488 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:26:19,488 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-30 21:26:19,489 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:26:19,489 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:26:19,489 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is True.
+DEBUG - 2025-12-30 21:26:19,489 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:26:19,489 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+INFO - 2025-12-30 21:26:26,215 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:26:26,215 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:26:26,215 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:26:26,215 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:26:26,215 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:26:26,216 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100.0MB.
+DEBUG - 2025-12-30 21:26:26,216 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-30 21:26:26,216 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to False.
+DEBUG - 2025-12-30 21:26:26,216 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2025-12-30 21:26:26,216 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2025-12-30 21:26:26,216 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:26:26,216 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-30 21:26:26,216 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:26:26,216 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:26:26,216 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:26:26,216 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:26:31,870 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:26:31,870 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:26:31,870 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:26:31,870 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_run_type - Run Typs is obs-test.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 10.0.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 16.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 2 Pixels Trigger.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is False.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 200.0.
+DEBUG - 2025-12-30 21:26:44,737 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_run_type - Run Typs is obs-test.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 10.0.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 16.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 2 Pixels Trigger.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is False.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 200.0.
+DEBUG - 2025-12-30 21:26:44,750 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+INFO - 2025-12-30 21:30:10,901 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:30:10,901 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:30:10,901 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_run_type - Set Run Type to obs-test.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 200.0MB.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to True.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_mov_integration_time - Set Integration Time to 5000.0 usec.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.get_mov_ph_threshold - Set MOV PH Threshold to 10.0.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_mov_sample_bits - Set MOV Sample Bits it 16.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 2 Pixel Trigger.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:30:10,902 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to False.
+DEBUG - 2025-12-30 21:30:19,067 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is False.
+DEBUG - 2025-12-30 21:30:19,068 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to False.
+DEBUG - 2025-12-30 21:30:19,068 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is False.
+DEBUG - 2025-12-30 21:30:19,068 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to False.
+DEBUG - 2025-12-30 21:30:48,062 - DATA-CONFIG-GEN.get_run_type - Run Typs is eng-test.
+DEBUG - 2025-12-30 21:30:48,062 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 3V.
+DEBUG - 2025-12-30 21:30:48,062 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:30:48,062 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:30:48,062 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:30:48,062 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 2.0.
+DEBUG - 2025-12-30 21:30:48,062 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 8.
+DEBUG - 2025-12-30 21:30:48,062 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:30:48,062 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 8.5.
+DEBUG - 2025-12-30 21:30:48,062 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:30:48,062 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is False.
+DEBUG - 2025-12-30 21:30:48,063 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:30:48,063 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_run_type - Run Typs is eng-test.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 3V.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 2.0.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 8.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 8.5.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is False.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:30:48,074 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+INFO - 2025-12-30 21:32:49,584 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:32:49,584 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:32:49,584 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_run_type - Set Run Type to eng-test.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 3.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100.0MB.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to True.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_mov_integration_time - Set Integration Time to 2000.0 usec.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.get_mov_ph_threshold - Set MOV PH Threshold to 2.0.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_mov_sample_bits - Set MOV Sample Bits it 8.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 8.5.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 1 Pixel Trigger.
+DEBUG - 2025-12-30 21:32:49,585 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to False.
+DEBUG - 2025-12-30 21:32:49,586 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to False.
+DEBUG - 2025-12-30 21:32:56,492 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:32:56,492 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:32:56,492 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:32:56,492 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_run_type - Run Typs is eng-test.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 3V.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 2.0.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 8.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 8.5.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 2 Pixels Trigger.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:33:05,788 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is False.
+DEBUG - 2025-12-30 21:33:05,789 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:33:05,789 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+DEBUG - 2025-12-30 21:33:05,803 - DATA-CONFIG-GEN.get_run_type - Run Typs is eng-test.
+DEBUG - 2025-12-30 21:33:05,803 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 3V.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is True.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_mov_integration_time - The Integration Time is {val} usec.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_mov_ph_threshold - The MOV PH Threshold is 2.0.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_mov_sample_bits - The MOV Sample Bits is 8.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 8.5.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 2 Pixels Trigger.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is False.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:33:05,804 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+INFO - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.set_run_type - Set Run Type to eng-test.
+DEBUG - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 3.
+DEBUG - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100.0MB.
+DEBUG - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to True.
+DEBUG - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to True.
+DEBUG - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.set_mov_integration_time - Set Integration Time to 2000 usec.
+DEBUG - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.get_mov_ph_threshold - Set MOV PH Threshold to 2.0.
+DEBUG - 2025-12-30 21:33:28,393 - DATA-CONFIG-GEN.set_mov_sample_bits - Set MOV Sample Bits it 8.
+DEBUG - 2025-12-30 21:33:28,394 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2025-12-30 21:33:28,394 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-30 21:33:28,394 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 8.5.
+DEBUG - 2025-12-30 21:33:28,394 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 2 Pixel Trigger.
+DEBUG - 2025-12-30 21:33:28,394 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-30 21:33:28,394 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-30 21:33:28,394 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to False.
+DEBUG - 2025-12-30 21:34:14,016 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2025-12-30 21:34:14,016 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2025-12-30 21:34:14,016 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2025-12-30 21:34:14,016 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2025-12-30 21:34:25,291 - DATA-CONFIG-GEN.get_run_type - Run Typs is eng-test.
+DEBUG - 2025-12-30 21:34:25,291 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 3V.
+DEBUG - 2025-12-30 21:34:25,291 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:34:25,291 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2025-12-30 21:34:25,291 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:34:25,291 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-30 21:34:25,291 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 2 Pixels Trigger.
+DEBUG - 2025-12-30 21:34:25,291 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:34:25,291 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is True.
+DEBUG - 2025-12-30 21:34:25,291 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:34:25,291 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_run_type - Run Typs is eng-test.
+DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 3V.
+DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 2 Pixels Trigger.
+DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is True.
+DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
