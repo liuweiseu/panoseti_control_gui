@@ -82,6 +82,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.console_output.sizePolicy().hasHeightForWidth())
         self.console_output.setSizePolicy(sizePolicy)
         self.console_output.setReadOnly(True)
+        self.console_output.setMaximumBlockCount(1000)
         self.console_output.setObjectName("console_output")
         self.formLayout.setWidget(6, QtWidgets.QFormLayout.ItemRole.SpanningRole, self.console_output)
         self.frame = QtWidgets.QFrame(parent=self.frame_2)

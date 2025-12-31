@@ -64,7 +64,7 @@ class Ui_Form(object):
         self.label_9.setObjectName("label_9")
         self.gridLayout_5.addWidget(self.label_9, 1, 0, 1, 1)
         self.ph_group_frame_enable = QtWidgets.QCheckBox(parent=self.ph_frame)
-        self.ph_group_frame_enable.setEnabled(True)
+        self.ph_group_frame_enable.setEnabled(False)
         self.ph_group_frame_enable.setObjectName("ph_group_frame_enable")
         self.gridLayout_5.addWidget(self.ph_group_frame_enable, 2, 1, 1, 1)
         self.gridLayout_3.addWidget(self.ph_frame, 2, 0, 1, 2)

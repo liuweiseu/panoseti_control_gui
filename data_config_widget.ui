@@ -118,7 +118,7 @@
        <item row="2" column="1">
         <widget class="QCheckBox" name="ph_group_frame_enable">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="text">
           <string>Group PH Frames</string>

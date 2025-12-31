@@ -1,14 +1,11 @@
 {
     "run_type": "eng-test",
-    "detector_overvoltage": 3,
+    "detector_overvoltage": 2,
     "gain": 60.0,
     "pulse_height": {
         "pe_threshold": 7.5,
         "two_pixel_trigger": 0,
-        "three_pixel_trigger": 0,
-        "any_trigger": {
-            "group_ph_frames": 1
-        }
+        "three_pixel_trigger": 0
     },
-    "max_file_size_mb": 100.0
+    "max_file_size_mb": 10.0
 }

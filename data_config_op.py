@@ -4,6 +4,7 @@ from data_config_widget import Ui_Form
 
 import logging
 import json
+from pathlib import Path
 from utils import create_logger
 
 class DataConfigWin(QWidget):
@@ -19,7 +20,9 @@ class DataConfigOp(object):
         self.ui = win.ui
         self.src_config = src_config
         if self.src_config is not None:
-            self.load_config()
+            fpath = Path(self.src_config)
+            if fpath.exists():
+                self.load_config()
         self.setup_signal_functions()
     
     # ------------------------------------------------------------------------

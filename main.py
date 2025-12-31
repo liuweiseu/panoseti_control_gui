@@ -17,7 +17,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.data_config_op.setup_signal_functions()
         self.data_config_win.show()
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     w = MainWindow()
