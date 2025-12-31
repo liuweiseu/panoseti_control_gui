@@ -346,6 +346,7 @@ class DataConfigOp(object):
 
     def on_cancel_clicked(self):
         self.win.close()
+        
     # ------------------------------------------------------------------------
     # Setup signal function
     # ------------------------------------------------------------------------

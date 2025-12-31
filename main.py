@@ -1,6 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow
 from mainwin import Ui_MainWindow
+from mainwin_op import MainWinOp
 from data_config_op import DataConfigWin, DataConfigOp
 from data_config_widget import Ui_Form
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -20,5 +21,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     w = MainWindow()
+    op = MainWinOp(w)
     w.show()
     sys.exit(app.exec())

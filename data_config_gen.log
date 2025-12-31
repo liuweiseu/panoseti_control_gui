@@ -626,3 +626,41 @@ DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_any_trigger - The Any Trig
 DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is True.
 DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
 DEBUG - 2025-12-30 21:34:25,301 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+INFO - 2025-12-31 10:09:45,017 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2025-12-31 10:09:45,017 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_run_type - Set Run Type to eng-test.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 3.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 100.0MB.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to False.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 2 Pixel Trigger.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to True.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to True.
+DEBUG - 2025-12-31 10:09:45,018 - DATA-CONFIG-GEN.set_group_ph_frames - Set PH Group Frames status to True.
+DEBUG - 2025-12-31 10:09:47,326 - DATA-CONFIG-GEN.get_run_type - Run Typs is eng-test.
+DEBUG - 2025-12-31 10:09:47,326 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 3V.
+DEBUG - 2025-12-31 10:09:47,326 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-31 10:09:47,326 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2025-12-31 10:09:47,326 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-31 10:09:47,326 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-31 10:09:47,326 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2025-12-31 10:09:47,326 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-31 10:09:47,326 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is True.
+DEBUG - 2025-12-31 10:09:47,326 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-31 10:09:47,326 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+DEBUG - 2025-12-31 10:09:47,339 - DATA-CONFIG-GEN.get_run_type - Run Typs is eng-test.
+DEBUG - 2025-12-31 10:09:47,339 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 3V.
+DEBUG - 2025-12-31 10:09:47,339 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2025-12-31 10:09:47,339 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2025-12-31 10:09:47,340 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2025-12-31 10:09:47,340 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 7.5.
+DEBUG - 2025-12-31 10:09:47,340 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2025-12-31 10:09:47,340 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is True.
+DEBUG - 2025-12-31 10:09:47,340 - DATA-CONFIG-GEN.get_group_ph_frames - The PH Group Frame staus is True.
+DEBUG - 2025-12-31 10:09:47,340 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 100.0.
+DEBUG - 2025-12-31 10:09:47,340 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
