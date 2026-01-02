@@ -3,7 +3,7 @@
     "detector_overvoltage": 2,
     "gain": 60.0,
     "pulse_height": {
-        "pe_threshold": 7.5,
+        "pe_threshold": 10.5,
         "two_pixel_trigger": 0,
         "three_pixel_trigger": 0
     },

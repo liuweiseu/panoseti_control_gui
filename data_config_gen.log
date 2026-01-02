@@ -726,3 +726,128 @@ DEBUG - 2025-12-31 12:20:06,373 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV 
 DEBUG - 2025-12-31 12:20:06,373 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
 DEBUG - 2025-12-31 12:20:06,374 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
 DEBUG - 2025-12-31 12:20:06,374 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+INFO - 2026-01-01 16:58:57,379 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2026-01-01 16:58:57,379 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2026-01-01 16:58:57,379 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_run_type - Set Run Type to eng-test.
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 10.0MB.
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to False.
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 1 Pixel Trigger.
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to False.
+DEBUG - 2026-01-01 16:58:57,380 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to False.
+INFO - 2026-01-01 16:59:07,969 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_run_type - Set Run Type to eng-test.
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 10.0MB.
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to False.
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 1 Pixel Trigger.
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to False.
+DEBUG - 2026-01-01 16:59:07,970 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to False.
+INFO - 2026-01-01 16:59:31,757 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_run_type - Set Run Type to eng-test.
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 10.0MB.
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to False.
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 1 Pixel Trigger.
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to False.
+DEBUG - 2026-01-01 16:59:31,758 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to False.
+INFO - 2026-01-01 16:59:38,852 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2026-01-01 16:59:38,852 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2026-01-01 16:59:38,852 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2026-01-01 16:59:38,852 - DATA-CONFIG-GEN.set_run_type - Set Run Type to eng-test.
+DEBUG - 2026-01-01 16:59:38,852 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2026-01-01 16:59:38,852 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 10.0MB.
+DEBUG - 2026-01-01 16:59:38,853 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2026-01-01 16:59:38,853 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to False.
+DEBUG - 2026-01-01 16:59:38,853 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2026-01-01 16:59:38,853 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2026-01-01 16:59:38,853 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2026-01-01 16:59:38,853 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2026-01-01 16:59:38,853 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 1 Pixel Trigger.
+DEBUG - 2026-01-01 16:59:38,853 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to False.
+DEBUG - 2026-01-01 16:59:38,853 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to False.
+INFO - 2026-01-01 18:57:58,053 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2026-01-01 18:57:58,053 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2026-01-01 18:57:58,053 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2026-01-01 18:57:58,053 - DATA-CONFIG-GEN.set_run_type - Set Run Type to eng-test.
+DEBUG - 2026-01-01 18:57:58,053 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2026-01-01 18:57:58,054 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 10.0MB.
+DEBUG - 2026-01-01 18:57:58,054 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2026-01-01 18:57:58,054 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to False.
+DEBUG - 2026-01-01 18:57:58,054 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2026-01-01 18:57:58,054 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2026-01-01 18:57:58,054 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2026-01-01 18:57:58,054 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2026-01-01 18:57:58,054 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 1 Pixel Trigger.
+DEBUG - 2026-01-01 18:57:58,054 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to False.
+DEBUG - 2026-01-01 18:57:58,054 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to False.
+INFO - 2026-01-01 19:04:45,490 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2026-01-01 19:04:45,490 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2026-01-01 19:04:45,490 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_run_type - Set Run Type to eng-test.
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 10.0MB.
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to False.
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 1 Pixel Trigger.
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to False.
+DEBUG - 2026-01-01 19:04:45,491 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to False.
+INFO - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+INFO - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.load_config - Loading default config from data_config.json...
+INFO - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.load_config - -------------------------------------------------
+DEBUG - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.set_run_type - Set Run Type to eng-test.
+DEBUG - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.set_detector_overvoltage - Set Detector Overvoltage to 2.
+DEBUG - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.set_max_file_size - Set Max File Size to 10.0MB.
+DEBUG - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.set_gain - Set the Gain to 60.0.
+DEBUG - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.set_mov_mode_enable - Set  MOV Mode status to False.
+DEBUG - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.set_mov_frame - Set MOV Frame status to False.
+DEBUG - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.set_ph_mode_enable - Set the PH Mode status to True.
+DEBUG - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.set_ph_frame - Set PH Frame status to True.
+DEBUG - 2026-01-02 14:06:49,622 - DATA-CONFIG-GEN.set_ph_pe_threshold - Set PH Pe Threshold to 7.5.
+DEBUG - 2026-01-02 14:06:49,623 - DATA-CONFIG-GEN.set_pixel_trigger_mode - Set Trigger Mode to 1 Pixel Trigger.
+DEBUG - 2026-01-02 14:06:49,623 - DATA-CONFIG-GEN.set_any_trigger - Set Any Trigger to False.
+DEBUG - 2026-01-02 14:06:49,623 - DATA-CONFIG-GEN.set_ph_group_frames_status - Set PH Group Frames status to False.
+DEBUG - 2026-01-02 14:06:56,287 - DATA-CONFIG-GEN.get_run_type - Run Typs is eng-test.
+DEBUG - 2026-01-02 14:06:56,288 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2026-01-02 14:06:56,288 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2026-01-02 14:06:56,288 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2026-01-02 14:06:56,288 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2026-01-02 14:06:56,288 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 10.5.
+DEBUG - 2026-01-02 14:06:56,288 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2026-01-02 14:06:56,288 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is False.
+DEBUG - 2026-01-02 14:06:56,288 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 10.0.
+DEBUG - 2026-01-02 14:06:56,288 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.
+DEBUG - 2026-01-02 14:06:56,304 - DATA-CONFIG-GEN.get_run_type - Run Typs is eng-test.
+DEBUG - 2026-01-02 14:06:56,304 - DATA-CONFIG-GEN.get_detector_overvoltage - The Detector Overvoltage is 2V.
+DEBUG - 2026-01-02 14:06:56,304 - DATA-CONFIG-GEN.get_gain - The Gain value is 60.0.
+DEBUG - 2026-01-02 14:06:56,304 - DATA-CONFIG-GEN.get_mov_mode_enable - The MOV Mode status is False.
+DEBUG - 2026-01-02 14:06:56,304 - DATA-CONFIG-GEN.get_ph_mode_enable - The PH Mode status is True.
+DEBUG - 2026-01-02 14:06:56,304 - DATA-CONFIG-GEN.get_ph_pe_threshold - The PH Pe Threshold is 10.5.
+DEBUG - 2026-01-02 14:06:56,304 - DATA-CONFIG-GEN.get_ph_pixel_trigger_mode - The trigger mode is 1 Pixel Trigger.
+DEBUG - 2026-01-02 14:06:56,304 - DATA-CONFIG-GEN.get_any_trigger - The Any Trigger status is False.
+DEBUG - 2026-01-02 14:06:56,304 - DATA-CONFIG-GEN.get_max_file_size - The Max File Size is 10.0.
+DEBUG - 2026-01-02 14:06:56,304 - DATA-CONFIG-GEN.get_config_output_dir - The Config Output Directory is data_config.json.

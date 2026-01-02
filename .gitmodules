@@ -1,0 +1,3 @@
+[submodule "panoseti_grpc"]
+	path = panoseti_grpc
+	url = https://github.com/panoseti/panoseti_grpc.git
