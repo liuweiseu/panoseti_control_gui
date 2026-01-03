@@ -243,6 +243,7 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
     @asyncSlot(bool)
     def on_click(self, checked: bool):
         self.append_log('clicked.')
+        self.shutdown_event.set()
     # ------------------------------------------------------------------------
     # Setup signal function
     # ------------------------------------------------------------------------
