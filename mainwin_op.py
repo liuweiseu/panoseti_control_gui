@@ -102,7 +102,7 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
                 self.static_label[i].deleteLater()
                 self.static_label[i] = None
         # 创建 pyqtgraph 动态图
-        if len(self.plot_widgets) <4 :
+        if len(self.plot_widgets) < 4 :
             for r in range(2):
                 for c in range(2):
                     plot_widget = pg.PlotWidget()
@@ -125,6 +125,32 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
                     # set title
                     plot_widget.setTitle("Winter", color='w', size='12pt')
                     # 定时更新曲线
+        # use self.addc
+        async with self.addc as addc:
+            host = None
+            hp_io_cfg_path = 'panoseti_grpc/daq_data/config/hp_io_config_simulate.json'
+            with open(hp_io_cfg_path, "r") as f:
+                hp_io_cfg = json.load(f)
+            await addc.init_hp_io(host, hp_io_cfg, timeout=15.0)
+            valid_daq_hosts = await addc.get_valid_daq_hosts()
+            print('valid_daq_hosts:', valid_daq_hosts)
+            if host is not None and host not in valid_daq_hosts:
+                raise ValueError(f"Invalid host: {host}. Valid hosts: {valid_daq_hosts}")
+            
+            stream_images_responses = await addc.stream_images(
+            host,
+            stream_movie_data=True,
+            stream_pulse_height_data=True,
+            update_interval_seconds=1.0,
+            module_ids=[],
+            parse_pano_images=True,
+            wait_for_ready=True,
+            )
+            self.append_log(f'go!')
+            async for parsed_pano_image in stream_images_responses:
+                self.imgs[0].setImage(parsed_pano_image['image_array'])
+            self.append_log(f'Done!')
+        
         for i in range(4):
             timer = pg.QtCore.QTimer()
             self.timers.append(timer)
@@ -210,9 +236,13 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         self.loop = asyncio.get_running_loop()
         for sig in (signal.SIGINT, signal.SIGTERM):
             self.loop.add_signal_handler(sig, self._signal_handler)
-        self.addc = AioDaqDataClient(self.ps_grpc_daq, self.ps_grpc_net, stop_event=self.shutdown_event, log_level=logging.DEBUG).__aenter__()
+        self.addc = AioDaqDataClient(self.ps_grpc_daq, self.ps_grpc_net, stop_event=self.shutdown_event, log_level=logging.DEBUG)
         await self.aio_show_plot()
         # self.show_plot()
+
+    @asyncSlot(bool)
+    def on_click(self, checked: bool):
+        self.append_log('clicked.')
     # ------------------------------------------------------------------------
     # Setup signal function
     # ------------------------------------------------------------------------
@@ -220,4 +250,5 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         self.reboot.clicked.connect(self.reboot_clicked)
         # self.start_grpc.clicked.connect(self.show_plot)
         self.start_grpc.clicked.connect(self.run_grpc)
+        self.maroc_config.clicked.connect(self.on_click)
 
