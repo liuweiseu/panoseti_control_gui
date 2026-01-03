@@ -6,6 +6,7 @@ import logging, json
 from pathlib import Path
 import pyqtgraph as pg
 import numpy as np
+import time
 
 from mainwin import Ui_MainWindow
 from data_config_op import DataConfigWin, DataConfigOp
@@ -14,7 +15,8 @@ sys.path.insert(0, 'panoseti_grpc')
 from daq_data.client import AioDaqDataClient
 import daq_data.cli as cli
 
-from qasync import asyncSlot
+# from qasync import asyncSlot
+from grpc_thread import AsyncioThread
 
 from utils import create_logger
 
@@ -24,7 +26,6 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.actiondata_config.triggered.connect(self.open_data_config)
-        self.setup_signal_functions()
         # Process
         self.process = QProcess(self)
         self.process.readyReadStandardOutput.connect(self.on_stdout)
@@ -61,7 +62,9 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         self.timers = []
         self.imgs = []
         self.shutdown_event = None
-        self.loop = None
+        self.grpc_thread = AsyncioThread()
+        self.grpc_thread.start()
+        self.setup_signal_functions()
     
     # ------------------------------------------------------------------------
     # Sub Window creation
@@ -219,37 +222,23 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         program = 'python'
         arguments = [f'{self.ps_sw}/config.py', '--mask_config']
         self.run_command(program, arguments)
+
+    def submit_task(self):
+        self.append_log('Start Task.')
+        self.grpc_thread.submit(self.grpc_thread.send_data())
+
+    def cancel_all(self):
+        self.append_log('Cancel Task.')
+        self.grpc_thread.cancel_all()
     
-    def _signal_handler(self, *_):
-            logging.getLogger("daq_data.client").info(
-                "Shutdown signal received, closing client stream..."
-            )
-            self.shutdown_event.set()
-
-    @asyncSlot(bool)
-    async def run_grpc(self, checked: bool):
-        # get panoseti_grpc client
-        # use the same code from here:
-        # https://github.com/panoseti/panoseti_grpc/blob/main/daq_data/cli.py#L182
-        # Graceful Shutdown Setup
-        self.shutdown_event = asyncio.Event()
-        self.loop = asyncio.get_running_loop()
-        for sig in (signal.SIGINT, signal.SIGTERM):
-            self.loop.add_signal_handler(sig, self._signal_handler)
-        self.addc = AioDaqDataClient(self.ps_grpc_daq, self.ps_grpc_net, stop_event=self.shutdown_event, log_level=logging.DEBUG)
-        await self.aio_show_plot()
-        # self.show_plot()
-
-    @asyncSlot(bool)
-    def on_click(self, checked: bool):
-        self.append_log('clicked.')
-        self.shutdown_event.set()
+    def print_log(self, data):
+        self.append_log(data)
     # ------------------------------------------------------------------------
     # Setup signal function
     # ------------------------------------------------------------------------
     def setup_signal_functions(self):
         self.reboot.clicked.connect(self.reboot_clicked)
-        # self.start_grpc.clicked.connect(self.show_plot)
-        self.start_grpc.clicked.connect(self.run_grpc)
-        self.maroc_config.clicked.connect(self.on_click)
+        self.start_grpc.clicked.connect(self.submit_task)
+        self.maroc_config.clicked.connect(self.cancel_all)
+        self.grpc_thread.data_signal.new_data.connect(self.print_log)
 
