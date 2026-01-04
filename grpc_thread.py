@@ -15,13 +15,13 @@ class DataSignal(QObject):
     new_data = pyqtSignal(object)
 
 class AsyncioThread(threading.Thread):
-    def __init__(self, daq_config_path, net_config_path):
+    def __init__(self, grpc_config):
         super().__init__(daemon=True)
         self.loop = asyncio.new_event_loop()
         self.tasks = set()
         self.data_signal = DataSignal()
-        self.daq_config_path = daq_config_path
-        self.net_config_path = net_config_path
+        self.daq_config_path = grpc_config['daq_config_path']
+        self.net_config_path = grpc_config['net_config_path']
         self.shutdown_event = None
 
     def run(self):

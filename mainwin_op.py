@@ -33,11 +33,12 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
                 root_config = json.load(f)
             self.append_log('********************************************')
             self.ps_sw = root_config['panoseti_sw']
-            self.ps_grpc_daq = root_config['panoseti_grpc_config']['daq_config']
-            self.ps_grpc_net = root_config['panoseti_grpc_config']['net_config']
-            self.append_log(f'panoseti_sw: {self.ps_sw}')
-            self.append_log(f'panoseti_grpc_daq: {self.ps_grpc_daq}')
-            self.append_log(f'panoseti_grpc_daq: {self.ps_grpc_net}')
+            self.grpc_config = {}
+            self.grpc_config['daq_config_path'] = root_config['panoseti_grpc_config']['daq_config']
+            self.grpc_config['net_config_path'] = root_config['panoseti_grpc_config']['net_config']
+            self.append_log(f"panoseti_sw: {self.ps_sw}")
+            self.append_log(f"panoseti_grpc_daq: {self.grpc_config['daq_config_path']}")
+            self.append_log(f"panoseti_grpc_daq: {self.grpc_config['net_config_path']}")
             self.append_log('********************************************')
         else:
             self.append_log('********************************************')
@@ -51,8 +52,9 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         self.plot_widgets = [None] * NUM_PLOTS
         self.timers = [None] * NUM_PLOTS
         self.imgs = [None] * NUM_PLOTS
+        self.qttexts = [None] * NUM_PLOTS
         self.shutdown_event = None
-        self.grpc_thread = AsyncioThread(self.ps_grpc_daq, self.ps_grpc_net)
+        self.grpc_thread = AsyncioThread(self.grpc_config)
         self.grpc_thread.start()
         self.setup_signal_functions()
     
@@ -99,13 +101,13 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
     def start_grpc_clicked(self):
         asyncio.run_coroutine_threadsafe(self.show_plot(), self.loop)
 
-    def create_plot(self, r, c):
+    def show_plot(self, r, c, data):
         i = r * 2 + c
         if self.static_label[i] is not None:
             self.view_layout.removeWidget(self.static_label[i])
             self.static_label[i].deleteLater()
             self.static_label[i] = None
-
+            # create obj
             plot_widget = pg.PlotWidget()
             self.plot_widgets[i] = plot_widget
             self.view_layout.addWidget(plot_widget, r, c, 1, 1)
@@ -125,12 +127,15 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
             img.setLookupTable(cmap.getLookupTable(0.0, 1.0, 256))
             # set title
             plot_widget.setTitle("Winter", color='w', size='12pt')
+            text = pg.TextItem("Frame: 0", color='w', anchor=(0, 1))  # anchor=(0,1) 左下角
+            text.setPos(0,0) 
+            self.plot_widgets[i].addItem(text)
+            self.qttexts[i] = text
         else:
             pass
+        self.imgs[i].setImage(data['image_array'])
+        self.qttexts[i].setText(f"Frame No: {data['frame_number']}")
 
-    def update_plot(self, r, c, data):
-        i = r * 2 + c
-        self.imgs[i].setImage(data)
     # ------------------------------------------------------------------------
     # Signal functions
     # ------------------------------------------------------------------------
@@ -165,16 +170,9 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         self.append_log('Cancel Task.')
         self.grpc_thread.loop.call_soon_threadsafe(self.grpc_thread.shutdown_event.set)
         self.grpc_thread.cancel_all()
-        self.set_placeholder(0, 0)
     
-    def print_log(self, data):
-        self.append_log(data['type'])
-        self.append_log(str(data['module_id']))
-        self.append_log(str(data['header']))
-        self.append_log(str(data['frame_number']))
-        self.append_log(str(data['file']))
-        self.create_plot(0, 0)
-        self.update_plot(0, 0, data['image_array'])
+    def plot_data(self, data):
+        self.show_plot(0, 0, data)
     # ------------------------------------------------------------------------
     # Setup signal function
     # ------------------------------------------------------------------------
@@ -182,5 +180,5 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         self.reboot.clicked.connect(self.reboot_clicked)
         self.start_grpc.clicked.connect(self.submit_task)
         self.maroc_config.clicked.connect(self.cancel_all)
-        self.grpc_thread.data_signal.new_data.connect(self.print_log)
+        self.grpc_thread.data_signal.new_data.connect(self.plot_data)
 
