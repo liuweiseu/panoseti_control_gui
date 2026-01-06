@@ -14,12 +14,12 @@ import asyncio
 # from qasync import asyncSlot
 from grpc_thread import AsyncioThread
 
-from utils import create_logger
+from utils import create_logger, make_rich_logger
 
 NUM_PLOTS = 4
 class MainWinOp(QMainWindow, Ui_MainWindow):
     def __init__(self, root_dir_config='root_dir.json'):
-        create_logger('mainwin.log', 'MAINWIN', 'a')
+        self.logger = make_rich_logger('mainwin.log', logging.DEBUG, mode='a')
         super().__init__()
         self.setupUi(self)
         self.actiondata_config.triggered.connect(self.open_data_config)
@@ -61,7 +61,33 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         self.setup_signal_functions()
         self.power_status = 'off'
         self.visualization_status = 'off'
+        # self.telescope_info = self._parse_obs_config()
+        # use hard-coded name here for temp use
+        self.telescope_info = ['Simulation'] * 1024
+        self.telescope_info[250] = 'PTI'
+        self.telescope_info[252] = 'Fern'
+        self.telescope_info[253] = 'Winter'
+        self.telescope_info[254] = 'Gattini'
     
+    # ------------------------------------------------------------------------
+    # helper function
+    # ------------------------------------------------------------------------
+    def _parse_obs_config(self):
+        with open(self.grpc_config['obs_config_path'], 'r', encoding='utf-8') as f:
+            config = json.load(f)
+        domes = config['domes']
+        # the max number of telescopes in the system is 1024
+        telescope_name = ['Simulation'] * 1024
+        for dome in domes:
+            name = dome['name']
+            modules_id = []
+            i = 0
+            for m in dome['modules']:
+                ip_str = m['ip_addr'].split('.')
+                mid = (int(ip_str[2]) << 6) + (int(ip_str[3]) >> 2)
+                telescope_name[i] = f'{name}{i}'
+                self.logger.debug(f'Found telescope at {name} site, and the module id is {mid}.')
+        return telescope_name
 
     # ------------------------------------------------------------------------
     # Sub Window creation
@@ -116,10 +142,10 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
             self.plot_widgets[i] = plot_widget
             self.view_layout.addWidget(plot_widget, r, c, 1, 1)
             # create random data for default viewer
-            data = np.random.rand(32, 32)
-            h, w = data.shape
+            rdata = np.random.rand(32, 32)
+            h, w = rdata.shape
             # show 2D img
-            img = pg.ImageItem(data)
+            img = pg.ImageItem(rdata)
             self.imgs[i] = img
             plot_widget.addItem(img)
             img.setRect(0,0,w,h)
@@ -130,15 +156,19 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
             cmap = pg.colormap.get('plasma')  # PyQtGraph >=0.13
             img.setLookupTable(cmap.getLookupTable(0.0, 1.0, 256))
             # set title
-            plot_widget.setTitle("Winter", color='w', size='12pt')
+            plot_widget.setTitle("Simulation", color='w', size='12pt')
             text = pg.TextItem("Frame: 0", color='w', anchor=(0, 1))  # anchor=(0,1) 左下角
             text.setPos(0,0) 
             self.plot_widgets[i].addItem(text)
             self.qttexts[i] = text
         else:
             pass
-        self.imgs[i].setImage(data['image_array'])
+        imgdata = data['image_array']
+        h, w = imgdata.shape
+        self.imgs[i].setRect(0,0,w,h)
+        self.imgs[i].setImage(imgdata)
         self.qttexts[i].setText(f"Frame No: {data['frame_number']}")
+        self.plot_widgets[i].setTitle(data['name'])
 
     # ------------------------------------------------------------------------
     # Signal functions
@@ -179,16 +209,42 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         self.run_command(program, arguments)
 
     def submit_task(self):
-        self.append_log('Start Task.')
-        self.grpc_thread.submit(self.grpc_thread.fetch_data())
+        if self.visualization_status == 'off':
+            self.append_log('Start Visualization.')
+            self.grpc_thread.submit(self.grpc_thread.fetch_data())
+            self.visualization_status = 'on'
+            self.start_grpc.setText('Stop Visualization')
+        elif self.visualization_status == 'on':
+            self.cancel_all()
+            self.visualization_status = 'off'
+            self.start_grpc.setText('Start Visualization')
 
     def cancel_all(self):
-        self.append_log('Cancel Task.')
+        self.append_log('Stop Visualization.')
         self.grpc_thread.loop.call_soon_threadsafe(self.grpc_thread.shutdown_event.set)
         self.grpc_thread.cancel_all()
     
     def plot_data(self, data):
-        self.show_plot(0, 0, data)
+        mid = data['module_id']
+        r = 0
+        c = 0
+        if mid == 254:
+            r = 0
+            c = 0
+        elif mid == 253:
+            r = 0
+            c = 1
+        elif mid == 253:
+            r = 1
+            c = 0
+        elif mid == 250:
+            r = 1
+            c = 1
+        else:
+            r = 0
+            c = 0
+        data['name'] = self.telescope_info[mid]
+        self.show_plot(r, c, data)
     # ------------------------------------------------------------------------
     # Setup signal function
     # ------------------------------------------------------------------------

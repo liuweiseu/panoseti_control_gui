@@ -1,3 +1,4 @@
 data_config_gen.log
 daq_data/*
 __pycache__/*
+logs/*
