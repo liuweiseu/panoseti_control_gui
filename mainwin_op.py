@@ -63,11 +63,12 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         self.visualization_status = 'off'
         # self.telescope_info = self._parse_obs_config()
         # use hard-coded name here for temp use
-        self.telescope_info = ['Simulation'] * 1024
-        self.telescope_info[250] = 'PTI'
-        self.telescope_info[252] = 'Fern'
-        self.telescope_info[253] = 'Winter'
-        self.telescope_info[254] = 'Gattini'
+        # TODO: imporve this part
+        self.telescope_info = [{'Simulation': [0, 0]}] * 1024
+        self.telescope_info[250] = {'PTI': [0, 0]}
+        self.telescope_info[252] = {'Fern': [0, 1]}
+        self.telescope_info[253] = {'Winter': [1, 0]}
+        self.telescope_info[254] = {'Gattini': [1, 1]}
     
     # ------------------------------------------------------------------------
     # helper function
@@ -226,25 +227,12 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
     
     def plot_data(self, data):
         mid = data['module_id']
-        r = 0
-        c = 0
-        if mid == 254:
-            r = 0
-            c = 0
-        elif mid == 253:
-            r = 0
-            c = 1
-        elif mid == 253:
-            r = 1
-            c = 0
-        elif mid == 250:
-            r = 1
-            c = 1
-        else:
-            r = 0
-            c = 0
-        data['name'] = self.telescope_info[mid]
-        self.show_plot(r, c, data)
+        print(self.telescope_info[mid])
+        for k, v in self.telescope_info[mid].items():
+            name = k
+            loc = v
+        data['name'] = name
+        self.show_plot(loc[0], loc[1], data)
     # ------------------------------------------------------------------------
     # Setup signal function
     # ------------------------------------------------------------------------
