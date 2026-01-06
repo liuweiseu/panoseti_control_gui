@@ -31,19 +31,21 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         if fpath.exists():
             with open(root_dir_config, 'r', encoding='utf-8') as f:
                 root_config = json.load(f)
-            self.append_log('********************************************')
             self.ps_sw = root_config['panoseti_sw']
             self.grpc_config = {}
             self.grpc_config['daq_config_path'] = root_config['panoseti_grpc_config']['daq_config']
             self.grpc_config['net_config_path'] = root_config['panoseti_grpc_config']['net_config']
+            self.grpc_config['obs_config_path'] = root_config['panoseti_grpc_config']['obs_config']
+            self.append_log('************************************************************************')
             self.append_log(f"panoseti_sw: {self.ps_sw}")
             self.append_log(f"panoseti_grpc_daq: {self.grpc_config['daq_config_path']}")
-            self.append_log(f"panoseti_grpc_daq: {self.grpc_config['net_config_path']}")
-            self.append_log('********************************************')
+            self.append_log(f"panoseti_grpc_net: {self.grpc_config['net_config_path']}")
+            self.append_log(f"panoseti_grpc_obs: {self.grpc_config['obs_config_path']}")
+            self.append_log('************************************************************************')
         else:
-            self.append_log('********************************************')
+            self.append_log('************************************************************************')
             self.append_log(f'\"{root_dir_config}\" doesn\'t exist!')
-            self.append_log('********************************************')
+            self.append_log('************************************************************************')
         # add static figure by default
         self.static_label = [None] * NUM_PLOTS
         for r in range(2):
@@ -57,6 +59,8 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         self.grpc_thread = AsyncioThread(self.grpc_config)
         self.grpc_thread.start()
         self.setup_signal_functions()
+        self.power_status = 'off'
+        self.visualization_status = 'off'
     
 
     # ------------------------------------------------------------------------
@@ -142,6 +146,18 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
     def run_command(self, program, arguments):
         self.process.start(program, arguments)
     
+    def power_clicked(self):
+        program = 'python'
+        if self.power_status == 'off':
+            arguments = [f'{self.ps_sw}/power.py', 'on']
+            self.power_status = 'on'
+            self.power.setText('Power Off')
+        elif self.power_status == 'on':
+            arguments = [f'{self.ps_sw}/power.py', 'off']
+            self.power_status = 'off'
+            self.power.setText('Power On')
+        self.run_command(program, arguments)
+
     def reboot_clicked(self):
         program = 'python'
         arguments = [f'{self.ps_sw}/config.py', '--reboot']
@@ -177,6 +193,7 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
     # Setup signal function
     # ------------------------------------------------------------------------
     def setup_signal_functions(self):
+        self.power.clicked.connect(self.power_clicked)
         self.reboot.clicked.connect(self.reboot_clicked)
         self.start_grpc.clicked.connect(self.submit_task)
         self.maroc_config.clicked.connect(self.cancel_all)
