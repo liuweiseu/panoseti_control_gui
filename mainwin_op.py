@@ -32,6 +32,7 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
             with open(root_dir_config, 'r', encoding='utf-8') as f:
                 root_config = json.load(f)
             self.ps_sw = root_config['panoseti_sw']
+            self.pw_sw_control = f"{self.ps_sw}/control"
             self.grpc_config = {}
             self.grpc_config['daq_config_path'] = root_config['panoseti_grpc_config']['daq_config']
             self.grpc_config['net_config_path'] = root_config['panoseti_grpc_config']['net_config']
@@ -180,33 +181,48 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
     def power_clicked(self):
         program = 'python'
         if self.power_status == 'off':
-            arguments = [f'{self.ps_sw}/power.py', 'on']
+            arguments = [f'{self.pw_sw_control}/power.py', 'on']
             self.power_status = 'on'
             self.power.setText('Power Off')
         elif self.power_status == 'on':
-            arguments = [f'{self.ps_sw}/power.py', 'off']
+            arguments = [f'{self.pw_sw_control}/power.py', 'off']
             self.power_status = 'off'
             self.power.setText('Power On')
         self.run_command(program, arguments)
 
     def reboot_clicked(self):
         program = 'python'
-        arguments = [f'{self.ps_sw}/config.py', '--reboot']
+        arguments = [f'{self.pw_sw_control}/config.py', '--reboot']
         self.run_command(program, arguments)
 
     def marocconfig_clicked(self):
         program = 'python'
-        arguments = [f'{self.ps_sw}/config.py', '--maroc_config']
+        arguments = [f'{self.pw_sw_control}/config.py', '--maroc_config']
         self.run_command(program, arguments)
     
     def maskconfig_clicked(self):
         program = 'python'
-        arguments = [f'{self.ps_sw}/config.py', '--mask_config']
+        arguments = [f'{self.pw_sw_control}/config.py', '--mask_config']
         self.run_command(program, arguments)
 
     def calbrateph_clicked(self):
         program = 'python'
-        arguments = [f'{self.ps_sw}/config.py', '--mask_config']
+        arguments = [f'{self.pw_sw_control}/config.py', '--mask_config']
+        self.run_command(program, arguments)
+
+    def getuid_clicked(self):
+        program = 'python'
+        arguments = [f'{self.pw_sw_control}/get_uid.py']
+        self.run_command(program, arguments)
+
+    def startdaq_clicked(self):
+        program = 'python'
+        arguments = [f'{self.pw_sw_control}/start.py']
+        self.run_command(program, arguments)
+
+    def stopdaq_clicked(self):
+        program = 'python'
+        arguments = [f'{self.pw_sw_control}/stop.py']
         self.run_command(program, arguments)
 
     def submit_task(self):
@@ -240,6 +256,11 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
         self.power.clicked.connect(self.power_clicked)
         self.reboot.clicked.connect(self.reboot_clicked)
         self.start_grpc.clicked.connect(self.submit_task)
-        self.maroc_config.clicked.connect(self.cancel_all)
+        self.maroc_config.clicked.connect(self.marocconfig_clicked)
+        self.mask_config.clicked.connect(self.maskconfig_clicked)
+        self.cal_ph.clicked.connect(self.calbrateph_clicked)
+        self.get_uid.clicked.connect(self.getuid_clicked)
+        self.start_daq.clicked.connect(self.startdaq_clicked)
+        self.stop_daq.clicked.connect(self.stopdaq_clicked)
         self.grpc_thread.data_signal.new_data.connect(self.plot_data)
 
