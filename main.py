@@ -1,5 +1,6 @@
-import sys
+import sys, os
 from PyQt6.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtGui import QIcon
 from mainwin import Ui_MainWindow
 from mainwin_op import MainWinOp
 from data_config_op import DataConfigWin, DataConfigOp
@@ -16,6 +17,9 @@ import daq_data.cli as cli
 
 def main():
     app = QApplication(sys.argv)
+    script_path = os.path.realpath(__file__)
+    curdir = os.path.dirname(script_path)
+    app.setWindowIcon(QIcon(f"{curdir}/icon/casper_icon.png"))
     w = MainWinOp()
     w.show()
     sys.exit(app.exec())
