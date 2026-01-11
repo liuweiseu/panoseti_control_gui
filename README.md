@@ -1,5 +1,6 @@
 # PANOSETI CONTROL GUI
-This GUI is based on [panoseti software](https://github.com/panoseti/panoseti) and [panoseti grpc](https://github.com/panoseti/panoseti_grpc.git).
+This GUI is based on [panoseti software](https://github.com/panoseti/panoseti) and [panoseti grpc](https://github.com/panoseti/panoseti_grpc.git).  
+![GUI](./figure/gui.png)
 
 # Get Started
 1. Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)(optional)  
