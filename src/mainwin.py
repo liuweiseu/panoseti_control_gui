@@ -71,9 +71,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.telescope_info[253] = {'Winter': [1, 0]}
         self.telescope_info[254] = {'Gattini': [1, 1]}
     
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     # helper function
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     def _parse_obs_config(self):
         with open(self.grpc_config['obs_config_path'], 'r', encoding='utf-8') as f:
             config = json.load(f)
@@ -91,9 +91,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
                 self.logger.debug(f'Found telescope at {name} site, and the module id is {mid}.')
         return telescope_name
 
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     # Sub Window creation
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     def open_data_config(self):
         if not hasattr(self, "data_config_win"):
             self.data_config_win = DataConfigWin()
@@ -101,9 +101,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.data_config_op.setup_signal_functions()
         self.data_config_win.show()
 
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     # Set placeholder
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     def set_placeholder(self, r, c):
         i = r * 2 + c
         pixmap = QPixmap("figure/placeholder.png")
@@ -113,25 +113,23 @@ class MainWin(QMainWindow, Ui_MainWindow):
         label.setScaledContents(True)
         self.static_label[i] = label
         self.view_layout.addWidget(self.static_label[i], r,c,1,1)
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     # Low level APIs
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     def on_stdout(self):
         text = self.process.readAllStandardOutput().data().decode()
         self.append_log(text)
-        self.append_log('------------------------------------------------------------------------')
 
     def on_stderr(self):
         text = self.process.readAllStandardError().data().decode()
         self.append_log(text)
-        self.append_log('------------------------------------------------------------------------')
 
     def append_log(self, text):
         self.console_output.appendPlainText(text.rstrip())
     
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     # plot figures
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     def start_grpc_clicked(self):
         asyncio.run_coroutine_threadsafe(self.show_plot(), self.loop)
 
@@ -174,9 +172,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.qttexts[i].setText(f"Frame No: {data['frame_number']}")
         self.plot_widgets[i].setTitle(data['name'])
 
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     # Signal functions
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     def run_command(self, program, arguments):
         self.process.start(program, arguments)
     
@@ -184,71 +182,109 @@ class MainWin(QMainWindow, Ui_MainWindow):
         os.chdir(self.ps_sw_control)
         program = 'python'
         if self.power_status == 'off':
-            arguments = ['power.py', 'on']
+            self.append_log('---------------------------------------------------------------------------')
+            self.append_log('power.py on')
+            self.append_log('---------------------------------------------------------------------------')
+            arguments = ['-u', 'power.py', 'on']
             self.power_status = 'on'
             self.power.setText('Power Off')
         elif self.power_status == 'on':
-            arguments = ['power.py', 'off']
+            self.append_log('---------------------------------------------------------------------------')
+            self.append_log('power.py off')
+            self.append_log('---------------------------------------------------------------------------')
+            arguments = ['-u','power.py', 'off']
             self.power_status = 'off'
             self.power.setText('Power On')
         self.run_command(program, arguments)
 
     def reboot_clicked(self):
         os.chdir(self.ps_sw_control)
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('config.py --reboot')
+        self.append_log('---------------------------------------------------------------------------')
         program = 'python'
-        arguments = ['config.py', '--reboot']
+        arguments = ['-u','config.py', '--reboot']
         self.run_command(program, arguments)
 
     def marocconfig_clicked(self):
         os.chdir(self.ps_sw_control)
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('config.py --maroc_config')
+        self.append_log('---------------------------------------------------------------------------')
         program = 'python'
-        arguments = ['config.py', '--maroc_config']
+        arguments = ['-u','config.py', '--maroc_config']
         self.run_command(program, arguments)
     
     def maskconfig_clicked(self):
         os.chdir(self.ps_sw_control)
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('config.py --mask_config')
+        self.append_log('---------------------------------------------------------------------------')
         program = 'python'
-        arguments = ['config.py', '--mask_config']
+        arguments = ['-u','config.py', '--mask_config']
         self.run_command(program, arguments)
 
     def calbrateph_clicked(self):
         os.chdir(self.ps_sw_control)
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('config.py --calibrate_ph')
+        self.append_log('---------------------------------------------------------------------------')
         program = 'python'
-        arguments = ['config.py', '--mask_config']
+        arguments = ['-u','config.py', '--calibrate_ph']
         self.run_command(program, arguments)
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('config.py --show_ph_baselines')
+        self.append_log('---------------------------------------------------------------------------')
+        program = 'python'
+        arguments = ['-u','config.py', '--show_ph_baselines']
+        self.run_command(program, arguments)
+
 
     def getuid_clicked(self):
         os.chdir(self.ps_sw_control)
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('get_uids.py')
+        self.append_log('---------------------------------------------------------------------------')
         program = 'python'
-        arguments = ['get_uids.py']
+        arguments = ['-u','get_uids.py']
         self.run_command(program, arguments)
 
     def startdaq_clicked(self):
         os.chdir(self.ps_sw_control)
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('start.py')
+        self.append_log('---------------------------------------------------------------------------')
         program = 'python'
-        arguments = ['start.py']
+        arguments = ['-u','start.py']
         self.run_command(program, arguments)
 
     def stopdaq_clicked(self):
         os.chdir(self.ps_sw_control)
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('stop.py')
+        self.append_log('---------------------------------------------------------------------------')
         program = 'python'
-        arguments = ['stop.py']
+        arguments = ['-u','stop.py']
         self.run_command(program, arguments)
 
     def submit_task(self):
         if self.visualization_status == 'off':
+            self.append_log('---------------------------------------------------------------------------')
             self.append_log('Start Visualization.')
+            self.append_log('---------------------------------------------------------------------------')
             self.grpc_thread.submit(self.grpc_thread.fetch_data())
             self.visualization_status = 'on'
             self.start_grpc.setText('Stop Visualization')
         elif self.visualization_status == 'on':
+            self.append_log('---------------------------------------------------------------------------')
+            self.append_log('Stop Visualization.')
+            self.append_log('---------------------------------------------------------------------------')
             self.cancel_all()
             self.visualization_status = 'off'
             self.start_grpc.setText('Start Visualization')
-        self.append_log('------------------------------------------------------------------------')
+        self.append_log('---------------------------------------------------------------------------')
 
     def cancel_all(self):
-        self.append_log('Stop Visualization.')
         self.grpc_thread.loop.call_soon_threadsafe(self.grpc_thread.shutdown_event.set)
         self.grpc_thread.cancel_all()
     
@@ -260,9 +296,9 @@ class MainWin(QMainWindow, Ui_MainWindow):
             loc = v
         data['name'] = name
         self.show_plot(loc[0], loc[1], data)
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     # Setup signal function
-    # ------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     def setup_signal_functions(self):
         self.power.clicked.connect(self.power_clicked)
         self.reboot.clicked.connect(self.reboot_clicked)
