@@ -45,7 +45,8 @@ class AsyncioThread(threading.Thread):
         async with AioDaqDataClient(self.daq_config_path, self.net_config_path, stop_event=self.shutdown_event, log_level=logging.DEBUG) as addc:
             print('created')
             host = None
-            hp_io_cfg_path = 'panoseti_grpc/daq_data/config/hp_io_config_simulate.json'
+            #hp_io_cfg_path = 'panoseti_grpc/daq_data/config/hp_io_config_simulate.json'
+            hp_io_cfg_path = 'panoseti_grpc/daq_data/config/hp_io_config_palomar.json'
             with open(hp_io_cfg_path, "r") as f:
                 hp_io_cfg = json.load(f)
             await addc.init_hp_io(host, hp_io_cfg, timeout=15.0)

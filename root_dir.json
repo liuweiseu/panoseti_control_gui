@@ -1,8 +1,8 @@
 {
-    "panoseti_sw": "/home/wei/panoseti",
+    "panoseti_sw": "/home/obs/panoseti_mount/panoseti",
     "panoseti_grpc_config": {
-        "daq_config": "/Users/wei/Desktop/configs/daq_config.json",
-        "net_config": "/Users/wei/Desktop/configs/network_config.json",
-        "obs_config": "/Users/wei/Desktop/configs/obs_config.json"
+        "daq_config": "/home/obs/panoseti_mount/panoseti/control/configs/daq_config.json",
+        "net_config": "/home/obs/panoseti_mount/panoseti/control/configs/network_config.json",
+        "obs_config": "/home/obs/panoseti_mount/panoseti/control/configs/obs_config.json"
     }
 }
