@@ -6,6 +6,8 @@ from PyQt6.QtGui import QIcon
 
 from src.mainwin import MainWin
 
+VER = 'V0.0.1'
+
 def main():
     basedir = Path(__file__).resolve().parent
     os.chdir(basedir)
@@ -14,6 +16,7 @@ def main():
     curdir = os.path.dirname(script_path)
     app.setWindowIcon(QIcon(f"{curdir}/figure/panoseti_icon.png"))
     w = MainWin()
+    w.setWindowTitle(f"PANOSETI Control - {VER}")
     w.show()
     sys.exit(app.exec())
 
