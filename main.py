@@ -6,7 +6,7 @@ from PyQt6.QtGui import QIcon
 
 from src.mainwin import MainWin
 
-VER = 'V0.0.1'
+VER = 'V0.0.2'
 
 def main():
     basedir = Path(__file__).resolve().parent
