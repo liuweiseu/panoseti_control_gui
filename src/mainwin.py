@@ -31,14 +31,16 @@ class MainWin(QMainWindow, Ui_MainWindow):
         if fpath.exists():
             with open(root_dir_config, 'r', encoding='utf-8') as f:
                 root_config = json.load(f)
-            self.ps_sw = root_config['panoseti_sw']
+            self.ps_sw = root_config['panoseti_sw']['sw_path']
+            self.ps_sw_python = root_config['panoseti_sw']['python_path']
             self.ps_sw_control = f"{self.ps_sw}/control"
             self.grpc_config = {}
             self.grpc_config['daq_config_path'] = root_config['panoseti_grpc_config']['daq_config']
             self.grpc_config['net_config_path'] = root_config['panoseti_grpc_config']['net_config']
             self.grpc_config['obs_config_path'] = root_config['panoseti_grpc_config']['obs_config']
             self.append_log('************************************************************************')
-            self.append_log(f"panoseti_sw: {self.ps_sw}")
+            self.append_log(f"panoseti_sw_path: {self.ps_sw}")
+            self.append_log(f"panoseti_python_path: {self.ps_sw_python}")
             self.append_log(f"panoseti_grpc_daq: {self.grpc_config['daq_config_path']}")
             self.append_log(f"panoseti_grpc_net: {self.grpc_config['net_config_path']}")
             self.append_log(f"panoseti_grpc_obs: {self.grpc_config['obs_config_path']}")
@@ -180,7 +182,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     
     def power_clicked(self):
         os.chdir(self.ps_sw_control)
-        program = 'python'
+        program = self.ps_sw_python
         if self.power_status == 'off':
             self.append_log('---------------------------------------------------------------------------')
             self.append_log('power.py on')
@@ -202,7 +204,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.append_log('---------------------------------------------------------------------------')
         self.append_log('config.py --reboot')
         self.append_log('---------------------------------------------------------------------------')
-        program = 'python'
+        program = self.ps_sw_python
         arguments = ['-u','config.py', '--reboot']
         self.run_command(program, arguments)
 
@@ -211,7 +213,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.append_log('---------------------------------------------------------------------------')
         self.append_log('config.py --maroc_config')
         self.append_log('---------------------------------------------------------------------------')
-        program = 'python'
+        program = self.ps_sw_python
         arguments = ['-u','config.py', '--maroc_config']
         self.run_command(program, arguments)
     
@@ -220,7 +222,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.append_log('---------------------------------------------------------------------------')
         self.append_log('config.py --mask_config')
         self.append_log('---------------------------------------------------------------------------')
-        program = 'python'
+        program = self.ps_sw_python
         arguments = ['-u','config.py', '--mask_config']
         self.run_command(program, arguments)
 
@@ -229,13 +231,13 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.append_log('---------------------------------------------------------------------------')
         self.append_log('config.py --calibrate_ph')
         self.append_log('---------------------------------------------------------------------------')
-        program = 'python'
+        program = self.ps_sw_python
         arguments = ['-u','config.py', '--calibrate_ph']
         self.run_command(program, arguments)
         self.append_log('---------------------------------------------------------------------------')
         self.append_log('config.py --show_ph_baselines')
         self.append_log('---------------------------------------------------------------------------')
-        program = 'python'
+        program = self.ps_sw_python
         arguments = ['-u','config.py', '--show_ph_baselines']
         self.run_command(program, arguments)
 
@@ -245,7 +247,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.append_log('---------------------------------------------------------------------------')
         self.append_log('get_uids.py')
         self.append_log('---------------------------------------------------------------------------')
-        program = 'python'
+        program = self.ps_sw_python
         arguments = ['-u','get_uids.py']
         self.run_command(program, arguments)
 
@@ -254,7 +256,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.append_log('---------------------------------------------------------------------------')
         self.append_log('start.py')
         self.append_log('---------------------------------------------------------------------------')
-        program = 'python'
+        program = self.ps_sw_python
         arguments = ['-u','start.py']
         self.run_command(program, arguments)
 
@@ -263,7 +265,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.append_log('---------------------------------------------------------------------------')
         self.append_log('stop.py')
         self.append_log('---------------------------------------------------------------------------')
-        program = 'python'
+        program = self.ps_sw_python
         arguments = ['-u','stop.py']
         self.run_command(program, arguments)
 
