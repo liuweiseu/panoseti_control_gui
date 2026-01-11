@@ -1,11 +1,11 @@
 from PyQt6.QtWidgets import QDialog, QWidget
 #from data_config_win import Ui_DataConfigWin
-from data_config_widget import Ui_Form
+from src.data_config_ui import Ui_Form
 
 import logging
 import json
 from pathlib import Path
-from utils import create_logger
+from utils.utils import make_rich_logger
 
 class DataConfigWin(QWidget):
     def __init__(self, parent=None):
@@ -14,8 +14,8 @@ class DataConfigWin(QWidget):
         self.ui.setupUi(self)
 
 class DataConfigOp(object):
-    def __init__(self, win, src_config='data_config.json'):
-        create_logger('data_config_gen.log', 'DATA-CONFIG-GEN', 'a')
+    def __init__(self, win, src_config='configs/data_config.json'):
+        self.logger = make_rich_logger('data_config_gen.log', logging.DEBUG, mode='a')
         self.win = win
         self.ui = win.ui
         self.src_config = src_config
@@ -29,190 +29,156 @@ class DataConfigOp(object):
     # Low level APIs
     # ------------------------------------------------------------------------
     def get_run_type(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_run_type')
         txt = self.ui.run_type.text()
-        logger.debug(f'Run Typs is {txt}.')
+        self.logger.debug(f'Run Typs is {txt}.')
         return txt
 
     def set_run_type(self, txt):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_run_type')
-        logger.debug(f'Set Run Type to {txt}.')
+        self.logger.debug(f'Set Run Type to {txt}.')
         self.ui.run_type.setText(txt)
     
     def get_detector_overvoltage(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_detector_overvoltage')
         overvol = self.ui.detector_overvoltage.currentText()
-        logger.debug(f'The Detector Overvoltage is {overvol}.')
+        self.logger.debug(f'The Detector Overvoltage is {overvol}.')
         return int(overvol.strip('V'))
     
     def set_detector_overvoltage(self, overvol):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_detector_overvoltage')
-        logger.debug(f'Set Detector Overvoltage to {overvol}.')
+        self.logger.debug(f'Set Detector Overvoltage to {overvol}.')
         self.ui.detector_overvoltage.setCurrentText(f'{overvol}V')
     
     def get_max_file_size(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_max_file_size')
         fsize = self.ui.max_file_size.value()
-        logger.debug(f'The Max File Size is {fsize}.')
+        self.logger.debug(f'The Max File Size is {fsize}.')
         return fsize
     
     def set_max_file_size(self, fsize):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_max_file_size')
-        logger.debug(f'Set Max File Size to {fsize}MB.')
+        self.logger.debug(f'Set Max File Size to {fsize}MB.')
         self.ui.max_file_size.setValue(fsize)
 
     def get_gain(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_gain')
         gain = self.ui.gain.value()
-        logger.debug(f'The Gain value is {gain}.')
+        self.logger.debug(f'The Gain value is {gain}.')
         return gain
     
     def set_gain(self, gain):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_gain')
-        logger.debug(f'Set the Gain to {gain}.')
+        self.logger.debug(f'Set the Gain to {gain}.')
         self.ui.gain.setValue(gain)
 
     def get_ph_mode_enable(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_ph_mode_enable')
         status = self.ui.ph_mode_enable.isChecked()
-        logger.debug(f'The PH Mode status is {status}.')
+        self.logger.debug(f'The PH Mode status is {status}.')
         return status
     
     def set_ph_mode_enable(self, status):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_ph_mode_enable')
-        logger.debug(f'Set the PH Mode status to {status}.')
+        self.logger.debug(f'Set the PH Mode status to {status}.')
         self.ui.ph_mode_enable.setChecked(status)
     
     def get_ph_pe_threshold(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_ph_pe_threshold')
         threshold = self.ui.ph_pe_threshold.value()
-        logger.debug(f'The PH Pe Threshold is {threshold}.')
+        self.logger.debug(f'The PH Pe Threshold is {threshold}.')
         return threshold
 
     def set_ph_pe_threshold(self, threshold):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_ph_pe_threshold')
-        logger.debug(f'Set PH Pe Threshold to {threshold}.')
+        self.logger.debug(f'Set PH Pe Threshold to {threshold}.')
         threshold = self.ui.ph_pe_threshold.setValue(threshold)
 
     def get_ph_pixel_trigger_mode(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_ph_pixel_trigger_mode')
         triggermode = self.ui.ph_trigger_mode.currentText()
-        logger.debug(f'The trigger mode is {triggermode}.')
+        self.logger.debug(f'The trigger mode is {triggermode}.')
         return triggermode
     
     def set_ph_pixel_trigger_mode(self, triggermode):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_pixel_trigger_mode')
-        logger.debug(f'Set Trigger Mode to {triggermode}.')
+        self.logger.debug(f'Set Trigger Mode to {triggermode}.')
         self.ui.ph_trigger_mode.setCurrentText(triggermode)
 
     def get_ph_any_trigger(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_any_trigger')
         status = self.ui.ph_any_trigger_enable.isChecked()
-        logger.debug(f'The Any Trigger status is {status}.')
+        self.logger.debug(f'The Any Trigger status is {status}.')
         return status
     
     def set_ph_any_trigger(self, status):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_any_trigger')
-        logger.debug(f'Set Any Trigger to {status}.')
+        self.logger.debug(f'Set Any Trigger to {status}.')
         self.ui.ph_any_trigger_enable.setChecked(status)
     
     def get_ph_group_frames(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_group_ph_frames')
         status = self.ui.ph_group_frame_enable.isChecked()
-        logger.debug(f'The PH Group Frame staus is {status}.')
+        self.logger.debug(f'The PH Group Frame staus is {status}.')
         return status
     
     def set_ph_group_frames(self, status):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_group_ph_frames')
-        logger.debug(f'Set PH Group Frames status to {status}.')
+        self.logger.debug(f'Set PH Group Frames status to {status}.')
         self.ui.ph_group_frame_enable.setChecked(status)
 
     def get_mov_mode_enable(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_mov_mode_enable')
         status = self.ui.mov_mode_enable.isChecked()
-        logger.debug(f'The MOV Mode status is {status}.')
+        self.logger.debug(f'The MOV Mode status is {status}.')
         return status
     
     def set_mov_mode_enable(self, status):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_mov_mode_enable')
-        logger.debug(f'Set  MOV Mode status to {status}.')
+        self.logger.debug(f'Set  MOV Mode status to {status}.')
         self.ui.mov_mode_enable.setChecked(status)
     
     def get_mov_integration_time(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_mov_integration_time')
         val = self.ui.mov_integration_time.value()
-        logger.debug('The Integration Time is {val} usec.')
+        self.logger.debug('The Integration Time is {val} usec.')
         return val
     
     def set_mov_integration_time(self, val):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_mov_integration_time')
-        logger.debug(f'Set Integration Time to {val} usec.')
+        self.logger.debug(f'Set Integration Time to {val} usec.')
         self.ui.mov_integration_time.setValue(val)
     
     def get_mov_ph_threshold(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_mov_ph_threshold')
         threshold = self.ui.mov_ph_threshold.value()
-        logger.debug(f'The MOV PH Threshold is {threshold}.')
+        self.logger.debug(f'The MOV PH Threshold is {threshold}.')
         return threshold
     
     def set_mov_ph_threshold(self, threshold):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_mov_ph_threshold')
-        logger.debug(f'Set MOV PH Threshold to {threshold}.')
+        self.logger.debug(f'Set MOV PH Threshold to {threshold}.')
         self.ui.mov_ph_threshold.setValue(threshold)
     
     def get_mov_sample_bits(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_mov_sample_bits')
         bits = self.ui.mov_sample_bits.currentText()
-        logger.debug(f'The MOV Sample Bits is {bits}.')
+        self.logger.debug(f'The MOV Sample Bits is {bits}.')
         return int(bits)
 
     def set_mov_sample_bits(self, bits):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_mov_sample_bits')
-        logger.debug(f'Set MOV Sample Bits it {bits}.')
+        self.logger.debug(f'Set MOV Sample Bits it {bits}.')
         bits = self.ui.mov_sample_bits.setCurrentText(str(bits))
 
     def get_config_output_dir(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_config_output_dir')
         outputdir = self.ui.config_output_dir.text()
-        logger.debug(f'The Config Output Directory is {outputdir}.')
+        self.logger.debug(f'The Config Output Directory is {outputdir}.')
         return outputdir
     
     def set_config_output_dir(self, outputdir):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_config_output_dir')
-        logger.debug(f'Set the Config Output Directory to {outputdir}.')
+        self.logger.debug(f'Set the Config Output Directory to {outputdir}.')
         outputdir = self.ui.config_output_dir.setText(outputdir)
     
     def get_ph_frame(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_ph_frame')
         status = self.ui.ph_frame.isEnabled()
-        logger.debug(f'The PH Frame status is {status}.')
+        self.logger.debug(f'The PH Frame status is {status}.')
         return status
     
     def set_ph_frame(self, status):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_ph_frame')
-        logger.debug(f'Set PH Frame status to {status}.')
+        self.logger.debug(f'Set PH Frame status to {status}.')
         self.ui.ph_frame.setEnabled(status)
     
     def get_mov_frame(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_mov_frame')
         status = self.ui.mov_frame.isEnabled()
-        logger.debug(f'The MOV Frame status is {status}.')
+        self.logger.debug(f'The MOV Frame status is {status}.')
         return status
     
     def set_mov_frame(self, status):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_mov_frame')
-        logger.debug(f'Set MOV Frame status to {status}.')
+        self.logger.debug(f'Set MOV Frame status to {status}.')
         self.ui.mov_frame.setEnabled(status)
 
     def get_ph_group_frames_status(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.get_ph_group_frames_status')
         status = self.ui.ph_group_frame_enable.isEnabled()
-        logger.debug(f'The PH Group Frames status is {status}.')
+        self.logger.debug(f'The PH Group Frames status is {status}.')
         return status
     
     def set_ph_group_frames_status(self, status):
-        logger = logging.getLogger('DATA-CONFIG-GEN.set_ph_group_frames_status')
-        logger.debug(f'Set PH Group Frames status to {status}.')
+        self.logger.debug(f'Set PH Group Frames status to {status}.')
         self.ui.ph_group_frame_enable.setEnabled(status)
 
     
@@ -220,10 +186,9 @@ class DataConfigOp(object):
     # Load and collect config
     # ------------------------------------------------------------------------
     def load_config(self):
-        logger = logging.getLogger('DATA-CONFIG-GEN.load_config')
-        logger.info('-------------------------------------------------')
-        logger.info(f'Loading default config from {self.src_config}...')
-        logger.info('-------------------------------------------------')
+        self.logger.info('-------------------------------------------------')
+        self.logger.info(f'Loading default config from {self.src_config}...')
+        self.logger.info('-------------------------------------------------')
         # load the config file
         with open(self.src_config, 'r', encoding='utf-8') as f:
             config = json.load(f)

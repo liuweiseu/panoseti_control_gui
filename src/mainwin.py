@@ -2,23 +2,23 @@ from PyQt6.QtCore import QProcess
 from PyQt6.QtWidgets import QLabel, QMainWindow
 from PyQt6.QtGui import QPixmap
 
-import logging, json
+import logging, json, os
 from pathlib import Path
 import pyqtgraph as pg
 import numpy as np
 
-from mainwin import Ui_MainWindow
-from data_config_op import DataConfigWin, DataConfigOp
+from src.mainwin_ui import Ui_MainWindow
+from src.data_config_win import DataConfigWin, DataConfigOp
 import asyncio
 
 # from qasync import asyncSlot
-from grpc_thread import AsyncioThread
+from src.grpc_thread import AsyncioThread
 
-from utils import create_logger, make_rich_logger
+from utils.utils import make_rich_logger
 
 NUM_PLOTS = 4
-class MainWinOp(QMainWindow, Ui_MainWindow):
-    def __init__(self, root_dir_config='root_dir.json'):
+class MainWin(QMainWindow, Ui_MainWindow):
+    def __init__(self, root_dir_config='configs/root_dir.json'):
         self.logger = make_rich_logger('mainwin.log', logging.DEBUG, mode='a')
         super().__init__()
         self.setupUi(self)
@@ -32,7 +32,7 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
             with open(root_dir_config, 'r', encoding='utf-8') as f:
                 root_config = json.load(f)
             self.ps_sw = root_config['panoseti_sw']
-            self.pw_sw_control = f"{self.ps_sw}/control"
+            self.ps_sw_control = f"{self.ps_sw}/control"
             self.grpc_config = {}
             self.grpc_config['daq_config_path'] = root_config['panoseti_grpc_config']['daq_config']
             self.grpc_config['net_config_path'] = root_config['panoseti_grpc_config']['net_config']
@@ -106,7 +106,7 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
     # ------------------------------------------------------------------------
     def set_placeholder(self, r, c):
         i = r * 2 + c
-        pixmap = QPixmap("placeholder.png")
+        pixmap = QPixmap("figure/placeholder.png")
         pixmap = pixmap.scaled(350, 350) 
         label = QLabel()
         label.setPixmap(pixmap)
@@ -177,52 +177,61 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
     # ------------------------------------------------------------------------
     def run_command(self, program, arguments):
         self.process.start(program, arguments)
+        self.append_log('------------------------------------------------------------------------')
     
     def power_clicked(self):
+        os.chdir(self.ps_sw_control)
         program = 'python'
         if self.power_status == 'off':
-            arguments = [f'{self.pw_sw_control}/power.py', 'on']
+            arguments = ['power.py', 'on']
             self.power_status = 'on'
             self.power.setText('Power Off')
         elif self.power_status == 'on':
-            arguments = [f'{self.pw_sw_control}/power.py', 'off']
+            arguments = ['power.py', 'off']
             self.power_status = 'off'
             self.power.setText('Power On')
         self.run_command(program, arguments)
 
     def reboot_clicked(self):
+        os.chdir(self.ps_sw_control)
         program = 'python'
-        arguments = [f'{self.pw_sw_control}/config.py', '--reboot']
+        arguments = ['config.py', '--reboot']
         self.run_command(program, arguments)
 
     def marocconfig_clicked(self):
+        os.chdir(self.ps_sw_control)
         program = 'python'
-        arguments = [f'{self.pw_sw_control}/config.py', '--maroc_config']
+        arguments = ['config.py', '--maroc_config']
         self.run_command(program, arguments)
     
     def maskconfig_clicked(self):
+        os.chdir(self.ps_sw_control)
         program = 'python'
-        arguments = [f'{self.pw_sw_control}/config.py', '--mask_config']
+        arguments = ['config.py', '--mask_config']
         self.run_command(program, arguments)
 
     def calbrateph_clicked(self):
+        os.chdir(self.ps_sw_control)
         program = 'python'
-        arguments = [f'{self.pw_sw_control}/config.py', '--mask_config']
+        arguments = ['config.py', '--mask_config']
         self.run_command(program, arguments)
 
     def getuid_clicked(self):
+        os.chdir(self.ps_sw_control)
         program = 'python'
-        arguments = [f'{self.pw_sw_control}/get_uid.py']
+        arguments = ['get_uid.py']
         self.run_command(program, arguments)
 
     def startdaq_clicked(self):
+        os.chdir(self.ps_sw_control)
         program = 'python'
-        arguments = [f'{self.pw_sw_control}/start.py']
+        arguments = ['start.py']
         self.run_command(program, arguments)
 
     def stopdaq_clicked(self):
+        os.chdir(self.ps_sw_control)
         program = 'python'
-        arguments = [f'{self.pw_sw_control}/stop.py']
+        arguments = ['stop.py']
         self.run_command(program, arguments)
 
     def submit_task(self):
@@ -235,6 +244,7 @@ class MainWinOp(QMainWindow, Ui_MainWindow):
             self.cancel_all()
             self.visualization_status = 'off'
             self.start_grpc.setText('Start Visualization')
+        self.append_log('------------------------------------------------------------------------')
 
     def cancel_all(self):
         self.append_log('Stop Visualization.')
