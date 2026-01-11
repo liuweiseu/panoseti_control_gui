@@ -332,7 +332,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     
     def plot_data(self, data):
         mid = data['module_id']
-        print(self.telescope_info[mid])
+        self.logger.debug(f"telescipe ID: {self.telescope_info[mid]}")
         for k, v in self.telescope_info[mid].items():
             name = k
             loc = v

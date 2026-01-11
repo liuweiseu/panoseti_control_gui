@@ -43,7 +43,6 @@ class AsyncioThread(threading.Thread):
         # use self.addc
         self.shutdown_event = asyncio.Event()
         async with AioDaqDataClient(self.daq_config_path, self.net_config_path, stop_event=self.shutdown_event, log_level=logging.DEBUG) as addc:
-            print('created')
             host = None
             #hp_io_cfg_path = 'panoseti_grpc/daq_data/config/hp_io_config_simulate.json'
             hp_io_cfg_path = 'panoseti_grpc/daq_data/config/hp_io_config_palomar.json'
