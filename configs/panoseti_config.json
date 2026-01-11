@@ -1,0 +1,6 @@
+{
+    "panoseti_sw": {
+        "sw_path": "/home/test/panoseti",
+        "python_path": "/home/test/miniconda3/envs/py39/bin/python"
+    }
+}

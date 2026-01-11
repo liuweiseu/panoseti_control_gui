@@ -18,8 +18,11 @@ from utils.utils import make_rich_logger
 
 NUM_PLOTS = 4
 class MainWin(QMainWindow, Ui_MainWindow):
-    def __init__(self, root_dir_config='configs/root_dir.json'):
-        self.logger = make_rich_logger('mainwin.log', logging.DEBUG, mode='a')
+    def __init__(self, root_dir_config='configs/panoseti_config.json'):
+        self.logger = make_rich_logger('mainwin.log', logging.WARNING, mode='a')
+        self.logger.info('********************************************')
+        self.logger.info('Main Window started.')
+        self.logger.info('********************************************')
         super().__init__()
         self.setupUi(self)
         self.actiondata_config.triggered.connect(self.open_data_config)
@@ -33,19 +36,39 @@ class MainWin(QMainWindow, Ui_MainWindow):
             with open(root_dir_config, 'r', encoding='utf-8') as f:
                 root_config = json.load(f)
             self.ps_sw = root_config['panoseti_sw']['sw_path']
+            self.ps_sw_daq_config = f"{self.ps_sw}/control/configs/daq_config.json"
+            self.ps_sw_network_config = f"{self.ps_sw}/control/configs/network_config.json"
+            self.ps_sw_obs_config = f"{self.ps_sw}/control/configs/obs_config.json"
+            self.ps_sw_data_config = f"{self.ps_sw}/control/configs/data_config.json"
             self.ps_sw_python = root_config['panoseti_sw']['python_path']
             self.ps_sw_control = f"{self.ps_sw}/control"
             self.grpc_config = {}
-            self.grpc_config['daq_config_path'] = root_config['panoseti_grpc_config']['daq_config']
-            self.grpc_config['net_config_path'] = root_config['panoseti_grpc_config']['net_config']
-            self.grpc_config['obs_config_path'] = root_config['panoseti_grpc_config']['obs_config']
+            self.grpc_config['daq_config_path'] = self.ps_sw_daq_config
+            self.grpc_config['net_config_path'] = self.ps_sw_network_config
+            self.grpc_config['obs_config_path'] = self.ps_sw_obs_config
+            self.logger.info(f"panoseti_sw_path: {self.ps_sw}")
+            self.logger.info(f"panoseti_python_path: {self.ps_sw_python}")
+            self.logger.info(f"panoseti_grpc_daq: {self.grpc_config['daq_config_path']}")
+            self.logger.info(f"panoseti_grpc_net: {self.grpc_config['net_config_path']}")
+            self.logger.info(f"panoseti_grpc_obs: {self.grpc_config['obs_config_path']}")
             self.append_log('************************************************************************')
             self.append_log(f"panoseti_sw_path: {self.ps_sw}")
             self.append_log(f"panoseti_python_path: {self.ps_sw_python}")
-            self.append_log(f"panoseti_grpc_daq: {self.grpc_config['daq_config_path']}")
-            self.append_log(f"panoseti_grpc_net: {self.grpc_config['net_config_path']}")
-            self.append_log(f"panoseti_grpc_obs: {self.grpc_config['obs_config_path']}")
             self.append_log('************************************************************************')
+            # check if the ps_sw_path exists or not
+            ps_sw_path = Path(self.ps_sw)
+            if ps_sw_path.exists() and ps_sw_path.is_dir():
+                pass
+            else:
+                self.append_log('* WARNING * : panoseti_sw_path doesn\'t exist.')
+                self.append_log('************************************************************************')
+            # check if the python evn exists or not
+            py_path = Path(self.ps_sw_python)
+            if py_path.exists():
+                pass
+            else:
+                self.append_log('* WARNING * : panoseti_python_path doesn\'t exist.')
+                self.append_log('************************************************************************')
         else:
             self.append_log('************************************************************************')
             self.append_log(f'\"{root_dir_config}\" doesn\'t exist!')
@@ -100,7 +123,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def open_data_config(self):
         if not hasattr(self, "data_config_win"):
             self.data_config_win = DataConfigWin()
-        self.data_config_op = DataConfigOp(self.data_config_win)
+        self.data_config_op = DataConfigOp(self.data_config_win, self.ps_sw_data_config)
         self.data_config_op.setup_signal_functions()
         self.data_config_win.show()
 
@@ -133,7 +156,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         else:
             self.append_log("Command failed")
             self.append_log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
-            
+
     def append_log(self, text):
         self.console_output.appendPlainText(text.rstrip())
     

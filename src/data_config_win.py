@@ -15,14 +15,20 @@ class DataConfigWin(QWidget):
 
 class DataConfigOp(object):
     def __init__(self, win, src_config='configs/data_config.json'):
-        self.logger = make_rich_logger('data_config_gen.log', logging.DEBUG, mode='a')
+        self.logger = make_rich_logger('data_config_gen.log', logging.WARNING, mode='a')
+        self.logger.info('********************************************')
+        self.logger.info('Data Config Gen started.')
+        self.logger.info('********************************************')
         self.win = win
         self.ui = win.ui
         self.src_config = src_config
         if self.src_config is not None:
+            self.logger.info(f'Loading {src_config}...')
             fpath = Path(self.src_config)
             if fpath.exists():
                 self.load_config()
+        else:
+            self.logger.info(f'No default data_config.json...')
         self.setup_signal_functions()
     
     # ------------------------------------------------------------------------
@@ -242,6 +248,8 @@ class DataConfigOp(object):
         else:
             self.set_ph_mode_enable(False)
             self.set_ph_frame(False)
+        # set output dir
+        self.set_config_output_dir(self.src_config)
     
     def collect_config(self):
         config = {}
