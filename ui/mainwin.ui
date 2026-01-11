@@ -154,13 +154,6 @@
              <enum>QFrame::Shadow::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_12">
-             <item row="2" column="2">
-              <widget class="QPushButton" name="mask_config">
-               <property name="text">
-                <string>MaskConfig</string>
-               </property>
-              </widget>
-             </item>
              <item row="3" column="2">
               <widget class="QPushButton" name="cal_ph">
                <property name="text">
@@ -168,10 +161,24 @@
                </property>
               </widget>
              </item>
+             <item row="2" column="2">
+              <widget class="QPushButton" name="mask_config">
+               <property name="text">
+                <string>MaskConfig</string>
+               </property>
+              </widget>
+             </item>
              <item row="1" column="2">
               <widget class="QPushButton" name="maroc_config">
                <property name="text">
                 <string>MarocConfig</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QPushButton" name="show_baselines">
+               <property name="text">
+                <string>ShowBaselines</string>
                </property>
               </widget>
              </item>
@@ -200,13 +207,6 @@
              <enum>QFrame::Shadow::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_9">
-             <item row="2" column="0">
-              <widget class="QPushButton" name="start_grpc">
-               <property name="text">
-                <string>Start Visualization</string>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="0">
               <widget class="QPushButton" name="stop_daq">
                <property name="text">
@@ -218,6 +218,20 @@
               <widget class="QPushButton" name="start_daq">
                <property name="text">
                 <string>Start Daq</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QPushButton" name="start_grpc">
+               <property name="text">
+                <string>Start Visualization</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QPushButton" name="stop_grpc">
+               <property name="text">
+                <string>Stop Visualization</string>
                </property>
               </widget>
              </item>
@@ -246,17 +260,38 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="0" colspan="2">
-              <widget class="QPushButton" name="power">
+             <item row="4" column="0" colspan="2">
+              <widget class="QPushButton" name="reboot">
+               <property name="text">
+                <string>Reboot</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QPushButton" name="power_on">
                <property name="text">
                 <string>Power On</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="0" colspan="2">
-              <widget class="QPushButton" name="reboot">
+             <item row="0" column="1">
+              <widget class="QPushButton" name="power_off">
                <property name="text">
-                <string>Reboot</string>
+                <string>Power Off</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QPushButton" name="redis_on">
+               <property name="text">
+                <string>Redis On</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="redis_off">
+               <property name="text">
+                <string>Redis Off</string>
                </property>
               </widget>
              </item>
@@ -299,18 +334,12 @@
      <string>Configs</string>
     </property>
     <addaction name="actiondata_config"/>
-    <addaction name="actiongrpc_config"/>
    </widget>
    <addaction name="menuConfigs"/>
   </widget>
   <action name="actiondata_config">
    <property name="text">
     <string>Data Config</string>
-   </property>
-  </action>
-  <action name="actiongrpc_config">
-   <property name="text">
-    <string>gRPC Config</string>
    </property>
   </action>
  </widget>
