@@ -37,9 +37,6 @@ class AsyncioThread(threading.Thread):
             await asyncio.sleep(1)
     
     async def fetch_data(self):
-        print('start fetch data.')
-        print(self.daq_config_path)
-        print(self.net_config_path)
         # use self.addc
         self.shutdown_event = asyncio.Event()
         async with AioDaqDataClient(self.daq_config_path, self.net_config_path, stop_event=self.shutdown_event, log_level=logging.DEBUG) as addc:
@@ -50,7 +47,6 @@ class AsyncioThread(threading.Thread):
                 hp_io_cfg = json.load(f)
             await addc.init_hp_io(host, hp_io_cfg, timeout=15.0)
             valid_daq_hosts = await addc.get_valid_daq_hosts()
-            print('valid_daq_hosts:', valid_daq_hosts)
             if host is not None and host not in valid_daq_hosts:
                 raise ValueError(f"Invalid host: {host}. Valid hosts: {valid_daq_hosts}")
             stream_images_responses = await addc.stream_images(
