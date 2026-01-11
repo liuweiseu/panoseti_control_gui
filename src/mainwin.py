@@ -86,8 +86,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.grpc_thread = AsyncioThread(self.grpc_config)
         self.grpc_thread.start()
         self.setup_signal_functions()
-        self.power_status = 'off'
-        self.visualization_status = 'off'
         # self.telescope_info = self._parse_obs_config()
         # use hard-coded name here for temp use
         # TODO: imporve this part
@@ -211,23 +209,40 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def run_command(self, program, arguments):
         self.process.start(program, arguments)
     
-    def power_clicked(self):
+    def power_on_clicked(self):
         os.chdir(self.ps_sw_control)
         program = self.ps_sw_python
-        if self.power_status == 'off':
-            self.append_log('---------------------------------------------------------------------------')
-            self.append_log('power.py on')
-            self.append_log('---------------------------------------------------------------------------')
-            arguments = ['-u', 'power.py', 'on']
-            self.power_status = 'on'
-            self.power.setText('Power Off')
-        elif self.power_status == 'on':
-            self.append_log('---------------------------------------------------------------------------')
-            self.append_log('power.py off')
-            self.append_log('---------------------------------------------------------------------------')
-            arguments = ['-u','power.py', 'off']
-            self.power_status = 'off'
-            self.power.setText('Power On')
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('power.py on')
+        self.append_log('---------------------------------------------------------------------------')
+        arguments = ['-u', 'power.py', 'on']
+        self.run_command(program, arguments)
+
+    def power_off_clicked(self):
+        os.chdir(self.ps_sw_control)
+        program = self.ps_sw_python
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('power.py off')
+        self.append_log('---------------------------------------------------------------------------')
+        arguments = ['-u', 'power.py', 'off']
+        self.run_command(program, arguments)
+
+    def redis_on_clicked(self):
+        os.chdir(self.ps_sw_control)
+        program = self.ps_sw_python
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('config.py --redis_daemons')
+        self.append_log('---------------------------------------------------------------------------')
+        arguments = ['-u', 'config.py', '--redis_daemons']
+        self.run_command(program, arguments)
+
+    def redis_off_clicked(self):
+        os.chdir(self.ps_sw_control)
+        program = self.ps_sw_python
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('config.py --stop_redis_daemons')
+        self.append_log('---------------------------------------------------------------------------')
+        arguments = ['-u', 'config.py', '--stop_redis_daemons']
         self.run_command(program, arguments)
 
     def reboot_clicked(self):
@@ -265,13 +280,15 @@ class MainWin(QMainWindow, Ui_MainWindow):
         program = self.ps_sw_python
         arguments = ['-u','config.py', '--calibrate_ph']
         self.run_command(program, arguments)
+    
+    def showbaselines_clicked(self):
+        os.chdir(self.ps_sw_control)
         self.append_log('---------------------------------------------------------------------------')
         self.append_log('config.py --show_ph_baselines')
         self.append_log('---------------------------------------------------------------------------')
         program = self.ps_sw_python
         arguments = ['-u','config.py', '--show_ph_baselines']
         self.run_command(program, arguments)
-
 
     def getuid_clicked(self):
         os.chdir(self.ps_sw_control)
@@ -301,23 +318,15 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.run_command(program, arguments)
 
     def submit_task(self):
-        if self.visualization_status == 'off':
-            self.append_log('---------------------------------------------------------------------------')
-            self.append_log('Start Visualization.')
-            self.append_log('---------------------------------------------------------------------------')
-            self.grpc_thread.submit(self.grpc_thread.fetch_data())
-            self.visualization_status = 'on'
-            self.start_grpc.setText('Stop Visualization')
-        elif self.visualization_status == 'on':
-            self.append_log('---------------------------------------------------------------------------')
-            self.append_log('Stop Visualization.')
-            self.append_log('---------------------------------------------------------------------------')
-            self.cancel_all()
-            self.visualization_status = 'off'
-            self.start_grpc.setText('Start Visualization')
         self.append_log('---------------------------------------------------------------------------')
+        self.append_log('Start Visualization.')
+        self.append_log('---------------------------------------------------------------------------')
+        self.grpc_thread.submit(self.grpc_thread.fetch_data())
 
     def cancel_all(self):
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log('Stop Visualization.')
+        self.append_log('---------------------------------------------------------------------------')
         self.grpc_thread.loop.call_soon_threadsafe(self.grpc_thread.shutdown_event.set)
         self.grpc_thread.cancel_all()
     
@@ -333,12 +342,17 @@ class MainWin(QMainWindow, Ui_MainWindow):
     # Setup signal function
     # ---------------------------------------------------------------------------
     def setup_signal_functions(self):
-        self.power.clicked.connect(self.power_clicked)
+        self.power_on.clicked.connect(self.power_on_clicked)
+        self.power_off.clicked.connect(self.power_off_clicked)
+        self.redis_on.clicked.connect(self.redis_on_clicked)
+        self.redis_off.clicked.connect(self.redis_off_clicked)
         self.reboot.clicked.connect(self.reboot_clicked)
         self.start_grpc.clicked.connect(self.submit_task)
+        self.stop_grpc.clicked.connect(self.cancel_all)
         self.maroc_config.clicked.connect(self.marocconfig_clicked)
         self.mask_config.clicked.connect(self.maskconfig_clicked)
         self.cal_ph.clicked.connect(self.calbrateph_clicked)
+        self.show_baselines.clicked.connect(self.showbaselines_clicked)
         self.get_uid.clicked.connect(self.getuid_clicked)
         self.start_daq.clicked.connect(self.startdaq_clicked)
         self.stop_daq.clicked.connect(self.stopdaq_clicked)
