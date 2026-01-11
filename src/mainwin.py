@@ -27,6 +27,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.process = QProcess(self)
         self.process.readyReadStandardOutput.connect(self.on_stdout)
         self.process.readyReadStandardError.connect(self.on_stderr)
+        self.process.finished.connect(self.on_finished)
         fpath = Path(root_dir_config)
         if fpath.exists():
             with open(root_dir_config, 'r', encoding='utf-8') as f:
@@ -126,6 +127,13 @@ class MainWin(QMainWindow, Ui_MainWindow):
         text = self.process.readAllStandardError().data().decode()
         self.append_log(text)
 
+    def on_finished(self, exitCode, exitStatus):
+        if exitStatus == QProcess.ExitStatus.NormalExit and exitCode == 0:
+            self.append_log('---------------------------------------------------------------------------')
+        else:
+            self.append_log("Command failed")
+            self.append_log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+            
     def append_log(self, text):
         self.console_output.appendPlainText(text.rstrip())
     
