@@ -119,10 +119,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def on_stdout(self):
         text = self.process.readAllStandardOutput().data().decode()
         self.append_log(text)
+        self.append_log('------------------------------------------------------------------------')
 
     def on_stderr(self):
         text = self.process.readAllStandardError().data().decode()
         self.append_log(text)
+        self.append_log('------------------------------------------------------------------------')
 
     def append_log(self, text):
         self.console_output.appendPlainText(text.rstrip())
@@ -177,7 +179,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
     # ------------------------------------------------------------------------
     def run_command(self, program, arguments):
         self.process.start(program, arguments)
-        self.append_log('------------------------------------------------------------------------')
     
     def power_clicked(self):
         os.chdir(self.ps_sw_control)
@@ -219,7 +220,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def getuid_clicked(self):
         os.chdir(self.ps_sw_control)
         program = 'python'
-        arguments = ['get_uid.py']
+        arguments = ['get_uids.py']
         self.run_command(program, arguments)
 
     def startdaq_clicked(self):
