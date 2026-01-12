@@ -59,6 +59,8 @@ class AsyncioThread(threading.Thread):
             wait_for_ready=True,
             )
             async for parsed_pano_image in stream_images_responses:
+                if self.shutdown_event.is_set():
+                    break
                 self.data_signal.new_data.emit(parsed_pano_image)
 
     def submit(self, coro):
