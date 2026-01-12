@@ -46,11 +46,14 @@ class MainWin(QMainWindow, Ui_MainWindow):
             self.grpc_config['daq_config_path'] = self.ps_sw_daq_config
             self.grpc_config['net_config_path'] = self.ps_sw_network_config
             self.grpc_config['obs_config_path'] = self.ps_sw_obs_config
+            #self.grpc_config['hp_io_cfg_path'] = 'panoseti_grpc/daq_data/config/hp_io_config_simulate.json'
+            self.grpc_config['hp_io_cfg_path'] = 'panoseti_grpc/daq_data/config/hp_io_config_palomar.json'
             self.logger.info(f"panoseti_sw_path: {self.ps_sw}")
             self.logger.info(f"panoseti_python_path: {self.ps_sw_python}")
             self.logger.info(f"panoseti_grpc_daq: {self.grpc_config['daq_config_path']}")
             self.logger.info(f"panoseti_grpc_net: {self.grpc_config['net_config_path']}")
             self.logger.info(f"panoseti_grpc_obs: {self.grpc_config['obs_config_path']}")
+            self.logger.info(f"panoseti_grpc_hp_io: {self.grpc_config['hp_io_cfg_path']}")
             self.append_log('************************************************************************')
             self.append_log(f"panoseti_sw_path: {self.ps_sw}")
             self.append_log(f"panoseti_python_path: {self.ps_sw_python}")

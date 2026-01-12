@@ -22,6 +22,9 @@ class AsyncioThread(threading.Thread):
         self.data_signal = DataSignal()
         self.daq_config_path = grpc_config['daq_config_path']
         self.net_config_path = grpc_config['net_config_path']
+        self.hp_io_cfg_path = grpc_config['hp_io_cfg_path']
+        with open(self.hp_io_cfg_path, "r") as f:
+            self.hp_io_cfg = json.load(f)
         self.shutdown_event = None
 
     def run(self):
@@ -39,13 +42,9 @@ class AsyncioThread(threading.Thread):
     async def fetch_data(self):
         # use self.addc
         host = None
-        #hp_io_cfg_path = 'panoseti_grpc/daq_data/config/hp_io_config_simulate.json'
-        hp_io_cfg_path = 'panoseti_grpc/daq_data/config/hp_io_config_palomar.json'
-        with open(hp_io_cfg_path, "r") as f:
-            hp_io_cfg = json.load(f)
         self.shutdown_event = asyncio.Event()
         async with AioDaqDataClient(self.daq_config_path, self.net_config_path, stop_event=self.shutdown_event, log_level=logging.DEBUG) as addc:
-            await addc.init_hp_io(host, hp_io_cfg, timeout=15.0)
+            await addc.init_hp_io(host, self.hp_io_cfg, timeout=15.0)
             valid_daq_hosts = await addc.get_valid_daq_hosts()
             if host is not None and host not in valid_daq_hosts:
                 raise ValueError(f"Invalid host: {host}. Valid hosts: {valid_daq_hosts}")
