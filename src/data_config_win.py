@@ -229,9 +229,9 @@ class DataConfigOp(object):
             self.set_ph_pe_threshold(pconfig['pe_threshold'])
             # set pixel mode
             if pconfig['two_pixel_trigger']:
-                self.set_ph_pixel_trigger_mode('2 Pixel Trigger')
+                self.set_ph_pixel_trigger_mode('2 Pixels Trigger')
             elif pconfig['three_pixel_trigger']:
-                self.set_ph_pixel_trigger_mode('3 Pixel Trigger')
+                self.set_ph_pixel_trigger_mode('3 Pixels Trigger')
             else:
                 self.set_ph_pixel_trigger_mode('1 Pixel Trigger')
             # set any trigger
