@@ -183,7 +183,7 @@ class Ui_Form(object):
         self.ph_mode_enable.setText(_translate("Form", "PH Mode"))
         self.ph_trigger_mode.setItemText(0, _translate("Form", "1 Pixel Trigger"))
         self.ph_trigger_mode.setItemText(1, _translate("Form", "2 Pixels Trigger"))
-        self.ph_trigger_mode.setItemText(2, _translate("Form", "3 Pixels Trigger "))
+        self.ph_trigger_mode.setItemText(2, _translate("Form", "3 Pixels Trigger"))
         self.label_8.setText(_translate("Form", "Pe Threshold"))
         self.ph_any_trigger_enable.setText(_translate("Form", "Any Trigger"))
         self.label_9.setText(_translate("Form", "Pixel Trigger Mode"))
