@@ -33,11 +33,6 @@ class AsyncioThread(threading.Thread):
 
     def stop(self):
         self.loop.call_soon_threadsafe(self.loop.stop)
-
-    async def send_data_demo(self):
-        while True:
-            self.data_signal.new_data.emit('hello world')
-            await asyncio.sleep(1)
     
     async def fetch_data(self):
         # use self.addc
@@ -74,3 +69,4 @@ class AsyncioThread(threading.Thread):
                 task.cancel()
             self.tasks.clear()
         self.loop.call_soon_threadsafe(_cancel)
+
