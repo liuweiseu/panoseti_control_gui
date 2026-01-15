@@ -9,12 +9,13 @@ from argparse import ArgumentParser
 sys.path.insert(0, 'panoseti_grpc')
 from daq_data.client import AioDaqDataClient
 
-from utils.utils import make_rich_logger
+sys.path.insert(0, 'utils')
+from utils import make_rich_logger
 
 class DaqDataBackend(object):
     def __init__(self, grpc_config_path: str, mode: str) -> None:
         # create logger
-        self.logger = make_rich_logger('mainwin.log', logging.WARNING, mode='a')
+        self.logger = make_rich_logger('grpc_process.log', logging.WARNING, mode='a')
         self.logger.info('********************************************')
         self.logger.info('PANOSETI gRPC process started.')
         self.logger.info('********************************************')
@@ -31,6 +32,7 @@ class DaqDataBackend(object):
             self.hp_io_cfg = json.load(f)
         self.shutdown_event = None
         # get bytes_per_pixel
+        self.mode = mode
         if mode == 'mov8':
             self.dtype = np.uint8
             self.size = 32
@@ -55,20 +57,19 @@ class DaqDataBackend(object):
         self.logger.info(f"{self.bytes_per_pixel} bytes per pixel.")
         # create a shared memory, the size is size * size
         self.shm = shared_memory.SharedMemory(
-            create=True, 
-            dtype=self.dtype, 
-            size=self.size * self.size * self.bytes_per_pixel
+            create=True,  
+            size=self.size * self.size
             )
         self.img = np.ndarray((self.size, self.size), dtype=self.dtype, buffer=self.shm.buf)
 
     def send_shm_info(self):
         self.logger.info("Sending the shm info...")
         print(
-            json.dump({
+            json.dumps({
                 "shm": self.shm.name,
                 "shape": [self.size, self.size],
-                "dtype": self.dtype
-            })
+                "dtype": self.mode
+            }), flush=True
         )
     
     async def send_images(self, ph_data=True, mov_data=False):
@@ -124,4 +125,5 @@ if __name__ == '__main__':
     # start!
     backend = DaqDataBackend(args.config, args.mode)
     backend.send_shm_info()
-    backend.send_images()
+    #backend.send_images()
+    backend.close()

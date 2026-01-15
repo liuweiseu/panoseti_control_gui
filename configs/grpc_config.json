@@ -1,0 +1,5 @@
+{
+    "daq_config_path": "/Users/wei/Desktop/configs/daq_config.json",
+    "net_config_path": "/Users/wei/Desktop/configs/network_config.json",
+    "hp_io_cfg_path": "panoseti_grpc/daq_data/config/hp_io_config_simulate.json"
+}
