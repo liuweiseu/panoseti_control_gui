@@ -9,7 +9,8 @@ import numpy as np
 
 from src.mainwin_ui import Ui_MainWindow
 from src.data_config_win import DataConfigWin, DataConfigOp
-import asyncio
+import asyncio, signal
+from multiprocessing import shared_memory, resource_tracker
 
 # from qasync import asyncSlot
 from src.grpc_thread import AsyncioThread
@@ -26,11 +27,20 @@ class MainWin(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.actiondata_config.triggered.connect(self.open_data_config)
-        # Process
-        self.process = QProcess(self)
-        self.process.readyReadStandardOutput.connect(self.on_stdout)
-        self.process.readyReadStandardError.connect(self.on_stderr)
-        self.process.finished.connect(self.on_finished)
+        # Process for panoseti software
+        self.ps_process = QProcess(self)
+        self.ps_process.readyReadStandardOutput.connect(self.ps_stdout)
+        self.ps_process.readyReadStandardError.connect(self.ps_stderr)
+        self.ps_process.finished.connect(self.ps_finished)
+        # Process for panoseti grpc
+        self.grpc_process = QProcess(self)
+        self.grpc_process.readyReadStandardOutput.connect(self.grpc_stdout)
+        self.grpc_process.readyReadStandardError.connect(self.grpc_stderr)
+        self.grpc_process.finished.connect(self.grpc_finished)
+        # use shared memory to get image data
+        self.shm = None
+        self.shm_name = None
+        self.img = None
         fpath = Path(root_dir_config)
         if fpath.exists():
             with open(root_dir_config, 'r', encoding='utf-8') as f:
@@ -86,8 +96,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.imgs = [None] * NUM_PLOTS
         self.qttexts = [None] * NUM_PLOTS
         self.shutdown_event = None
-        self.grpc_thread = AsyncioThread(self.grpc_config)
-        self.grpc_thread.start()
         self.setup_signal_functions()
         # self.telescope_info = self._parse_obs_config()
         # use hard-coded name here for temp use
@@ -143,15 +151,15 @@ class MainWin(QMainWindow, Ui_MainWindow):
     # ---------------------------------------------------------------------------
     # Low level APIs
     # ---------------------------------------------------------------------------
-    def on_stdout(self):
-        text = self.process.readAllStandardOutput().data().decode()
+    def ps_stdout(self):
+        text = self.ps_process.readAllStandardOutput().data().decode()
         self.append_log(text)
 
-    def on_stderr(self):
-        text = self.process.readAllStandardError().data().decode()
+    def ps_stderr(self):
+        text = self.ps_process.readAllStandardError().data().decode()
         self.append_log(text)
 
-    def on_finished(self, exitCode, exitStatus):
+    def ps_finished(self, exitCode, exitStatus):
         if exitStatus == QProcess.ExitStatus.NormalExit and exitCode == 0:
             self.append_log('---------------------------------------------------------------------------')
         else:
@@ -160,13 +168,66 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
     def append_log(self, text):
         self.console_output.appendPlainText(text.rstrip())
+
+    def start_grpc_clicked(self, mode='ph256'):
+        self.logger.info('Start PANOSETI gPRC process.')
+        program = 'python'
+        args = ['-u', 'src/grpc_process.py', '-m', 'ph256']
+        self.grpc_process.start(program, args)
+
+    def stop_grpc_clicked(self):
+        self.logger.info('Stop PANOSETI gPRC process.')
+        self.shm.close()
+        # self.shm.unlink()
+        pid = self.grpc_process.processId()
+        self.logger.debug(f"PANOSETI gPRC PID: {pid}")
+        os.kill(pid, signal.SIGINT)
+        self.grpc_process.waitForFinished(3000)
+
+    def _get_dytpe_from_mode(self, mode):
+        if mode == 'ph1024' or mode == 'ph256':
+            dtype = np.int16
+        elif mode == 'mov8':
+            dtype = np.uint8
+        elif mode == 'mov16':
+            dtype = np.uint16
+        else:
+            self.logger.error(f"mode({mode}) is not supported.")
+
+    def grpc_stdout(self):
+        # we get an image every time when this function is called
+        text =  self.grpc_process.readAllStandardOutput().data().decode()
+        print(text)
+        metadata = json.loads(text)
+        if 'shm' in metadata:
+            # this is from send_shm_info
+            self.shm_name = metadata['shm']
+            self.shm = shared_memory.SharedMemory(name=self.shm_name, create=False)
+            # resource_tracker.unregister(self.shm_name, 'shared_memory')
+            h, w = metadata['shape']
+            mode = metadata['mode']
+            dtype = self._get_dytpe_from_mode(mode)
+            self.img = np.ndarray((h, w), dtype=dtype, buffer=self.shm.buf)
+        else:
+            # this is from send_images
+            data = metadata
+            # image_array = self.img.copy()
+            # data['image_array'] = image_array
+            # self.plot_data(data)
+
+    def grpc_stderr(self):
+        text =  self.grpc_process.readAllStandardError().data().decode()
+        self.logger.error(f"PANOSETI gPRC executed failed: {text}")
     
+    def grpc_finished(self, exitCode, exitStatus):
+        if exitStatus == QProcess.ExitStatus.NormalExit and exitCode == 0:
+            self.logger.info('PANOSETI gRPC process exited gracefully.')
+        else:
+            self.logger.error('PANOSETI gPRC process exited failed.')
+
     # ---------------------------------------------------------------------------
     # plot figures
     # ---------------------------------------------------------------------------
-    def start_grpc_clicked(self):
-        asyncio.run_coroutine_threadsafe(self.show_plot(), self.loop)
-
     def show_plot(self, r, c, data):
         i = r * 2 + c
         if self.static_label[i] is not None:
@@ -210,7 +271,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     # Signal functions
     # ---------------------------------------------------------------------------
     def run_command(self, program, arguments):
-        self.process.start(program, arguments)
+        self.ps_process.start(program, arguments)
     
     def power_on_clicked(self):
         os.chdir(self.ps_sw_control)
@@ -341,6 +402,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
             loc = v
         data['name'] = name
         self.show_plot(loc[0], loc[1], data)
+
+    def closeEvent(self, event):
+        #self.stop_grpc_clicked()
+        event.accept()
     # ---------------------------------------------------------------------------
     # Setup signal function
     # ---------------------------------------------------------------------------
@@ -350,8 +415,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.redis_on.clicked.connect(self.redis_on_clicked)
         self.redis_off.clicked.connect(self.redis_off_clicked)
         self.reboot.clicked.connect(self.reboot_clicked)
-        self.start_grpc.clicked.connect(self.submit_task)
-        self.stop_grpc.clicked.connect(self.cancel_all)
+        self.start_grpc.clicked.connect(self.start_grpc_clicked)
+        self.stop_grpc.clicked.connect(self.stop_grpc_clicked)
         self.maroc_config.clicked.connect(self.marocconfig_clicked)
         self.mask_config.clicked.connect(self.maskconfig_clicked)
         self.cal_ph.clicked.connect(self.calbrateph_clicked)
@@ -359,5 +424,4 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.get_uid.clicked.connect(self.getuid_clicked)
         self.start_daq.clicked.connect(self.startdaq_clicked)
         self.stop_daq.clicked.connect(self.stopdaq_clicked)
-        self.grpc_thread.data_signal.new_data.connect(self.plot_data)
 

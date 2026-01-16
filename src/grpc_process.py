@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 
 sys.path.insert(0, 'panoseti_grpc')
 from daq_data.client import AioDaqDataClient
+import signal
 
 sys.path.insert(0, 'utils')
 from utils import make_rich_logger
@@ -68,7 +69,7 @@ class DaqDataBackend(object):
             json.dumps({
                 "shm": self.shm.name,
                 "shape": [self.size, self.size],
-                "dtype": self.mode
+                "mode": self.mode
             }), flush=True
         )
     
@@ -77,7 +78,7 @@ class DaqDataBackend(object):
         # use self.addc
         host = None
         self.shutdown_event = asyncio.Event()
-        async with AioDaqDataClient(self.daq_config_path, self.net_config_path, stop_event=self.shutdown_event, log_level=logging.DEBUG) as addc:
+        async with AioDaqDataClient(self.daq_config_path, self.net_config_path, stop_event=self.shutdown_event, log_level=logging.ERROR) as addc:
             await addc.init_hp_io(host, self.hp_io_cfg, timeout=15.0)
             valid_daq_hosts = await addc.get_valid_daq_hosts()
             if host is not None and host not in valid_daq_hosts:
@@ -94,14 +95,21 @@ class DaqDataBackend(object):
             async for parsed_pano_image in stream_images_responses:
                 if self.shutdown_event.is_set():
                     break
-                self.img[:] = parsed_pano_image['image_array']
+                self.img[:] = parsed_pano_image['image_array'][:]
                 metadata = {k: v for k, v in parsed_pano_image.items() if k != "image_array"}
-                print(metadata)
+                print(json.dumps(metadata, default=str)) 
 
     def close(self):
         self.logger.info("Deattach the shm.")
         self.shm.close()
         self.shm.unlink()
+        self.logger.info("Deattached the shm.")
+
+async def run(args):
+    backend = DaqDataBackend(args.config, args.mode)
+    backend.send_shm_info()
+    await backend.send_images()
+    backend.close()
 
 if __name__ == '__main__':
     parser = ArgumentParser(description="Usage for PANOSETI gRPC.")
@@ -122,8 +130,9 @@ if __name__ == '__main__':
     )
     # parse the args
     args = parser.parse_args()
+    # deal with SIGINT
+    def handler(signum, frame):
+        sys.exit(0)
+    signal.signal(signal.SIGINT, handler)
     # start!
-    backend = DaqDataBackend(args.config, args.mode)
-    backend.send_shm_info()
-    #backend.send_images()
-    backend.close()
+    asyncio.run(run(args))

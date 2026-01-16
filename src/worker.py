@@ -2,6 +2,11 @@ import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox
 from PyQt6.QtCore import QProcess
 import json
+import signal
+import os
+
+from PyQt6.QtCore import QT_VERSION_STR, PYQT_VERSION_STR
+print(QT_VERSION_STR, PYQT_VERSION_STR)
 
 class SimpleWindow(QWidget):
     def __init__(self):
@@ -14,6 +19,7 @@ class SimpleWindow(QWidget):
         self.process.readyReadStandardOutput.connect(self.on_stdout)
         self.process.readyReadStandardError.connect(self.on_stderr)
         self.process.finished.connect(self.on_finished)
+        self.process_done = False
 
 
     def init_ui(self):
@@ -25,12 +31,13 @@ class SimpleWindow(QWidget):
     def on_button_click(self):
         # run cmd
         program = 'python'
-        args = ['-u', 'src/grpc_process.py']
+        args = ['-u', 'src/grpc_process.py', '-m', 'ph256']
         self.run_command(program, args)
 
     def on_stdout(self):
         text = self.process.readAllStandardOutput().data().decode()
-        info = json.loads(text)
+        info = json.dumps(text, default=str)
+        info = json.loads(info)
         print(info)
 
     def on_stderr(self):
@@ -43,7 +50,16 @@ class SimpleWindow(QWidget):
         if exitStatus == QProcess.ExitStatus.NormalExit and exitCode == 0:
             print("OK.")
         else:
+            print(exitStatus)
+            print(exitCode)
             print("Failed.")
+    
+    def closeEvent(self, event):
+        pid = self.process.processId()
+        print(f"pid: {pid}")
+        os.kill(pid, signal.SIGINT)
+        self.process.waitForFinished(3000)
+        event.accept()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
