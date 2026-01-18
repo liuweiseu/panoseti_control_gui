@@ -1,13 +1,16 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox
 from PyQt6.QtCore import QProcess
+from PyQt6.QtCore import QSocketNotifier
+
+SOCK_PATH = "/tmp/meta.sock"
+
 import json
 import signal
 import os
+import socket
 
-from PyQt6.QtCore import QT_VERSION_STR, PYQT_VERSION_STR
-print(QT_VERSION_STR, PYQT_VERSION_STR)
-
+SERVER_NAME = 'panoseti_grpc_visualization'
 class SimpleWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -20,7 +23,31 @@ class SimpleWindow(QWidget):
         self.process.readyReadStandardError.connect(self.on_stderr)
         self.process.finished.connect(self.on_finished)
         self.process_done = False
+        if os.path.exists(SOCK_PATH):
+            os.remove(SOCK_PATH)
+        self.server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        self.server.bind(SOCK_PATH)
+        self.server.listen(1)
+        self.server_notifier = QSocketNotifier(
+            self.server.fileno(),
+            QSocketNotifier.Type.Read
+        )
+        self.server_notifier.activated.connect(self._on_new_connection)
+        self.conn = None
+        self.conn_notifier = None
 
+    def _on_new_connection(self):
+        # 防止重复触发
+        self.server_notifier.setEnabled(False)
+
+        self.conn, _ = self.server.accept()
+        self.conn.setblocking(False)
+        # 监听连接 socket
+        self.conn_notifier = QSocketNotifier(
+            self.conn.fileno(),
+            QSocketNotifier.Type.Read
+        )
+        self.conn_notifier.activated.connect(self._on_ready_read)
 
     def init_ui(self):
         # 创建按钮
@@ -36,12 +63,11 @@ class SimpleWindow(QWidget):
 
     def on_stdout(self):
         text = self.process.readAllStandardOutput().data().decode()
-        info = json.dumps(text, default=str)
-        info = json.loads(info)
-        print(info)
+        print(text)
 
     def on_stderr(self):
         text = self.process.readAllStandardError().data().decode()
+        print(text)
     
     def run_command(self, program, arguments):
         self.process.start(program, arguments)
@@ -60,6 +86,18 @@ class SimpleWindow(QWidget):
         os.kill(pid, signal.SIGINT)
         self.process.waitForFinished(3000)
         event.accept()
+    
+    def _on_ready_read(self):
+        data = self.conn.recv(4096)
+        if not data:
+            self.conn_notifier.setEnabled(False)
+            self.conn.close()
+            return
+        for line in data.split(b"\n"):
+            if line:
+                print(line)
+                #metadata = json.loads(line.decode())
+        #print(metadata)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

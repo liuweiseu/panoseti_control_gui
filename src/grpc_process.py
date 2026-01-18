@@ -5,6 +5,7 @@ from typing import Union
 import asyncio
 import logging
 from argparse import ArgumentParser
+import socket
 
 sys.path.insert(0, 'panoseti_grpc')
 from daq_data.client import AioDaqDataClient
@@ -13,6 +14,8 @@ import signal
 sys.path.insert(0, 'utils')
 from utils import make_rich_logger
 
+SOCK_PATH = "/tmp/meta.sock"
+
 class DaqDataBackend(object):
     def __init__(self, grpc_config_path: str, mode: str) -> None:
         # create logger
@@ -20,6 +23,8 @@ class DaqDataBackend(object):
         self.logger.info('********************************************')
         self.logger.info('PANOSETI gRPC process started.')
         self.logger.info('********************************************')
+        self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        self.sock.connect(SOCK_PATH)
         # get configs
         with open(grpc_config_path, "r") as f:
             grpc_config = json.load(f)
@@ -63,15 +68,16 @@ class DaqDataBackend(object):
             )
         self.img = np.ndarray((self.size, self.size), dtype=self.dtype, buffer=self.shm.buf)
 
+    def send_metadata(self, metadata):
+        self.sock.sendall(json.dumps(metadata, default=str).encode() + b'\n')
+
     def send_shm_info(self):
         self.logger.info("Sending the shm info...")
-        print(
-            json.dumps({
+        self.send_metadata({
                 "shm": self.shm.name,
                 "shape": [self.size, self.size],
                 "mode": self.mode
-            }), flush=True
-        )
+            })
     
     async def send_images(self, ph_data=True, mov_data=False):
         self.logger.info("Sending images...")
@@ -97,12 +103,15 @@ class DaqDataBackend(object):
                     break
                 self.img[:] = parsed_pano_image['image_array'][:]
                 metadata = {k: v for k, v in parsed_pano_image.items() if k != "image_array"}
-                print(json.dumps(metadata, default=str)) 
+                self.send_metadata(metadata) 
 
     def close(self):
         self.logger.info("Deattach the shm.")
         self.shm.close()
-        self.shm.unlink()
+        try:
+            self.shm.unlink()
+        except:
+            self.logger.error('grpc_process failed.')
         self.logger.info("Deattached the shm.")
 
 async def run(args):

@@ -178,7 +178,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def stop_grpc_clicked(self):
         self.logger.info('Stop PANOSETI gPRC process.')
         self.shm.close()
-        # self.shm.unlink()
+        try:
+            self.shm.unlink()
+        except:
+            print('failed to stop grpc.')
         pid = self.grpc_process.processId()
         self.logger.debug(f"PANOSETI gPRC PID: {pid}")
         os.kill(pid, signal.SIGINT)
@@ -404,7 +407,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.show_plot(loc[0], loc[1], data)
 
     def closeEvent(self, event):
-        #self.stop_grpc_clicked()
+        self.stop_grpc_clicked()
         event.accept()
     # ---------------------------------------------------------------------------
     # Setup signal function
