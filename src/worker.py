@@ -95,9 +95,8 @@ class SimpleWindow(QWidget):
             return
         for line in data.split(b"\n"):
             if line:
-                print(line)
-                #metadata = json.loads(line.decode())
-        #print(metadata)
+                metadata = json.loads(line.decode())
+        print(metadata)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

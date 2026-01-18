@@ -1,23 +1,26 @@
 from PyQt6.QtCore import QProcess
 from PyQt6.QtWidgets import QLabel, QMainWindow
 from PyQt6.QtGui import QPixmap
+from PyQt6.QtCore import QSocketNotifier
 
 import logging, json, os
 from pathlib import Path
 import pyqtgraph as pg
 import numpy as np
+import socket
 
 from src.mainwin_ui import Ui_MainWindow
 from src.data_config_win import DataConfigWin, DataConfigOp
 import asyncio, signal
 from multiprocessing import shared_memory, resource_tracker
 
-# from qasync import asyncSlot
 from src.grpc_thread import AsyncioThread
 
 from utils.utils import make_rich_logger
 
 NUM_PLOTS = 4
+
+SOCK_PATH = "/tmp/meta.sock"
 class MainWin(QMainWindow, Ui_MainWindow):
     def __init__(self, root_dir_config='configs/panoseti_config.json'):
         self.logger = make_rich_logger('mainwin.log', logging.WARNING, mode='a')
@@ -37,6 +40,19 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.grpc_process.readyReadStandardOutput.connect(self.grpc_stdout)
         self.grpc_process.readyReadStandardError.connect(self.grpc_stderr)
         self.grpc_process.finished.connect(self.grpc_finished)
+        # set socket notifier
+        if os.path.exists(SOCK_PATH):
+            os.remove(SOCK_PATH)
+        self.server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        self.server.bind(SOCK_PATH)
+        self.server.listen(1)
+        self.server_notifier = QSocketNotifier(
+            self.server.fileno(),
+            QSocketNotifier.Type.Read
+        )
+        self.server_notifier.activated.connect(self._on_new_connection)
+        self.conn = None
+        self.conn_notifier = None
         # use shared memory to get image data
         self.shm = None
         self.shm_name = None
@@ -106,6 +122,47 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.telescope_info[253] = {'Winter': [1, 0]}
         self.telescope_info[254] = {'Gattini': [1, 1]}
     
+    # ---------------------------------------------------------------------------
+    # signal functions for socket
+    # ---------------------------------------------------------------------------
+    def _on_new_connection(self):
+        self.server_notifier.setEnabled(False)
+        self.conn, _ = self.server.accept()
+        self.conn.setblocking(False)
+        self.conn_notifier = QSocketNotifier(
+            self.conn.fileno(),
+            QSocketNotifier.Type.Read
+        )
+        self.conn_notifier.activated.connect(self._on_ready_read)
+
+    def _on_ready_read(self):
+        data = self.conn.recv(4096)
+        if not data:
+            self.conn_notifier.setEnabled(False)
+            self.conn.close()
+            return
+        for line in data.split(b"\n"):
+            if line:
+                metadata = json.loads(line.decode())
+        if 'shm' in metadata:
+            # this is from send_shm_info
+            self.shm_name = metadata['shm']
+            self.shm = shared_memory.SharedMemory(name=self.shm_name, create=False)
+            # resource_tracker.unregister(self.shm_name, 'shared_memory')
+            h, w = metadata['shape']
+            mode = metadata['mode']
+            dtype = self._get_dytpe_from_mode(mode)
+            print(f"h, w = {h}, {w}")
+            self.img = np.ndarray((h, w), dtype=dtype, buffer=self.shm.buf)
+        else:
+            # this is from send_images
+            data = metadata
+            image_array = self.img.copy()
+            print(f"size of image_array: {image_array.shape}")
+            data['image_array'] = image_array
+            print(image_array)
+            self.plot_data(data)
+
     # ---------------------------------------------------------------------------
     # helper function
     # ---------------------------------------------------------------------------
@@ -196,31 +253,16 @@ class MainWin(QMainWindow, Ui_MainWindow):
             dtype = np.uint16
         else:
             self.logger.error(f"mode({mode}) is not supported.")
+        return dtype
 
     def grpc_stdout(self):
         # we get an image every time when this function is called
         text =  self.grpc_process.readAllStandardOutput().data().decode()
-        print(text)
-        metadata = json.loads(text)
-        if 'shm' in metadata:
-            # this is from send_shm_info
-            self.shm_name = metadata['shm']
-            self.shm = shared_memory.SharedMemory(name=self.shm_name, create=False)
-            # resource_tracker.unregister(self.shm_name, 'shared_memory')
-            h, w = metadata['shape']
-            mode = metadata['mode']
-            dtype = self._get_dytpe_from_mode(mode)
-            self.img = np.ndarray((h, w), dtype=dtype, buffer=self.shm.buf)
-        else:
-            # this is from send_images
-            data = metadata
-            # image_array = self.img.copy()
-            # data['image_array'] = image_array
-            # self.plot_data(data)
+        self.logger.info(f"PANOSETI gPRC info: \n{text}")
 
     def grpc_stderr(self):
         text =  self.grpc_process.readAllStandardError().data().decode()
-        self.logger.error(f"PANOSETI gPRC executed failed: {text}")
+        self.logger.error(f"PANOSETI gPRC executed failed: \n{text}")
     
     def grpc_finished(self, exitCode, exitStatus):
         if exitStatus == QProcess.ExitStatus.NormalExit and exitCode == 0:
@@ -265,6 +307,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             pass
         imgdata = data['image_array']
         h, w = imgdata.shape
+        print(f'h, w = {h ,w}')
         self.imgs[i].setRect(0,0,w,h)
         self.imgs[i].setImage(imgdata)
         self.qttexts[i].setText(f"Frame No: {data['frame_number']}")

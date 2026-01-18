@@ -101,7 +101,10 @@ class DaqDataBackend(object):
             async for parsed_pano_image in stream_images_responses:
                 if self.shutdown_event.is_set():
                     break
-                self.img[:] = parsed_pano_image['image_array'][:]
+                self.logger.debug(f"size of image_array: {parsed_pano_image['image_array'].shape}")
+                self.logger.debug(f"size of image_array: {type(parsed_pano_image['image_array'])}")
+                self.img[:] = parsed_pano_image['image_array']
+                self.logger.debug(f"size of img: {self.img.shape}")
                 metadata = {k: v for k, v in parsed_pano_image.items() if k != "image_array"}
                 self.send_metadata(metadata) 
 
