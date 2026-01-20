@@ -31,6 +31,8 @@ If miniconda is installed, please create and activate the python environment.
     pip install pyqtgraph
     # or 
     conda  install -c conda-forge pyqtgraph
+    
+    pip install rich
     ```
     **Note:** If you use `pip install pyqt6`, you may have to install necessary libraries
     ```
