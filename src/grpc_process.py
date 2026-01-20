@@ -64,7 +64,7 @@ class DaqDataBackend(object):
         # create a shared memory, the size is size * size
         self.shm = shared_memory.SharedMemory(
             create=True,  
-            size=self.size * self.size
+            size=self.size * self.size * self.bytes_per_pixel
             )
         self.img = np.ndarray((self.size, self.size), dtype=self.dtype, buffer=self.shm.buf)
 
