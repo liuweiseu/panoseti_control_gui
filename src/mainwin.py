@@ -152,15 +152,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
             h, w = metadata['shape']
             mode = metadata['mode']
             dtype = self._get_dytpe_from_mode(mode)
-            print(f"h, w = {h}, {w}")
             self.img = np.ndarray((h, w), dtype=dtype, buffer=self.shm.buf)
         else:
             # this is from send_images
             data = metadata
             image_array = self.img.copy()
-            print(f"size of image_array: {image_array.shape}")
             data['image_array'] = image_array
-            print(image_array)
             self.plot_data(data)
 
     # ---------------------------------------------------------------------------
@@ -234,15 +231,21 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
     def stop_grpc_clicked(self):
         self.logger.info('Stop PANOSETI gPRC process.')
+        # close shared memory
         self.shm.close()
-        try:
-            self.shm.unlink()
-        except:
-            print('failed to stop grpc.')
+        # send SIGINT to the grpc process
         pid = self.grpc_process.processId()
         self.logger.debug(f"PANOSETI gPRC PID: {pid}")
         os.kill(pid, signal.SIGINT)
         self.grpc_process.waitForFinished(3000)
+        # try to unlink shared memory
+        # it may already be unlinked on the grpc process
+        try:
+            self.shm.unlink()
+        except:
+            self.logger.warning('Shared Memory may already be unlinked.')
+        # re-enable the notificer
+        self.server_notifier.setEnabled(True)
 
     def _get_dytpe_from_mode(self, mode):
         if mode == 'ph1024' or mode == 'ph256':
@@ -307,7 +310,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
             pass
         imgdata = data['image_array']
         h, w = imgdata.shape
-        print(f'h, w = {h ,w}')
         self.imgs[i].setRect(0,0,w,h)
         self.imgs[i].setImage(imgdata)
         self.qttexts[i].setText(f"Frame No: {data['frame_number']}")
@@ -450,7 +452,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.show_plot(loc[0], loc[1], data)
 
     def closeEvent(self, event):
-        self.stop_grpc_clicked()
+        try:
+            self.stop_grpc_clicked()
+        except:
+            pass
         event.accept()
     # ---------------------------------------------------------------------------
     # Setup signal function
