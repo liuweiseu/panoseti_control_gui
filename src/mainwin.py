@@ -72,6 +72,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             self.grpc_config['daq_config_path'] = self.ps_sw_daq_config
             self.grpc_config['net_config_path'] = self.ps_sw_network_config
             self.grpc_config['obs_config_path'] = self.ps_sw_obs_config
+            self.verbose = root_config['verbose']
             #self.grpc_config['hp_io_cfg_path'] = 'panoseti_grpc/daq_data/config/hp_io_config_simulate.json'
             self.grpc_config['hp_io_cfg_path'] = 'panoseti_grpc/daq_data/config/hp_io_config_palomar.json'
             self.logger.info(f"panoseti_sw_path: {self.ps_sw}")
@@ -264,11 +265,13 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def grpc_stdout(self):
         # we get an image every time when this function is called
         text =  self.grpc_process.readAllStandardOutput().data().decode()
-        #print(text)
+        if self.verbose:
+            print(text)
 
     def grpc_stderr(self):
         text =  self.grpc_process.readAllStandardError().data().decode()
-        #print(text)
+        if self.verbose:
+            print(text)
     
     def grpc_finished(self, exitCode, exitStatus):
         if exitStatus == QProcess.ExitStatus.NormalExit and exitCode == 0:

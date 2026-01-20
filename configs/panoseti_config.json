@@ -5,5 +5,6 @@
     },
     "pyqt": {
         "python_path": "/home/test/miniconda3/envs/grpc/bin/python"
-    }
+    },
+    "verbose": false
 }
