@@ -20,7 +20,7 @@ from utils.utils import make_rich_logger
 
 NUM_PLOTS = 4
 
-SOCK_PATH = "/tmp/meta.sock"
+SOCK_PATH = "/tmp/panoseti_meta.sock"
 class MainWin(QMainWindow, Ui_MainWindow):
     def __init__(self, root_dir_config='configs/panoseti_config.json'):
         self.logger = make_rich_logger('mainwin.log', logging.WARNING, mode='a')
@@ -147,8 +147,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
         if 'shm' in metadata:
             # this is from send_shm_info
             self.shm_name = metadata['shm']
+            self.logger.debug(f"shm_name is {self.shm_name}")
             self.shm = shared_memory.SharedMemory(name=self.shm_name, create=False)
-            # resource_tracker.unregister(self.shm_name, 'shared_memory')
             h, w = metadata['shape']
             mode = metadata['mode']
             dtype = self._get_dytpe_from_mode(mode)
@@ -235,15 +235,18 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.shm.close()
         # send SIGINT to the grpc process
         pid = self.grpc_process.processId()
-        self.logger.debug(f"PANOSETI gPRC PID: {pid}")
-        os.kill(pid, signal.SIGINT)
+        if pid != 0:
+            self.logger.debug(f"PANOSETI gPRC PID: {pid}")
+            os.kill(pid, signal.SIGINT)
+        else:
+            self.logger.debug("No PANOSETI gRPC process found.")
         self.grpc_process.waitForFinished(3000)
         # try to unlink shared memory
         # it may already be unlinked on the grpc process
         try:
             self.shm.unlink()
         except:
-            self.logger.warning('Shared Memory may already be unlinked.')
+            self.logger.debug('Shared Memory may already be unlinked.')
         # re-enable the notificer
         self.server_notifier.setEnabled(True)
 
@@ -261,13 +264,11 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def grpc_stdout(self):
         # we get an image every time when this function is called
         text =  self.grpc_process.readAllStandardOutput().data().decode()
-        print(text)
-        #self.logger.info(f"PANOSETI gPRC info: \n{text}")
+        #print(text)
 
     def grpc_stderr(self):
         text =  self.grpc_process.readAllStandardError().data().decode()
-        print(text)
-        # self.logger.error(f"PANOSETI gPRC executed failed: \n{text}")
+        #print(text)
     
     def grpc_finished(self, exitCode, exitStatus):
         if exitStatus == QProcess.ExitStatus.NormalExit and exitCode == 0:
@@ -454,11 +455,16 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.show_plot(loc[0], loc[1], data)
 
     def closeEvent(self, event):
+        # call stop_grpc to stop grpc process
         try:
             self.stop_grpc_clicked()
         except:
             pass
+        # delete uds
+        if os.path.exists(SOCK_PATH):
+            os.remove(SOCK_PATH)
         event.accept()
+
     # ---------------------------------------------------------------------------
     # Setup signal function
     # ---------------------------------------------------------------------------

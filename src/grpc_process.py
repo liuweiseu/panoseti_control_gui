@@ -14,7 +14,7 @@ import signal
 sys.path.insert(0, 'utils')
 from utils import make_rich_logger
 
-SOCK_PATH = "/tmp/meta.sock"
+SOCK_PATH = "/tmp/panoseti_meta.sock"
 
 class DaqDataBackend(object):
     def __init__(self, grpc_config_path: str, mode: str) -> None:
