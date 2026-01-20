@@ -261,11 +261,13 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def grpc_stdout(self):
         # we get an image every time when this function is called
         text =  self.grpc_process.readAllStandardOutput().data().decode()
-        self.logger.info(f"PANOSETI gPRC info: \n{text}")
+        print(text)
+        #self.logger.info(f"PANOSETI gPRC info: \n{text}")
 
     def grpc_stderr(self):
         text =  self.grpc_process.readAllStandardError().data().decode()
-        self.logger.error(f"PANOSETI gPRC executed failed: \n{text}")
+        print(text)
+        # self.logger.error(f"PANOSETI gPRC executed failed: \n{text}")
     
     def grpc_finished(self, exitCode, exitStatus):
         if exitStatus == QProcess.ExitStatus.NormalExit and exitCode == 0:
