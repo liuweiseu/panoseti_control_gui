@@ -84,7 +84,7 @@ class DaqDataBackend(object):
         # use self.addc
         host = None
         self.shutdown_event = asyncio.Event()
-        async with AioDaqDataClient(self.daq_config_path, self.net_config_path, stop_event=self.shutdown_event, log_level=logging.ERROR) as addc:
+        async with AioDaqDataClient(self.daq_config_path, self.net_config_path, stop_event=self.shutdown_event, log_level=logging.DEBUG) as addc:
             await addc.init_hp_io(host, self.hp_io_cfg, timeout=15.0)
             valid_daq_hosts = await addc.get_valid_daq_hosts()
             if host is not None and host not in valid_daq_hosts:
