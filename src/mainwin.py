@@ -40,6 +40,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.grpc_process.readyReadStandardOutput.connect(self.grpc_stdout)
         self.grpc_process.readyReadStandardError.connect(self.grpc_stderr)
         self.grpc_process.finished.connect(self.grpc_finished)
+        self.grpc_process_exit = False
         # set socket notifier
         if os.path.exists(SOCK_PATH):
             os.remove(SOCK_PATH)
@@ -226,6 +227,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
     def start_grpc_clicked(self, mode='ph256'):
         self.logger.info('Start PANOSETI gPRC process.')
+        self.grpc_process_exit = False
         program = 'python'
         args = ['-u', 'src/grpc_process.py', '-m', 'ph256']
         self.grpc_process.start(program, args)
@@ -250,6 +252,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             self.logger.debug('Shared Memory may already be unlinked.')
         # re-enable the notificer
         self.server_notifier.setEnabled(True)
+        self.grpc_process_exit = True
 
     def _get_dytpe_from_mode(self, mode):
         if mode == 'ph1024' or mode == 'ph256':
@@ -459,10 +462,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, event):
         # call stop_grpc to stop grpc process
-        try:
+        if self.grpc_process_exit == False:
             self.stop_grpc_clicked()
-        except:
-            pass
         # delete uds
         if os.path.exists(SOCK_PATH):
             os.remove(SOCK_PATH)
