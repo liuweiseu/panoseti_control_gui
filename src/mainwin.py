@@ -151,6 +151,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             self.shm_name = metadata['shm']
             self.logger.debug(f"shm_name is {self.shm_name}")
             self.shm = shared_memory.SharedMemory(name=self.shm_name, create=False)
+            resource_tracker.unregister(self.shm._name, 'shared_memory')
             h, w = metadata['shape']
             mode = metadata['mode']
             dtype = self._get_dytpe_from_mode(mode)

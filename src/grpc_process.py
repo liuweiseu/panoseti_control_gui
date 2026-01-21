@@ -1,5 +1,5 @@
 import time, json, sys
-from multiprocessing import shared_memory
+from multiprocessing import shared_memory, resource_tracker
 import numpy as np
 from typing import Union
 import asyncio
@@ -66,6 +66,7 @@ class DaqDataBackend(object):
             create=True,  
             size=self.size * self.size * self.bytes_per_pixel
             )
+        resource_tracker.unregister(self.shm._name, 'shared_memory')
         self.img = np.ndarray((self.size, self.size), dtype=self.dtype, buffer=self.shm.buf)
 
     def send_metadata(self, metadata):
