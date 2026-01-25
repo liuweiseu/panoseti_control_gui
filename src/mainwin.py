@@ -68,6 +68,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             self.ps_sw_obs_config = f"{self.ps_sw}/control/configs/obs_config.json"
             self.ps_sw_data_config = f"{self.ps_sw}/control/configs/data_config.json"
             self.ps_sw_python = root_config['panoseti_sw']['python_path']
+            self.pyqt_python = root_config['pyqt']['python_path']
             self.ps_sw_control = f"{self.ps_sw}/control"
             self.grpc_config = {}
             self.grpc_config['daq_config_path'] = self.ps_sw_daq_config
@@ -228,7 +229,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def start_grpc_clicked(self, mode='ph256'):
         self.logger.info('Start PANOSETI gPRC process.')
         self.grpc_process_exit = False
-        program = 'python'
+        program = self.pyqt_python
         args = ['-u', 'src/grpc_process.py', '-m', 'ph256']
         self.grpc_process.start(program, args)
 
