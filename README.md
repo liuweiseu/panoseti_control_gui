@@ -33,6 +33,8 @@ If miniconda is installed, please create and activate the python environment.
     conda  install -c conda-forge pyqtgraph
     
     pip install rich
+
+    pip install ipython
     ```
     **Note:** If you use `pip install pyqt6`, you may have to install necessary libraries
     ```
