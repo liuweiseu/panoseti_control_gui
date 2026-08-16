@@ -3,24 +3,25 @@ from PyQt6.QtWidgets import QLabel, QMainWindow
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import QSocketNotifier
 
-import logging, json, os
+import logging, json, os, sys
 from pathlib import Path
 import pyqtgraph as pg
 import numpy as np
 import socket
 
-from src.mainwin_ui import Ui_MainWindow
-from src.data_config_win import DataConfigWin, DataConfigOp
+from pseti_gui.mainwin_ui import Ui_MainWindow
+from pseti_gui.data_config_win import DataConfigWin, DataConfigOp
 import asyncio, signal
 from multiprocessing import shared_memory, resource_tracker
 
-from src.grpc_thread import AsyncioThread
+from pseti_gui.grpc_thread import AsyncioThread
 
-from utils.utils import make_rich_logger
+from pseti_gui.utils import make_rich_logger
 
 NUM_PLOTS = 4
 
 SOCK_PATH = "/tmp/panoseti_meta.sock"
+FIGURE_DIR = Path(__file__).resolve().parent / "figure"
 class MainWin(QMainWindow, Ui_MainWindow):
     def __init__(self, root_dir_config='configs/panoseti_config.json'):
         self.logger = make_rich_logger('mainwin.log', logging.WARNING, mode='a')
@@ -197,7 +198,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     # ---------------------------------------------------------------------------
     def set_placeholder(self, r, c):
         i = r * 2 + c
-        pixmap = QPixmap("figure/placeholder.png")
+        pixmap = QPixmap(str(FIGURE_DIR / "placeholder.png"))
         pixmap = pixmap.scaled(350, 350) 
         label = QLabel()
         label.setPixmap(pixmap)

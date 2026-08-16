@@ -1,5 +1,5 @@
 # PANOSETI CONTROL GUI
-This GUI is based on [panoseti software](https://github.com/panoseti/panoseti) and [panoseti grpc](https://github.com/panoseti/panoseti_grpc.git).  
+This GUI is based on [panoseti software](https://github.com/panoseti/panoseti) and the [panoseti-grpc](https://pypi.org/project/panoseti-grpc/) package.  
 ![MAINWIN_GUI](./figure/mainwin_gui.png)  
 
 <img src="./figure/data_config_gui.png" width="400">
@@ -16,13 +16,7 @@ If miniconda is installed, please create and activate the python environment.
     ```
     git clone https://github.com/liuweiseu/panoseti_control_gui.git
     ```
-3. update submodule
-    ```
-    cd panoseti_control_gui
-    git submodule update
-    git submodule init
-    ```
-4. install necessary packages for pyqt
+3. install necessary packages for pyqt
     ```
     pip install pyqt6
     # or
@@ -39,11 +33,11 @@ If miniconda is installed, please create and activate the python environment.
     sudo apt update
     sudo apt install libxcb-cursor0
     ```
-5. install necessary packages for grpc
+4. install necessary packages for grpc
     ```
-    pip install -r panoseti_grpc/requirements.txt
+    pip install panoseti-grpc
     ```
-6. set the config file  
+5. set the config file  
     You need to set the `configs/panoseti_config.json`:  
     ```
     {

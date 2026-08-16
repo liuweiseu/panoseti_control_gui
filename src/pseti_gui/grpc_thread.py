@@ -7,7 +7,6 @@ import signal
 
 from PyQt6.QtCore import QObject, pyqtSignal
 
-sys.path.insert(0, 'panoseti_grpc')
 from daq_data.client import AioDaqDataClient
 import daq_data.cli as cli
 

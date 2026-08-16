@@ -7,12 +7,10 @@ import logging
 from argparse import ArgumentParser
 import socket
 
-sys.path.insert(0, 'panoseti_grpc')
 from daq_data.client import AioDaqDataClient
 import signal
 
-sys.path.insert(0, 'utils')
-from utils import make_rich_logger
+from pseti_gui.utils import make_rich_logger
 
 SOCK_PATH = "/tmp/panoseti_meta.sock"
 

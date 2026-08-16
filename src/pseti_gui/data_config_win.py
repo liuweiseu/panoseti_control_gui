@@ -1,11 +1,10 @@
 from PyQt6.QtWidgets import QDialog, QWidget
-#from data_config_win import Ui_DataConfigWin
-from src.data_config_ui import Ui_Form
+from pseti_gui.data_config_ui import Ui_Form
 
 import logging
 import json
 from pathlib import Path
-from utils.utils import make_rich_logger
+from pseti_gui.utils import make_rich_logger
 
 class DataConfigWin(QWidget):
     def __init__(self, parent=None):
