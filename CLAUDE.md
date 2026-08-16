@@ -6,10 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `pseti-gui` — a PyQt6 desktop GUI for controlling a PANOSETI observatory (power, DAQ, MAROC/mask config,
 calibration) and live-viewing detector images. It is a thin control-panel front end over two sibling repos:
-[`panoseti`](../panoseti) (most buttons shell out to the `pseti` CLI on `PATH`; two legacy buttons still
-invoke `<sw_path>/control/start.py`/`stop.py` directly — see Architecture) and
-[`panoseti_grpc`](../panoseti_grpc) (the `AioDaqDataClient` used to stream images, imported directly as a
-dependency).
+[`panoseti`](../panoseti) (every control button shells out to the `pseti` CLI resolved on `PATH` — see
+Architecture) and [`panoseti_grpc`](../panoseti_grpc) (the `AioDaqDataClient` used to stream images, imported
+directly as a dependency). `pseti-gui` itself carries no reference to where either sibling repo's source
+lives — it only needs `pseti` on `PATH` and `configs/grpc_config.json` pointed at the right JSON files.
 
 ## Common Commands
 
@@ -23,29 +23,24 @@ There are no automated tests or CI in this repo — verify changes by running th
 
 ## Configuration
 
-`configs/panoseti_config.json` (git-ignored path values, but the file itself must exist) points the GUI at
-the sibling `panoseti` checkout and its Python interpreter:
+Two independent config files, neither of which points at a `panoseti` source checkout anymore:
 
-```json
-{
-    "panoseti_sw": {"sw_path": "/path/to/panoseti", "python_path": "/path/to/python"},
-    "pyqt": {"python_path": "/path/to/python"},
-    "verbose": false
-}
-```
+- **`configs/panoseti_config.json`** — GUI-only settings. Currently just:
+  ```json
+  {"verbose": false}
+  ```
+  `verbose` gates whether `grpc_process.py`'s captured stdout/stderr gets printed by the parent process
+  (`grpc_stdout`/`grpc_stderr` in `mainwin.py`). Missing file → `append_log()` warns and `verbose` defaults
+  to `False`; nothing else in `MainWin.__init__` depends on this file.
+- **`configs/grpc_config.json`** — read by `grpc_process.py` (default arg, `start_grpc_clicked` doesn't
+  override it) for the *image-streaming* backend only: `daq_config_path`, `net_config_path`, `hp_io_cfg_path`.
+  These must point at real `daq_config.json`/`network_config.json`/`hp_io_config*.json` files (typically
+  inside a `panoseti/control/configs/` checkout, but `pseti-gui` doesn't care where) — see
+  [panoseti's config system](../panoseti/CLAUDE.md#configuration-system) for what those files mean.
 
-`MainWin.__init__` (`src/pseti_gui/mainwin.py`) derives `daq_config.json`/`network_config.json`/
-`obs_config.json`/`data_config.json` paths from `panoseti_sw.sw_path` + `/control/configs/...` — see
-[panoseti's config system](../panoseti/CLAUDE.md#configuration-system) for what those files mean.
-`hp_io_cfg_path` is currently hardcoded in `mainwin.py` to
-`panoseti_grpc/daq_data/config/hp_io_config_palomar.json` (there's a commented-out `_simulate.json`
-alternative right above it for local testing without hardware).
-
-`panoseti_sw.python_path` is only still consumed by `startdaq_clicked`/`stopdaq_clicked` (see
-Architecture) and by a startup sanity check — it is **not** used to run `pseti` (power/uids/cfg buttons),
-which is resolved on `PATH` instead. Separately, the `pseti` command itself must be installed
-(`uv tool install <path-to-panoseti>/control`, ideally with `--editable` — see Architecture) and on the
-`PATH` of whatever environment launches `pseti-gui`.
+**Prerequisite, not a config file:** the `pseti` CLI itself must be installed and resolvable on the `PATH`
+of whatever environment launches `pseti-gui` — see Architecture for `uv tool install --editable` and the
+`PanoPaths` caveat.
 
 ## Architecture
 
@@ -53,24 +48,20 @@ which is resolved on `PATH` instead. Separately, the `pseti` command itself must
 
 The GUI process (`MainWin`) never talks gRPC directly. Instead:
 
-1. **Control actions** shell out via `QProcess`, in two different ways depending on the button — both
-   stream stdout/stderr into the console log pane (`ps_stdout`/`ps_stderr`/`append_log`):
-   - Most buttons (`power_on_clicked`, `marocconfig_clicked`, `getuid_clicked`, redis/reboot/calibration,
-     etc.) go through `run_pseti(*args)`, which invokes the `pseti` CLI **by name on `PATH`**
-     (`pseti power on`, `pseti cfg maroc-config`, `pseti uids`, …) — see the `panoseti/control` CLI
-     reference for the full subcommand list. This deliberately does **not** go through
-     `panoseti_sw.python_path`: `pseti` must be installed as a standalone tool (e.g.
-     `uv tool install <path-to-panoseti>/control`) so `pseti-gui` doesn't need to know where the
-     `panoseti` checkout or its interpreter live — only that `pseti` resolves on `PATH`. **Caveat:** the
-     `control` package's `PanoPaths.software_root_dir()` locates the observatory config/state tree from
-     the installed package's own `__file__`, not from an env var by default — a non-editable
-     `uv tool install` copies the package into an isolated tool venv, so it would silently resolve configs
-     from *that* venv instead of the real checkout. Use `uv tool install --editable <path>` (keeps
-     `__file__` pointing at the live checkout) or set `PSETI_ROOT`/`PSETI_CONFIG` in the environment
-     `pseti-gui` launches from.
-   - `startdaq_clicked`/`stopdaq_clicked` are the one remaining pair still calling
-     `<sw_path>/control/start.py`/`stop.py` directly via `panoseti_sw.python_path` — not yet migrated to
-     `pseti start`/`pseti stop`.
+1. **Control actions** — every button (`power_on_clicked`, `marocconfig_clicked`, `getuid_clicked`,
+   `startdaq_clicked`/`stopdaq_clicked`, redis/reboot/calibration, etc.) goes through `run_pseti(*args)`,
+   which invokes the `pseti` CLI **by name on `PATH`** via `QProcess` (`pseti power on`, `pseti cfg
+   maroc-config`, `pseti uids`, `pseti start`, `pseti stop`, …) — see the `panoseti/control` CLI reference
+   for the full subcommand list. Stdout/stderr stream into the console log pane
+   (`ps_stdout`/`ps_stderr`/`append_log`). This deliberately does **not** go through any interpreter path
+   configured in `pseti-gui`: `pseti` must be installed as a standalone tool so `pseti-gui` doesn't need to
+   know where the `panoseti` checkout or its interpreter live — only that `pseti` resolves on `PATH`.
+   **Caveat:** the `control` package's `PanoPaths.software_root_dir()` locates the observatory config/state
+   tree from the installed package's own `__file__`, not from an env var by default — a non-editable
+   `uv tool install` copies the package into an isolated tool venv, so it would silently resolve configs
+   from *that* venv instead of the real checkout. Use `uv tool install --editable <path-to-panoseti>/control`
+   (keeps `__file__` pointing at the live checkout) or set `PSETI_ROOT`/`PSETI_CONFIG` in the environment
+   `pseti-gui` launches from.
 2. **Image streaming** runs in a separate child process (`start_grpc_clicked` launches
    `python -m pseti_gui.grpc_process` via `QProcess`) because `AioDaqDataClient` is asyncio-based and the
    main window runs the Qt event loop. This child process (`grpc_process.py`'s `DaqDataBackend`) owns the
@@ -102,9 +93,9 @@ Shutdown is `SIGINT`-driven, not a clean RPC: `stop_grpc_clicked()` sends `SIGIN
 
 `MainWin.telescope_info` maps `module_id` → `{display_name: [grid_row, grid_col]}` for the 2×2 image grid
 (`NUM_PLOTS = 4`, `show_plot()`/`plot_data()`). This is currently **hardcoded** in `__init__` (module 250 =
-PTI, 252 = Fern, 253 = Winter, 254 = Gattini) rather than derived from `obs_config.json` — `_parse_obs_config()`
-exists but is unused (see the `# TODO: improve this part` comment). When adding a new site/module, update
-`telescope_info` here, not `obs_config.json` alone.
+PTI, 252 = Fern, 253 = Winter, 254 = Gattini) rather than derived from `obs_config.json` (see the
+`# TODO: improve this part` comment) — there's no `obs_config.json` path wired into `pseti-gui` to derive it
+from even if that TODO were done. When adding a new site/module, update `telescope_info` here.
 
 ### UI files: regenerate, don't hand-edit
 
@@ -123,11 +114,17 @@ uv run pyuic6 ui/data_config_widget.ui -o src/pseti_gui/data_config_ui.py
 
 ### Data config sub-window
 
-`open_data_config()` opens `DataConfigWin` (pure Qt widget wrapper) paired with `DataConfigOp` (all the
-get/set logic + `load_config()`/`collect_config()`), which round-trips `<sw_path>/control/configs/data_config.json`
-against the form fields. `DataConfigOp` is deliberately just get/set pairs per widget plus two translation
-functions — see [panoseti's data_config.json constraints](../panoseti/CLAUDE.md#data-config-validation-constraints)
-for what values are actually valid before wiring up a new field.
+`open_data_config()` lazily creates one `DataConfigWin` (`QMainWindow` with a `File > Open...` action,
+`self.action_open`) + one `DataConfigOp` (all the get/set logic + `load_config()`/`collect_config()`) and
+reuses both on subsequent opens — `DataConfigOp.__init__` wires signals exactly once; don't reconstruct it
+per-open, or `on_open_clicked`/`on_ok_clicked`/etc. end up connected multiple times on the same long-lived
+`win.ui` widgets and fire once per prior open. There is no default/hardcoded source file: `DataConfigOp.src_config`
+starts `None`, and `on_open_clicked()` (wired to `action_open.triggered`) pops a `QFileDialog` to pick a
+`data_config.json` to load; `collect_config()` (on clicking OK) writes back to whatever path is currently in
+the `config_output_dir` line-edit field (populated by `load_config()`, but also directly user-editable).
+`DataConfigOp` is deliberately just get/set pairs per widget plus two translation functions — see
+[panoseti's data_config.json constraints](../panoseti/CLAUDE.md#data-config-validation-constraints) for what
+values are actually valid before wiring up a new field.
 
 ## Logging
 

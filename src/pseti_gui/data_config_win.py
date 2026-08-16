@@ -1,32 +1,31 @@
-from PyQt6.QtWidgets import QDialog, QWidget
+from PyQt6.QtWidgets import QFileDialog, QMainWindow, QWidget
+from PyQt6.QtGui import QAction
 from pseti_gui.data_config_ui import Ui_Form
 
 import json
-from pathlib import Path
 from panoseti_grpc.telemetry.logger import get_logger
 
-class DataConfigWin(QWidget):
+class DataConfigWin(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setWindowTitle('Data Config')
+        central = QWidget(self)
         self.ui = Ui_Form()
-        self.ui.setupUi(self)
+        self.ui.setupUi(central)
+        self.setCentralWidget(central)
+        file_menu = self.menuBar().addMenu('&File')
+        self.action_open = QAction('&Open...', self)
+        file_menu.addAction(self.action_open)
 
 class DataConfigOp(object):
-    def __init__(self, win, src_config='configs/data_config.json'):
+    def __init__(self, win):
         self.logger = get_logger('pseti_gui.data_config_gen', log_dir='/var/log/panoseti')
         self.logger.info('********************************************')
         self.logger.info('Data Config Gen started.')
         self.logger.info('********************************************')
         self.win = win
         self.ui = win.ui
-        self.src_config = src_config
-        if self.src_config is not None:
-            self.logger.info(f'Loading {src_config}...')
-            fpath = Path(self.src_config)
-            if fpath.exists():
-                self.load_config()
-        else:
-            self.logger.info(f'No default data_config.json...')
+        self.src_config = None
         self.setup_signal_functions()
     
     # ------------------------------------------------------------------------
@@ -320,7 +319,13 @@ class DataConfigOp(object):
 
     def on_cancel_clicked(self):
         self.win.close()
-        
+
+    def on_open_clicked(self):
+        path, _ = QFileDialog.getOpenFileName(self.win, 'Open Data Config', '', 'JSON Files (*.json);;All Files (*)')
+        if path:
+            self.src_config = path
+            self.load_config()
+
     # ------------------------------------------------------------------------
     # Setup signal function
     # ------------------------------------------------------------------------
@@ -330,4 +335,5 @@ class DataConfigOp(object):
         self.ui.ph_any_trigger_enable.clicked.connect(self.AnyTrigger_StatusChanged)
         self.ui.data_config_button.accepted.connect(self.on_ok_clicked)
         self.ui.data_config_button.rejected.connect(self.on_cancel_clicked)
+        self.win.action_open.triggered.connect(self.on_open_clicked)
     

@@ -62,31 +62,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         if fpath.exists():
             with open(root_dir_config, 'r', encoding='utf-8') as f:
                 root_config = json.load(f)
-            self.ps_sw = root_config['panoseti_sw']['sw_path']
-            self.ps_sw_data_config = f"{self.ps_sw}/control/configs/data_config.json"
-            self.ps_sw_python = root_config['panoseti_sw']['python_path']
-            self.ps_sw_control = f"{self.ps_sw}/control"
             self.verbose = root_config.get('verbose', False)
-            self.logger.info(f"panoseti_sw_path: {self.ps_sw}")
-            self.logger.info(f"panoseti_python_path: {self.ps_sw_python}")
-            self.append_log('************************************************************************')
-            self.append_log(f"panoseti_sw_path: {self.ps_sw}")
-            self.append_log(f"panoseti_python_path: {self.ps_sw_python}")
-            self.append_log('************************************************************************')
-            # check if the ps_sw_path exists or not
-            ps_sw_path = Path(self.ps_sw)
-            if ps_sw_path.exists() and ps_sw_path.is_dir():
-                pass
-            else:
-                self.append_log('* WARNING * : panoseti_sw_path doesn\'t exist.')
-                self.append_log('************************************************************************')
-            # check if the python evn exists or not
-            py_path = Path(self.ps_sw_python)
-            if py_path.exists():
-                pass
-            else:
-                self.append_log('* WARNING * : panoseti_python_path doesn\'t exist.')
-                self.append_log('************************************************************************')
         else:
             self.append_log('************************************************************************')
             self.append_log(f'\"{root_dir_config}\" doesn\'t exist!')
@@ -154,8 +130,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def open_data_config(self):
         if not hasattr(self, "data_config_win"):
             self.data_config_win = DataConfigWin()
-        self.data_config_op = DataConfigOp(self.data_config_win, self.ps_sw_data_config)
-        self.data_config_op.setup_signal_functions()
+            self.data_config_op = DataConfigOp(self.data_config_win)
         self.data_config_win.show()
 
     # ---------------------------------------------------------------------------
@@ -340,22 +315,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.run_pseti('uids')
 
     def startdaq_clicked(self):
-        os.chdir(self.ps_sw_control)
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('start.py')
-        self.append_log('---------------------------------------------------------------------------')
-        program = self.ps_sw_python
-        arguments = ['-u','start.py']
-        self.run_command(program, arguments)
+        self.run_pseti('start')
 
     def stopdaq_clicked(self):
-        os.chdir(self.ps_sw_control)
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('stop.py')
-        self.append_log('---------------------------------------------------------------------------')
-        program = self.ps_sw_python
-        arguments = ['-u','stop.py']
-        self.run_command(program, arguments)
+        self.run_pseti('stop')
 
     def plot_data(self, data):
         mid = data['module_id']

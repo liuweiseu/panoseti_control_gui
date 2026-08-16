@@ -20,20 +20,22 @@ This GUI is based on [panoseti software](https://github.com/panoseti/panoseti) a
     sudo apt update
     sudo apt install libxcb-cursor0
     ```
-4. set the config file  
-    You need to set the `configs/panoseti_config.json`:  
+4. install the `pseti` CLI (from the [panoseti](https://github.com/panoseti/panoseti) repo's `control/` package) as a
+   standalone tool, so it's on your `PATH` — the power/DAQ/config buttons in the GUI shell out to it by name:
+    ```
+    uv tool install --editable /path/to/panoseti/control
+    ```
+    Use `--editable` so the installed `pseti` keeps resolving its config/state directories from your actual
+    `panoseti` checkout (see [CLAUDE.md](CLAUDE.md) for why).
+5. set the config file  
+    `configs/panoseti_config.json` only controls GUI-side console verbosity now:
     ```
     {
-        "panoseti_sw": {
-            "sw_path": "/home/test/panoseti",
-            "python_path": "/home/test/miniconda3/envs/py39/bin/python"
-        },
-        "pyqt": {
-            "python_path": "/home/test/miniconda3/envs/grpc/bin/python"
-        },
         "verbose": false
-    }   
+    }
     ```
+    Separately, `configs/grpc_config.json` points the image-streaming backend at your `daq_config.json`/
+    `network_config.json`/`hp_io_config*.json` — edit the paths in that file for your deployment.
 # Start GUI
 There are two ways to start the GUI:
 1. run it inside the repo with uv
