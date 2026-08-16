@@ -21,7 +21,7 @@ NUM_PLOTS = 4
 SOCK_PATH = "/tmp/panoseti_meta.sock"
 FIGURE_DIR = Path(__file__).resolve().parent / "figure"
 class MainWin(QMainWindow, Ui_MainWindow):
-    def __init__(self, root_dir_config='configs/panoseti_config.json'):
+    def __init__(self):
         self.logger = get_logger('pseti_gui.mainwin', log_dir='/var/log/panoseti')
         self.logger.info('********************************************')
         self.logger.info('Main Window started.')
@@ -57,16 +57,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.shm = None
         self.shm_name = None
         self.img = None
-        self.verbose = False
-        fpath = Path(root_dir_config)
-        if fpath.exists():
-            with open(root_dir_config, 'r', encoding='utf-8') as f:
-                root_config = json.load(f)
-            self.verbose = root_config.get('verbose', False)
-        else:
-            self.append_log('************************************************************************')
-            self.append_log(f'\"{root_dir_config}\" doesn\'t exist!')
-            self.append_log('************************************************************************')
         # add static figure by default
         self.static_label = [None] * NUM_PLOTS
         for r in range(2):
@@ -212,13 +202,11 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def grpc_stdout(self):
         # we get an image every time when this function is called
         text =  self.grpc_process.readAllStandardOutput().data().decode()
-        if self.verbose:
-            print(text)
+        print(text)
 
     def grpc_stderr(self):
         text =  self.grpc_process.readAllStandardError().data().decode()
-        if self.verbose:
-            print(text)
+        print(text)
     
     def grpc_finished(self, exitCode, exitStatus):
         if exitStatus == QProcess.ExitStatus.NormalExit and exitCode == 0:

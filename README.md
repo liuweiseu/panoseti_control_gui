@@ -28,13 +28,7 @@ This GUI is based on [panoseti software](https://github.com/panoseti/panoseti) a
     Use `--editable` so the installed `pseti` keeps resolving its config/state directories from your actual
     `panoseti` checkout (see [CLAUDE.md](CLAUDE.md) for why).
 5. set the config file  
-    `configs/panoseti_config.json` only controls GUI-side console verbosity now:
-    ```
-    {
-        "verbose": false
-    }
-    ```
-    Separately, `configs/grpc_config.json` points the image-streaming backend at your `daq_config.json`/
+    `configs/grpc_config.json` points the image-streaming backend at your `daq_config.json`/
     `network_config.json`/`hp_io_config*.json` — edit the paths in that file for your deployment.
 # Start GUI
 There are two ways to start the GUI:
@@ -47,4 +41,6 @@ There are two ways to start the GUI:
     uv tool install .
     pseti-gui
     ```
+Once the image-streaming backend (Start gRPC button) is running, its stdout/stderr are printed directly to
+the terminal `pseti-gui` was launched from.
 

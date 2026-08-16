@@ -23,20 +23,17 @@ There are no automated tests or CI in this repo — verify changes by running th
 
 ## Configuration
 
-Two independent config files, neither of which points at a `panoseti` source checkout anymore:
+Only one config file left, and it doesn't point at a `panoseti` source checkout:
 
-- **`configs/panoseti_config.json`** — GUI-only settings. Currently just:
-  ```json
-  {"verbose": false}
-  ```
-  `verbose` gates whether `grpc_process.py`'s captured stdout/stderr gets printed by the parent process
-  (`grpc_stdout`/`grpc_stderr` in `mainwin.py`). Missing file → `append_log()` warns and `verbose` defaults
-  to `False`; nothing else in `MainWin.__init__` depends on this file.
 - **`configs/grpc_config.json`** — read by `grpc_process.py` (default arg, `start_grpc_clicked` doesn't
   override it) for the *image-streaming* backend only: `daq_config_path`, `net_config_path`, `hp_io_cfg_path`.
   These must point at real `daq_config.json`/`network_config.json`/`hp_io_config*.json` files (typically
   inside a `panoseti/control/configs/` checkout, but `pseti-gui` doesn't care where) — see
   [panoseti's config system](../panoseti/CLAUDE.md#configuration-system) for what those files mean.
+
+There used to also be a `configs/panoseti_config.json` for a `verbose` flag gating whether
+`grpc_process.py`'s captured stdout/stderr got printed — removed; `grpc_stdout`/`grpc_stderr` in
+`mainwin.py` now print unconditionally, so `MainWin.__init__` takes no config-path argument at all.
 
 **Prerequisite, not a config file:** the `pseti` CLI itself must be installed and resolvable on the `PATH`
 of whatever environment launches `pseti-gui` — see Architecture for `uv tool install --editable` and the
@@ -133,5 +130,6 @@ factory documented in [panoseti's control CLAUDE.md](../panoseti/control/CLAUDE.
 Each component gets its own logger under the `pseti_gui.*` namespace (`pseti_gui.mainwin`,
 `pseti_gui.grpc_process`, `pseti_gui.data_config_gen`), writing to `/var/log/panoseti/<hostname>/{service}.log`
 + `.jsonl` plus a Rich console handler; falls back to a temp dir if `/var/log/panoseti` isn't writable by the
-current user. `grpc_process.py`'s own stdout is additionally captured by the *parent* process via `QProcess`
-and only printed if `verbose: true` in `panoseti_config.json`.
+current user. `grpc_process.py`'s own stdout/stderr is additionally captured by the *parent* process via
+`QProcess` and unconditionally `print()`-ed to the terminal `pseti-gui` was launched from
+(`grpc_stdout`/`grpc_stderr` in `mainwin.py`).
