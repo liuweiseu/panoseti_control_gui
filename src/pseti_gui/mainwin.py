@@ -229,8 +229,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def start_grpc_clicked(self, mode='ph256'):
         self.logger.info('Start PANOSETI gPRC process.')
         self.grpc_process_exit = False
-        program = 'python'
-        args = ['-u', 'src/grpc_process.py', '-m', 'ph256']
+        program = sys.executable
+        args = ['-u', '-m', 'pseti_gui.grpc_process', '-m', 'ph256']
         self.grpc_process.start(program, args)
 
     def stop_grpc_clicked(self):
