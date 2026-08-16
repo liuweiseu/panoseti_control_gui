@@ -60,15 +60,18 @@ src/
 
 ### 2. 入口文件
 
-- 新增 `src/pseti_gui/app.py`，内容基本是现在根目录 `main.py` 的逻辑，但窗口图标路径改成包内相对路径（例如 `Path(__file__).parent / "figure" / "panoseti_icon.png"`），不再依赖 `os.chdir` 之后的 cwd
-- 根目录新增 `app.py`（原 `main.py` 改名），作为薄壳：
+有两个同名但不同层级的 `app.py`，职责不同：
+
+- `src/pseti_gui/app.py`（包内，新增）：真正的入口逻辑，内容基本是现在根目录 `main.py` 的代码，但窗口图标路径改成包内相对路径（例如 `Path(__file__).parent / "figure" / "panoseti_icon.png"`），不再依赖 `os.chdir` 之后的 cwd。`[project.scripts]` 指向的就是这里的 `main()`
+- 根目录 `app.py`（**由 `main.py` 改名而来**，不是新文件）：只是一个薄壳，方便在仓库目录内直接 `python app.py` / `uv run app.py`：
   ```python
   from pseti_gui.app import main
 
   if __name__ == "__main__":
       main()
   ```
-- 删除根目录 `main.py`（改名为 `app.py`）和 `panoseti_control.sh`
+
+`panoseti_control.sh` 直接删除，不保留。
 
 ### 3. gRPC 子进程启动方式
 
