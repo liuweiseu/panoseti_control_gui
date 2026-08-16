@@ -221,7 +221,7 @@ class DataConfigOp(object):
             self.set_mov_mode_enable(False)
             self.set_mov_frame(False)
         # check if ph mode is enabled
-        if 'pulse_height':
+        if 'pulse_height' in config:
             self.set_ph_mode_enable(True)
             self.set_ph_frame(True)
             pconfig = config['pulse_height']
