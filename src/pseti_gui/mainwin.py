@@ -14,8 +14,6 @@ from pseti_gui.data_config_win import DataConfigWin, DataConfigOp
 import asyncio, signal
 from multiprocessing import shared_memory, resource_tracker
 
-from pseti_gui.grpc_thread import AsyncioThread
-
 from pseti_gui.utils import make_rich_logger
 
 NUM_PLOTS = 4
@@ -59,6 +57,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.shm = None
         self.shm_name = None
         self.img = None
+        self.verbose = False
         fpath = Path(root_dir_config)
         if fpath.exists():
             with open(root_dir_config, 'r', encoding='utf-8') as f:
@@ -74,7 +73,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
             self.grpc_config['daq_config_path'] = self.ps_sw_daq_config
             self.grpc_config['net_config_path'] = self.ps_sw_network_config
             self.grpc_config['obs_config_path'] = self.ps_sw_obs_config
-            self.verbose = root_config['verbose']
+            self.verbose = root_config.get('verbose', False)
             #self.grpc_config['hp_io_cfg_path'] = 'panoseti_grpc/daq_data/config/hp_io_config_simulate.json'
             self.grpc_config['hp_io_cfg_path'] = 'panoseti_grpc/daq_data/config/hp_io_config_palomar.json'
             self.logger.info(f"panoseti_sw_path: {self.ps_sw}")
@@ -236,7 +235,8 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def stop_grpc_clicked(self):
         self.logger.info('Stop PANOSETI gPRC process.')
         # close shared memory
-        self.shm.close()
+        if self.shm is not None:
+            self.shm.close()
         # send SIGINT to the grpc process
         pid = self.grpc_process.processId()
         if pid != 0:
@@ -247,10 +247,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.grpc_process.waitForFinished(3000)
         # try to unlink shared memory
         # it may already be unlinked on the grpc process
-        try:
-            self.shm.unlink()
-        except:
-            self.logger.debug('Shared Memory may already be unlinked.')
+        if self.shm is not None:
+            try:
+                self.shm.unlink()
+            except:
+                self.logger.debug('Shared Memory may already be unlinked.')
+            self.shm = None
         # re-enable the notificer
         self.server_notifier.setEnabled(True)
         self.grpc_process_exit = True
@@ -439,19 +441,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
         arguments = ['-u','stop.py']
         self.run_command(program, arguments)
 
-    def submit_task(self):
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('Start Visualization.')
-        self.append_log('---------------------------------------------------------------------------')
-        self.grpc_thread.submit(self.grpc_thread.fetch_data())
-
-    def cancel_all(self):
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('Stop Visualization.')
-        self.append_log('---------------------------------------------------------------------------')
-        self.grpc_thread.loop.call_soon_threadsafe(self.grpc_thread.shutdown_event.set)
-        self.grpc_thread.cancel_all()
-    
     def plot_data(self, data):
         mid = data['module_id']
         self.logger.debug(f"telescipe ID: {self.telescope_info[mid]}")

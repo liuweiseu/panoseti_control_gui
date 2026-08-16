@@ -30,7 +30,8 @@ This GUI is based on [panoseti software](https://github.com/panoseti/panoseti) a
         },
         "pyqt": {
             "python_path": "/home/test/miniconda3/envs/grpc/bin/python"
-        }
+        },
+        "verbose": false
     }   
     ```
 # Start GUI

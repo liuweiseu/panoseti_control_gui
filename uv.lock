@@ -587,7 +587,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "numpy" },
-    { name = "panoseti-grpc" },
+    { name = "panoseti-grpc", specifier = ">=0.4.17" },
     { name = "pyqt6" },
     { name = "pyqtgraph" },
     { name = "rich" },

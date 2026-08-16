@@ -7,7 +7,7 @@ dependencies = [
     "pyqtgraph",
     "rich",
     "numpy",
-    "panoseti-grpc",
+    "panoseti-grpc>=0.4.17",
 ]
 
 [project.scripts]
