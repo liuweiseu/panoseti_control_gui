@@ -63,25 +63,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
             with open(root_dir_config, 'r', encoding='utf-8') as f:
                 root_config = json.load(f)
             self.ps_sw = root_config['panoseti_sw']['sw_path']
-            self.ps_sw_daq_config = f"{self.ps_sw}/control/configs/daq_config.json"
-            self.ps_sw_network_config = f"{self.ps_sw}/control/configs/network_config.json"
-            self.ps_sw_obs_config = f"{self.ps_sw}/control/configs/obs_config.json"
             self.ps_sw_data_config = f"{self.ps_sw}/control/configs/data_config.json"
             self.ps_sw_python = root_config['panoseti_sw']['python_path']
             self.ps_sw_control = f"{self.ps_sw}/control"
-            self.grpc_config = {}
-            self.grpc_config['daq_config_path'] = self.ps_sw_daq_config
-            self.grpc_config['net_config_path'] = self.ps_sw_network_config
-            self.grpc_config['obs_config_path'] = self.ps_sw_obs_config
             self.verbose = root_config.get('verbose', False)
-            #self.grpc_config['hp_io_cfg_path'] = 'panoseti_grpc/daq_data/config/hp_io_config_simulate.json'
-            self.grpc_config['hp_io_cfg_path'] = 'panoseti_grpc/daq_data/config/hp_io_config_palomar.json'
             self.logger.info(f"panoseti_sw_path: {self.ps_sw}")
             self.logger.info(f"panoseti_python_path: {self.ps_sw_python}")
-            self.logger.info(f"panoseti_grpc_daq: {self.grpc_config['daq_config_path']}")
-            self.logger.info(f"panoseti_grpc_net: {self.grpc_config['net_config_path']}")
-            self.logger.info(f"panoseti_grpc_obs: {self.grpc_config['obs_config_path']}")
-            self.logger.info(f"panoseti_grpc_hp_io: {self.grpc_config['hp_io_cfg_path']}")
             self.append_log('************************************************************************')
             self.append_log(f"panoseti_sw_path: {self.ps_sw}")
             self.append_log(f"panoseti_python_path: {self.ps_sw_python}")
@@ -115,7 +102,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.qttexts = [None] * NUM_PLOTS
         self.shutdown_event = None
         self.setup_signal_functions()
-        # self.telescope_info = self._parse_obs_config()
         # use hard-coded name here for temp use
         # TODO: imporve this part
         self.telescope_info = [{'Simulation': [0, 0]}] * 1024
@@ -161,26 +147,6 @@ class MainWin(QMainWindow, Ui_MainWindow):
             image_array = self.img.copy()
             data['image_array'] = image_array
             self.plot_data(data)
-
-    # ---------------------------------------------------------------------------
-    # helper function
-    # ---------------------------------------------------------------------------
-    def _parse_obs_config(self):
-        with open(self.grpc_config['obs_config_path'], 'r', encoding='utf-8') as f:
-            config = json.load(f)
-        domes = config['domes']
-        # the max number of telescopes in the system is 1024
-        telescope_name = ['Simulation'] * 1024
-        for dome in domes:
-            name = dome['name']
-            modules_id = []
-            i = 0
-            for m in dome['modules']:
-                ip_str = m['ip_addr'].split('.')
-                mid = (int(ip_str[2]) << 6) + (int(ip_str[3]) >> 2)
-                telescope_name[i] = f'{name}{i}'
-                self.logger.debug(f'Found telescope at {name} site, and the module id is {mid}.')
-        return telescope_name
 
     # ---------------------------------------------------------------------------
     # Sub Window creation
@@ -333,95 +299,45 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def run_command(self, program, arguments):
         self.ps_process.start(program, arguments)
     
+    def run_pseti(self, *pseti_args):
+        # `pseti` is resolved on PATH (installed via `uv tool install`), not
+        # via panoseti_sw.python_path -- decouples pseti-gui from needing to
+        # know where the panoseti/control checkout or its interpreter live.
+        cmdline = 'pseti ' + ' '.join(pseti_args)
+        self.append_log('---------------------------------------------------------------------------')
+        self.append_log(cmdline)
+        self.append_log('---------------------------------------------------------------------------')
+        self.run_command('pseti', list(pseti_args))
+
     def power_on_clicked(self):
-        os.chdir(self.ps_sw_control)
-        program = self.ps_sw_python
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('power.py on')
-        self.append_log('---------------------------------------------------------------------------')
-        arguments = ['-u', 'power.py', 'on']
-        self.run_command(program, arguments)
+        self.run_pseti('power', 'on')
 
     def power_off_clicked(self):
-        os.chdir(self.ps_sw_control)
-        program = self.ps_sw_python
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('power.py off')
-        self.append_log('---------------------------------------------------------------------------')
-        arguments = ['-u', 'power.py', 'off']
-        self.run_command(program, arguments)
+        self.run_pseti('power', 'off')
 
     def redis_on_clicked(self):
-        os.chdir(self.ps_sw_control)
-        program = self.ps_sw_python
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('config.py --redis_daemons')
-        self.append_log('---------------------------------------------------------------------------')
-        arguments = ['-u', 'config.py', '--redis_daemons']
-        self.run_command(program, arguments)
+        self.run_pseti('cfg', 'redis-daemons')
 
     def redis_off_clicked(self):
-        os.chdir(self.ps_sw_control)
-        program = self.ps_sw_python
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('config.py --stop_redis_daemons')
-        self.append_log('---------------------------------------------------------------------------')
-        arguments = ['-u', 'config.py', '--stop_redis_daemons']
-        self.run_command(program, arguments)
+        self.run_pseti('cfg', 'stop-redis-daemons')
 
     def reboot_clicked(self):
-        os.chdir(self.ps_sw_control)
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('config.py --reboot')
-        self.append_log('---------------------------------------------------------------------------')
-        program = self.ps_sw_python
-        arguments = ['-u','config.py', '--reboot']
-        self.run_command(program, arguments)
+        self.run_pseti('cfg', 'reboot')
 
     def marocconfig_clicked(self):
-        os.chdir(self.ps_sw_control)
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('config.py --maroc_config')
-        self.append_log('---------------------------------------------------------------------------')
-        program = self.ps_sw_python
-        arguments = ['-u','config.py', '--maroc_config']
-        self.run_command(program, arguments)
-    
+        self.run_pseti('cfg', 'maroc-config')
+
     def maskconfig_clicked(self):
-        os.chdir(self.ps_sw_control)
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('config.py --mask_config')
-        self.append_log('---------------------------------------------------------------------------')
-        program = self.ps_sw_python
-        arguments = ['-u','config.py', '--mask_config']
-        self.run_command(program, arguments)
+        self.run_pseti('cfg', 'mask-config')
 
     def calbrateph_clicked(self):
-        os.chdir(self.ps_sw_control)
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('config.py --calibrate_ph')
-        self.append_log('---------------------------------------------------------------------------')
-        program = self.ps_sw_python
-        arguments = ['-u','config.py', '--calibrate_ph']
-        self.run_command(program, arguments)
-    
+        self.run_pseti('cfg', 'calibrate-ph')
+
     def showbaselines_clicked(self):
-        os.chdir(self.ps_sw_control)
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('config.py --show_ph_baselines')
-        self.append_log('---------------------------------------------------------------------------')
-        program = self.ps_sw_python
-        arguments = ['-u','config.py', '--show_ph_baselines']
-        self.run_command(program, arguments)
+        self.run_pseti('cfg', 'show-ph-baselines')
 
     def getuid_clicked(self):
-        os.chdir(self.ps_sw_control)
-        self.append_log('---------------------------------------------------------------------------')
-        self.append_log('get_uids.py')
-        self.append_log('---------------------------------------------------------------------------')
-        program = self.ps_sw_python
-        arguments = ['-u','get_uids.py']
-        self.run_command(program, arguments)
+        self.run_pseti('uids')
 
     def startdaq_clicked(self):
         os.chdir(self.ps_sw_control)

@@ -5,9 +5,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Repository Overview
 
 `pseti-gui` — a PyQt6 desktop GUI for controlling a PANOSETI observatory (power, DAQ, MAROC/mask config,
-calibration) and live-viewing detector images. It is a thin control-panel front end over two sibling repos
-that must be installed alongside it: [`panoseti`](../panoseti) (the `control/` CLI scripts, invoked as
-subprocesses) and [`panoseti_grpc`](../panoseti_grpc) (the `AioDaqDataClient` used to stream images).
+calibration) and live-viewing detector images. It is a thin control-panel front end over two sibling repos:
+[`panoseti`](../panoseti) (most buttons shell out to the `pseti` CLI on `PATH`; two legacy buttons still
+invoke `<sw_path>/control/start.py`/`stop.py` directly — see Architecture) and
+[`panoseti_grpc`](../panoseti_grpc) (the `AioDaqDataClient` used to stream images, imported directly as a
+dependency).
 
 ## Common Commands
 
@@ -39,16 +41,36 @@ the sibling `panoseti` checkout and its Python interpreter:
 `panoseti_grpc/daq_data/config/hp_io_config_palomar.json` (there's a commented-out `_simulate.json`
 alternative right above it for local testing without hardware).
 
+`panoseti_sw.python_path` is only still consumed by `startdaq_clicked`/`stopdaq_clicked` (see
+Architecture) and by a startup sanity check — it is **not** used to run `pseti` (power/uids/cfg buttons),
+which is resolved on `PATH` instead. Separately, the `pseti` command itself must be installed
+(`uv tool install <path-to-panoseti>/control`, ideally with `--editable` — see Architecture) and on the
+`PATH` of whatever environment launches `pseti-gui`.
+
 ## Architecture
 
 ### Two-process, two-IPC-channel design
 
 The GUI process (`MainWin`) never talks gRPC directly. Instead:
 
-1. **Control actions** (`power_on_clicked`, `startdaq_clicked`, `marocconfig_clicked`, etc. in `mainwin.py`)
-   shell out via `QProcess` to `panoseti_sw.python_path` running scripts in `<sw_path>/control/`
-   (`power.py`, `config.py`, `start.py`, `stop.py`, `get_uids.py`). Stdout/stderr are streamed into the
-   console log pane (`ps_stdout`/`ps_stderr`/`append_log`).
+1. **Control actions** shell out via `QProcess`, in two different ways depending on the button — both
+   stream stdout/stderr into the console log pane (`ps_stdout`/`ps_stderr`/`append_log`):
+   - Most buttons (`power_on_clicked`, `marocconfig_clicked`, `getuid_clicked`, redis/reboot/calibration,
+     etc.) go through `run_pseti(*args)`, which invokes the `pseti` CLI **by name on `PATH`**
+     (`pseti power on`, `pseti cfg maroc-config`, `pseti uids`, …) — see the `panoseti/control` CLI
+     reference for the full subcommand list. This deliberately does **not** go through
+     `panoseti_sw.python_path`: `pseti` must be installed as a standalone tool (e.g.
+     `uv tool install <path-to-panoseti>/control`) so `pseti-gui` doesn't need to know where the
+     `panoseti` checkout or its interpreter live — only that `pseti` resolves on `PATH`. **Caveat:** the
+     `control` package's `PanoPaths.software_root_dir()` locates the observatory config/state tree from
+     the installed package's own `__file__`, not from an env var by default — a non-editable
+     `uv tool install` copies the package into an isolated tool venv, so it would silently resolve configs
+     from *that* venv instead of the real checkout. Use `uv tool install --editable <path>` (keeps
+     `__file__` pointing at the live checkout) or set `PSETI_ROOT`/`PSETI_CONFIG` in the environment
+     `pseti-gui` launches from.
+   - `startdaq_clicked`/`stopdaq_clicked` are the one remaining pair still calling
+     `<sw_path>/control/start.py`/`stop.py` directly via `panoseti_sw.python_path` — not yet migrated to
+     `pseti start`/`pseti stop`.
 2. **Image streaming** runs in a separate child process (`start_grpc_clicked` launches
    `python -m pseti_gui.grpc_process` via `QProcess`) because `AioDaqDataClient` is asyncio-based and the
    main window runs the Qt event loop. This child process (`grpc_process.py`'s `DaqDataBackend`) owns the
@@ -109,8 +131,10 @@ for what values are actually valid before wiring up a new field.
 
 ## Logging
 
-`utils.make_rich_logger(name, clevel, flevel, mode)` sets up per-component loggers (`mainwin.log`,
-`grpc_process.log`, `data_config_gen.log`) that write to `./logs/{name}_{date}.log` (full detail) plus a
-Rich console handler (level `clevel`, default WARNING in this codebase — console output is intentionally
-sparse). `grpc_process.py`'s own stdout is captured by the *parent* process via `QProcess` and only printed
-if `verbose: true` in `panoseti_config.json`.
+Uses the project-standard `panoseti_grpc.telemetry.logger.get_logger(service_name, log_dir=...)` — the same
+factory documented in [panoseti's control CLAUDE.md](../panoseti/control/CLAUDE.md#telemetry--logging).
+Each component gets its own logger under the `pseti_gui.*` namespace (`pseti_gui.mainwin`,
+`pseti_gui.grpc_process`, `pseti_gui.data_config_gen`), writing to `/var/log/panoseti/<hostname>/{service}.log`
++ `.jsonl` plus a Rich console handler; falls back to a temp dir if `/var/log/panoseti` isn't writable by the
+current user. `grpc_process.py`'s own stdout is additionally captured by the *parent* process via `QProcess`
+and only printed if `verbose: true` in `panoseti_config.json`.
