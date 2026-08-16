@@ -7,7 +7,7 @@ import logging
 from argparse import ArgumentParser
 import socket
 
-from daq_data.client import AioDaqDataClient
+from panoseti_grpc.daq_data.client import AioDaqDataClient
 import signal
 
 from pseti_gui.utils import make_rich_logger

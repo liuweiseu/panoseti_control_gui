@@ -7,8 +7,7 @@ import signal
 
 from PyQt6.QtCore import QObject, pyqtSignal
 
-from daq_data.client import AioDaqDataClient
-import daq_data.cli as cli
+from panoseti_grpc.daq_data.client import AioDaqDataClient
 
 class DataSignal(QObject):
     new_data = pyqtSignal(object)
