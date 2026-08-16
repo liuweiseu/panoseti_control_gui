@@ -10,14 +10,14 @@ import socket
 from panoseti_grpc.daq_data.client import AioDaqDataClient
 import signal
 
-from pseti_gui.utils import make_rich_logger
+from panoseti_grpc.telemetry.logger import get_logger
 
 SOCK_PATH = "/tmp/panoseti_meta.sock"
 
 class DaqDataBackend(object):
     def __init__(self, grpc_config_path: str, mode: str) -> None:
         # create logger
-        self.logger = make_rich_logger('grpc_process.log', logging.WARNING, mode='a')
+        self.logger = get_logger('pseti_gui.grpc_process', log_dir='/var/log/panoseti')
         self.logger.info('********************************************')
         self.logger.info('PANOSETI gRPC process started.')
         self.logger.info('********************************************')

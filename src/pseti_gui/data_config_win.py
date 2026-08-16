@@ -1,10 +1,9 @@
 from PyQt6.QtWidgets import QDialog, QWidget
 from pseti_gui.data_config_ui import Ui_Form
 
-import logging
 import json
 from pathlib import Path
-from pseti_gui.utils import make_rich_logger
+from panoseti_grpc.telemetry.logger import get_logger
 
 class DataConfigWin(QWidget):
     def __init__(self, parent=None):
@@ -14,7 +13,7 @@ class DataConfigWin(QWidget):
 
 class DataConfigOp(object):
     def __init__(self, win, src_config='configs/data_config.json'):
-        self.logger = make_rich_logger('data_config_gen.log', logging.WARNING, mode='a')
+        self.logger = get_logger('pseti_gui.data_config_gen', log_dir='/var/log/panoseti')
         self.logger.info('********************************************')
         self.logger.info('Data Config Gen started.')
         self.logger.info('********************************************')

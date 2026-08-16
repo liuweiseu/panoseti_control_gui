@@ -1,4 +1,5 @@
 import sys
+from importlib.metadata import version
 from pathlib import Path
 
 from PyQt6.QtWidgets import QApplication
@@ -6,7 +7,7 @@ from PyQt6.QtGui import QIcon
 
 from pseti_gui.mainwin import MainWin
 
-VER = 'V0.0.3'
+VER = f'V{version("pseti-gui")}'
 
 
 def main():

@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QLabel, QMainWindow
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import QSocketNotifier
 
-import logging, json, os, sys
+import json, os, sys
 from pathlib import Path
 import pyqtgraph as pg
 import numpy as np
@@ -14,7 +14,7 @@ from pseti_gui.data_config_win import DataConfigWin, DataConfigOp
 import asyncio, signal
 from multiprocessing import shared_memory, resource_tracker
 
-from pseti_gui.utils import make_rich_logger
+from panoseti_grpc.telemetry.logger import get_logger
 
 NUM_PLOTS = 4
 
@@ -22,7 +22,7 @@ SOCK_PATH = "/tmp/panoseti_meta.sock"
 FIGURE_DIR = Path(__file__).resolve().parent / "figure"
 class MainWin(QMainWindow, Ui_MainWindow):
     def __init__(self, root_dir_config='configs/panoseti_config.json'):
-        self.logger = make_rich_logger('mainwin.log', logging.WARNING, mode='a')
+        self.logger = get_logger('pseti_gui.mainwin', log_dir='/var/log/panoseti')
         self.logger.info('********************************************')
         self.logger.info('Main Window started.')
         self.logger.info('********************************************')
