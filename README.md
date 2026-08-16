@@ -5,39 +5,22 @@ This GUI is based on [panoseti software](https://github.com/panoseti/panoseti) a
 <img src="./figure/data_config_gui.png" width="400">
 
 # Get Started
-1. Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)(optional)  
-Miniconda is recommended to create a vritual python environment, so that it won't mess up the python environment on your system.  
-If miniconda is installed, please create and activate the python environment.
-    ```
-    conda create -n ps_gui python=3.9
-    conda activate ps_gui
-    ``` 
+1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
 2. clone the repository
     ```
     git clone https://github.com/liuweiseu/panoseti_control_gui.git
+    cd panoseti_control_gui
     ```
-3. install necessary packages for pyqt
+3. install dependencies
     ```
-    pip install pyqt6
-    # or
-    conda install -c conda-forge pyqt=6
-
-    pip install pyqtgraph
-    # or 
-    conda  install -c conda-forge pyqtgraph
-    
-    pip install rich
+    uv sync
     ```
-    **Note:** If you use `pip install pyqt6`, you may have to install necessary libraries
+    **Note:** On Linux, PyQt6 may need an extra system library
     ```
     sudo apt update
     sudo apt install libxcb-cursor0
     ```
-4. install necessary packages for grpc
-    ```
-    pip install panoseti-grpc
-    ```
-5. set the config file  
+4. set the config file  
     You need to set the `configs/panoseti_config.json`:  
     ```
     {
@@ -52,13 +35,13 @@ If miniconda is installed, please create and activate the python environment.
     ```
 # Start GUI
 There are two ways to start the GUI:
-1. activate the conda env, and start `main.py`
+1. run it inside the repo with uv
     ```
-    conda activate ps_gui
-    python main.py
+    uv run pseti-gui
     ```
-2. set the config file, and start the GUI through the shell script
+2. install it as a standalone command, then run it from anywhere
     ```
-    ./panoseti_control.sh
+    uv tool install .
+    pseti-gui
     ```
 
