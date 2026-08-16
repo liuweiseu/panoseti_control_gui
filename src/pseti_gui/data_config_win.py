@@ -16,6 +16,11 @@ class DataConfigWin(QMainWindow):
         file_menu = self.menuBar().addMenu('&File')
         self.action_open = QAction('&Open...', self)
         file_menu.addAction(self.action_open)
+        # Ui_Form.setupUi() calls central.resize(640, 393) (baked into the
+        # generated code from the .ui file's Form geometry), but that resize
+        # doesn't propagate to the QMainWindow wrapping it -- without this the
+        # window opens at Qt's small default size and needs manual resizing.
+        self.resize(central.width(), central.height() + self.menuBar().sizeHint().height())
 
 class DataConfigOp(object):
     def __init__(self, win):
