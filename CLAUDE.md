@@ -26,10 +26,11 @@ There are no automated tests or CI in this repo — verify changes by running th
 Only one config file left, and it doesn't point at a `panoseti` source checkout:
 
 - **`configs/grpc_config.json`** — read by `grpc_process.py` (default arg, `start_grpc_clicked` doesn't
-  override it) for the *image-streaming* backend only: `daq_config_path`, `net_config_path`, `hp_io_cfg_path`.
-  These must point at real `daq_config.json`/`network_config.json`/`hp_io_config*.json` files (typically
-  inside a `panoseti/control/configs/` checkout, but `pseti-gui` doesn't care where) — see
-  [panoseti's config system](../panoseti/CLAUDE.md#configuration-system) for what those files mean.
+  override it) for the *image-streaming* backend only: `host`/`port` of a single `panoseti_grpc` server to
+  connect to. That server can be an edge DAQ node (single-machine dev) or a headnode/gateway that fans in
+  multiple edge nodes server-side (see [panoseti_grpc's CLAUDE.md](../panoseti_grpc/CLAUDE.md#unified-server)
+  for the `role="edge"` vs `role="gateway"` distinction) — `pseti-gui` doesn't need to know or care which;
+  it just opens one `AioDaqDataClient(host, port)` and calls `stream_images()`.
 
 There used to also be a `configs/panoseti_config.json` for a `verbose` flag gating whether
 `grpc_process.py`'s captured stdout/stderr got printed — removed; `grpc_stdout`/`grpc_stderr` in
@@ -61,9 +62,13 @@ The GUI process (`MainWin`) never talks gRPC directly. Instead:
    `pseti-gui` launches from.
 2. **Image streaming** runs in a separate child process (`start_grpc_clicked` launches
    `python -m pseti_gui.grpc_process` via `QProcess`) because `AioDaqDataClient` is asyncio-based and the
-   main window runs the Qt event loop. This child process (`grpc_process.py`'s `DaqDataBackend`) owns the
-   `AioDaqDataClient`, writes each incoming frame into a `multiprocessing.shared_memory.SharedMemory` block,
-   and notifies the GUI process over a Unix domain socket at `/tmp/panoseti_meta.sock`.
+   main window runs the Qt event loop. This child process (`grpc_process.py`'s `DaqDataBackend`) owns a
+   single-target `AioDaqDataClient(host, port)` (per `configs/grpc_config.json`), writes each incoming frame
+   into a `multiprocessing.shared_memory.SharedMemory` block, and notifies the GUI process over a Unix
+   domain socket at `/tmp/panoseti_meta.sock`. It does **not** call `init_hp_io` — it only attaches to a
+   stream that's already running (started by `pseti start` or a server with `init_from_default = true`);
+   see [panoseti_grpc's CLAUDE.md](../panoseti_grpc/CLAUDE.md#daq-data-service) for who's responsible for
+   initialization.
 
 ### IPC protocol over the UDS socket
 

@@ -26,15 +26,13 @@ class DaqDataBackend(object):
         # get configs
         with open(grpc_config_path, "r") as f:
             grpc_config = json.load(f)
-        self.daq_config_path = grpc_config['daq_config_path']
-        self.net_config_path = grpc_config['net_config_path']
-        self.hp_io_cfg_path = grpc_config['hp_io_cfg_path']
-        self.logger.info(f"daq_config_path: {self.daq_config_path}")
-        self.logger.info(f"net_config_path: {self.net_config_path}")
-        self.logger.info(f"hp_io_cfg_path: {self.hp_io_cfg_path}")
-        with open(self.hp_io_cfg_path, "r") as f:
-            self.hp_io_cfg = json.load(f)
-        self.shutdown_event = None
+        # Single-target connection: the server may be an edge DAQ node (dev/
+        # single-machine setups) or a headnode/gateway that fans in multiple
+        # edge nodes server-side -- pseti-gui doesn't need to know which.
+        self.host = grpc_config.get('host', 'localhost')
+        self.port = grpc_config.get('port', 50051)
+        self.logger.info(f"host: {self.host}")
+        self.logger.info(f"port: {self.port}")
         # get bytes_per_pixel
         self.mode = mode
         if mode == 'mov8':
@@ -61,7 +59,7 @@ class DaqDataBackend(object):
         self.logger.info(f"{self.bytes_per_pixel} bytes per pixel.")
         # create a shared memory, the size is size * size
         self.shm = shared_memory.SharedMemory(
-            create=True,  
+            create=True,
             size=self.size * self.size * self.bytes_per_pixel
             )
         resource_tracker.unregister(self.shm._name, 'shared_memory')
@@ -77,32 +75,26 @@ class DaqDataBackend(object):
                 "shape": [self.size, self.size],
                 "mode": self.mode
             })
-    
+
     async def send_images(self, ph_data=True, mov_data=False):
         self.logger.info("Sending images...")
-        # use self.addc
-        host = None
-        self.shutdown_event = asyncio.Event()
-        async with AioDaqDataClient(self.daq_config_path, self.net_config_path, stop_event=self.shutdown_event, log_level=logging.DEBUG) as addc:
-            await addc.init_hp_io(host, self.hp_io_cfg, timeout=15.0)
-            valid_daq_hosts = await addc.get_valid_daq_hosts()
-            if host is not None and host not in valid_daq_hosts:
-                raise ValueError(f"Invalid host: {host}. Valid hosts: {valid_daq_hosts}")
-            stream_images_responses = await addc.stream_images(
-            host,
-            stream_movie_data=mov_data,
-            stream_pulse_height_data=ph_data,
-            update_interval_seconds=1.0,
-            module_ids=[],
-            parse_pano_images=True,
-            wait_for_ready=True,
+        # The data source (real Hashpipe UDS acquisition or a simulation) is
+        # initialized elsewhere -- production edge servers auto-start via
+        # init_from_default, and `pseti start` is what triggers acquisition
+        # otherwise. This process only attaches to an already-running stream.
+        async with AioDaqDataClient(self.host, self.port, log_level=logging.DEBUG) as addc:
+            stream_images_responses = addc.stream_images(
+                stream_movie_data=mov_data,
+                stream_pulse_height_data=ph_data,
+                update_interval_seconds=1.0,
+                module_ids=(),
+                parse_pano_images=True,
+                wait_for_ready=True,
             )
             async for parsed_pano_image in stream_images_responses:
-                if self.shutdown_event.is_set():
-                    break
                 self.img[:] = parsed_pano_image['image_array']
                 metadata = {k: v for k, v in parsed_pano_image.items() if k != "image_array"}
-                self.send_metadata(metadata) 
+                self.send_metadata(metadata)
 
     def close(self):
         self.logger.info("Deattach the shm.")
