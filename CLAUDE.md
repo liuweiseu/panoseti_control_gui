@@ -133,8 +133,11 @@ persists across app restarts via the org/app name `app.py` sets on the `QApplica
 `load_config()` on it, best-effort — any failure (file moved/deleted/invalid) just logs a warning and
 leaves `src_config` at `None` instead of blocking the window from opening. `on_open_clicked()` (wired to
 `action_open.triggered`) pops a `QFileDialog` — pre-seeded with that same remembered path — to pick a
-`data_config.json` to load, and writes the chosen path back to `QSettings` for next time. `collect_config()`
-(on clicking OK) writes back to whatever path is currently in the `config_output_dir` line-edit field
+`data_config.json` to load, and writes the chosen path back to `QSettings` for next time. `on_ok_clicked()`
+pops a `QMessageBox.question()` confirmation naming the exact `config_output_dir` path before writing
+anything (defaults to Cancel) — if that's not the intended file, the dialog itself tells the user to
+Cancel and use File > Open... first; only on `Ok` does it call `collect_config()` and close the window.
+`collect_config()` writes back to whatever path is currently in the `config_output_dir` line-edit field
 (populated by `load_config()`, but also directly user-editable).
 `DataConfigOp` is deliberately just get/set pairs per widget plus two translation functions — see
 [panoseti's data_config.json constraints](../panoseti/CLAUDE.md#data-config-validation-constraints) for what

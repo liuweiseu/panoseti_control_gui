@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QFileDialog, QMainWindow, QWidget
+from PyQt6.QtWidgets import QFileDialog, QMainWindow, QMessageBox, QWidget
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import QSettings
 from pseti_gui.data_config_ui import Ui_Form
@@ -337,6 +337,18 @@ class DataConfigOp(object):
             self.set_ph_group_frames_status(False)
     
     def on_ok_clicked(self):
+        output_path = self.get_config_output_dir()
+        reply = QMessageBox.question(
+            self.win,
+            'Confirm Save',
+            f'This will write the new config to:\n\n{output_path}\n\n'
+            'If this is not the file you meant to update, click Cancel and '
+            'use File > Open... to load the correct file first.',
+            QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel,
+            QMessageBox.StandardButton.Cancel,
+        )
+        if reply != QMessageBox.StandardButton.Ok:
+            return
         self.collect_config()
         self.win.close()
 
