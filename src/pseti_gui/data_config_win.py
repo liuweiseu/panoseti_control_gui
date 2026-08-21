@@ -38,6 +38,18 @@ class DataConfigOp(object):
         # organization/application name so QSettings() can resolve a store).
         self.settings = QSettings()
         self.setup_signal_functions()
+        # Restore the last-opened data_config.json, if any -- best effort:
+        # the file may have since been moved/deleted/edited into something
+        # invalid, in which case we just fall back to an empty form instead
+        # of failing to open the Data Config window at all.
+        last_path = self.settings.value(_LAST_PATH_SETTINGS_KEY, '', type=str)
+        if last_path:
+            self.src_config = last_path
+            try:
+                self.load_config()
+            except Exception as e:
+                self.logger.warning(f'Could not auto-load last data_config.json ({last_path}): {e}')
+                self.src_config = None
     
     # ------------------------------------------------------------------------
     # Low level APIs

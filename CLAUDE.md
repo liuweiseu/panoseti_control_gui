@@ -127,10 +127,15 @@ uv run pyuic6 ui/data_config_widget.ui -o src/pseti_gui/data_config_ui.py
 `self.action_open`) + one `DataConfigOp` (all the get/set logic + `load_config()`/`collect_config()`) and
 reuses both on subsequent opens — `DataConfigOp.__init__` wires signals exactly once; don't reconstruct it
 per-open, or `on_open_clicked`/`on_ok_clicked`/etc. end up connected multiple times on the same long-lived
-`win.ui` widgets and fire once per prior open. There is no default/hardcoded source file: `DataConfigOp.src_config`
-starts `None`, and `on_open_clicked()` (wired to `action_open.triggered`) pops a `QFileDialog` to pick a
-`data_config.json` to load; `collect_config()` (on clicking OK) writes back to whatever path is currently in
-the `config_output_dir` line-edit field (populated by `load_config()`, but also directly user-editable).
+`win.ui` widgets and fire once per prior open. There is no hardcoded source file, but `DataConfigOp.__init__`
+does try to restore the last one: it reads the last-opened path from `QSettings` (`data_config/last_path`,
+persists across app restarts via the org/app name `app.py` sets on the `QApplication`) and calls
+`load_config()` on it, best-effort — any failure (file moved/deleted/invalid) just logs a warning and
+leaves `src_config` at `None` instead of blocking the window from opening. `on_open_clicked()` (wired to
+`action_open.triggered`) pops a `QFileDialog` — pre-seeded with that same remembered path — to pick a
+`data_config.json` to load, and writes the chosen path back to `QSettings` for next time. `collect_config()`
+(on clicking OK) writes back to whatever path is currently in the `config_output_dir` line-edit field
+(populated by `load_config()`, but also directly user-editable).
 `DataConfigOp` is deliberately just get/set pairs per widget plus two translation functions — see
 [panoseti's data_config.json constraints](../panoseti/CLAUDE.md#data-config-validation-constraints) for what
 values are actually valid before wiring up a new field.
