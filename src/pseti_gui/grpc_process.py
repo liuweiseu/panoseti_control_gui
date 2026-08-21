@@ -1,4 +1,5 @@
 import time, json, sys
+import locale
 from enum import Enum
 from multiprocessing import shared_memory, resource_tracker
 import numpy as np
@@ -137,6 +138,13 @@ def main(
     mode: Mode = typer.Option(Mode.ph1024, "-m", "--mode", help="Mode options."),
 ) -> None:
     """Attach to a running panoseti_grpc DaqData stream and forward frames to pseti-gui over shared memory."""
+    # Rich's log timestamps use the locale-dependent "%x %X" strftime format.
+    # mainwin.py's process picks up the environment's locale as a side effect
+    # of PyQt6's QApplication init (which calls setlocale(LC_ALL, "")); this
+    # plain subprocess never touches locale otherwise, so without this it
+    # stays on the terse default "C" locale format instead of matching
+    # mainwin.py's log timestamps.
+    locale.setlocale(locale.LC_TIME, '')
     # deal with SIGINT
     def handler(signum, frame):
         sys.exit(0)
