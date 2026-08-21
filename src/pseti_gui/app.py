@@ -12,6 +12,10 @@ VER = f'V{version("pseti-gui")}'
 
 def main():
     app = QApplication(sys.argv)
+    # Org/app name are required for QSettings() (used e.g. to remember the
+    # last-opened data_config.json path) to resolve a persistent store.
+    app.setOrganizationName("PANOSETI")
+    app.setApplicationName("pseti-gui")
     icon_path = Path(__file__).resolve().parent / "figure" / "panoseti_icon.png"
     app.setWindowIcon(QIcon(str(icon_path)))
     w = MainWin()

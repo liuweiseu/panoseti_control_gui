@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QFileDialog, QMainWindow, QWidget
 from PyQt6.QtGui import QAction
+from PyQt6.QtCore import QSettings
 from pseti_gui.data_config_ui import Ui_Form
 
 import json
@@ -22,6 +23,8 @@ class DataConfigWin(QMainWindow):
         # window opens at Qt's small default size and needs manual resizing.
         self.resize(central.width(), central.height() + self.menuBar().sizeHint().height())
 
+_LAST_PATH_SETTINGS_KEY = 'data_config/last_path'
+
 class DataConfigOp(object):
     def __init__(self, win):
         self.logger = get_logger('pseti_gui.data_config_gen', log_dir='/var/log/panoseti')
@@ -31,6 +34,9 @@ class DataConfigOp(object):
         self.win = win
         self.ui = win.ui
         self.src_config = None
+        # Persists across app restarts (relies on app.py setting the Qt
+        # organization/application name so QSettings() can resolve a store).
+        self.settings = QSettings()
         self.setup_signal_functions()
     
     # ------------------------------------------------------------------------
@@ -326,9 +332,11 @@ class DataConfigOp(object):
         self.win.close()
 
     def on_open_clicked(self):
-        path, _ = QFileDialog.getOpenFileName(self.win, 'Open Data Config', '', 'JSON Files (*.json);;All Files (*)')
+        last_path = self.settings.value(_LAST_PATH_SETTINGS_KEY, '', type=str)
+        path, _ = QFileDialog.getOpenFileName(self.win, 'Open Data Config', last_path, 'JSON Files (*.json);;All Files (*)')
         if path:
             self.src_config = path
+            self.settings.setValue(_LAST_PATH_SETTINGS_KEY, path)
             self.load_config()
 
     # ------------------------------------------------------------------------
