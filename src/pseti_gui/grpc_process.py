@@ -1,12 +1,13 @@
 import time, json, sys
+from enum import Enum
 from multiprocessing import shared_memory, resource_tracker
 import numpy as np
 from typing import Union
 import asyncio
 import logging
-from argparse import ArgumentParser
 import socket
 
+import typer
 from panoseti_grpc.daq_data.client import AioDaqDataClient
 import signal
 
@@ -14,8 +15,15 @@ from panoseti_grpc.telemetry.logger import get_logger
 
 SOCK_PATH = "/tmp/panoseti_meta.sock"
 
+
+class Mode(str, Enum):
+    mov8 = "mov8"
+    mov16 = "mov16"
+    ph256 = "ph256"
+    ph1024 = "ph1024"
+
 class DaqDataBackend(object):
-    def __init__(self, grpc_config_path: str, mode: str) -> None:
+    def __init__(self, host: str, port: int, mode: str) -> None:
         # create logger
         self.logger = get_logger('pseti_gui.grpc_process', log_dir='/var/log/panoseti')
         self.logger.info('********************************************')
@@ -23,14 +31,11 @@ class DaqDataBackend(object):
         self.logger.info('********************************************')
         self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         self.sock.connect(SOCK_PATH)
-        # get configs
-        with open(grpc_config_path, "r") as f:
-            grpc_config = json.load(f)
         # Single-target connection: the server may be an edge DAQ node (dev/
         # single-machine setups) or a headnode/gateway that fans in multiple
         # edge nodes server-side -- pseti-gui doesn't need to know which.
-        self.host = grpc_config.get('host', 'localhost')
-        self.port = grpc_config.get('port', 50051)
+        self.host = host
+        self.port = port
         self.logger.info(f"host: {self.host}")
         self.logger.info(f"port: {self.port}")
         # get bytes_per_pixel
@@ -106,34 +111,28 @@ class DaqDataBackend(object):
             self.logger.error('grpc_process failed.')
         self.logger.info("Deattached the shm.")
 
-async def run(args):
-    backend = DaqDataBackend(args.config, args.mode)
+async def run(host: str, port: int, mode: str):
+    backend = DaqDataBackend(host, port, mode)
     backend.send_shm_info()
     await backend.send_images()
     backend.close()
 
-if __name__ == '__main__':
-    parser = ArgumentParser(description="Usage for PANOSETI gRPC.")
-    # config file option
-    parser.add_argument(
-        "-c", "--config",
-        type=str,
-        default="configs/grpc_config.json",
-        help="grpc config file."
-    )
-    # mode option
-    parser.add_argument(
-        "-m", "--mode",
-        type=str,
-        choices=['mov8', 'mov16', 'ph256', 'ph1024'],
-        default='ph1024',
-        help="Mode options."
-    )
-    # parse the args
-    args = parser.parse_args()
+app = typer.Typer(add_completion=False)
+
+
+@app.command()
+def main(
+    host: str = typer.Option("localhost", "-o", "--host", help="Host of the panoseti_grpc server (edge DAQ node or headnode/gateway) to connect to."),
+    port: int = typer.Option(50051, "-p", "--port", help="Port of the panoseti_grpc server to connect to."),
+    mode: Mode = typer.Option(Mode.ph1024, "-m", "--mode", help="Mode options."),
+) -> None:
+    """Attach to a running panoseti_grpc DaqData stream and forward frames to pseti-gui over shared memory."""
     # deal with SIGINT
     def handler(signum, frame):
         sys.exit(0)
     signal.signal(signal.SIGINT, handler)
     # start!
-    asyncio.run(run(args))
+    asyncio.run(run(host, port, mode.value))
+
+if __name__ == '__main__':
+    app()

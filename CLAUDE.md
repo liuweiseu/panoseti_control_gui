@@ -9,7 +9,9 @@ calibration) and live-viewing detector images. It is a thin control-panel front 
 [`panoseti`](../panoseti) (every control button shells out to the `pseti` CLI resolved on `PATH` — see
 Architecture) and [`panoseti_grpc`](../panoseti_grpc) (the `AioDaqDataClient` used to stream images, imported
 directly as a dependency). `pseti-gui` itself carries no reference to where either sibling repo's source
-lives — it only needs `pseti` on `PATH` and `configs/grpc_config.json` pointed at the right JSON files.
+lives, and has no config files of its own — it only needs `pseti` on `PATH` and, optionally, the host/port
+of the `panoseti_grpc` server to stream images from (CLI args to `grpc_process.py`, default
+`localhost:50051`).
 
 ## Common Commands
 
@@ -23,18 +25,22 @@ There are no automated tests or CI in this repo — verify changes by running th
 
 ## Configuration
 
-Only one config file left, and it doesn't point at a `panoseti` source checkout:
+There are no config files left in this repo (the old `configs/` directory is gone). Everything is either a
+CLI argument or resolved on `PATH`:
 
-- **`configs/grpc_config.json`** — read by `grpc_process.py` (default arg, `start_grpc_clicked` doesn't
-  override it) for the *image-streaming* backend only: `host`/`port` of a single `panoseti_grpc` server to
-  connect to. That server can be an edge DAQ node (single-machine dev) or a headnode/gateway that fans in
-  multiple edge nodes server-side (see [panoseti_grpc's CLAUDE.md](../panoseti_grpc/CLAUDE.md#unified-server)
-  for the `role="edge"` vs `role="gateway"` distinction) — `pseti-gui` doesn't need to know or care which;
-  it just opens one `AioDaqDataClient(host, port)` and calls `stream_images()`.
+- **`grpc_process.py`** (Typer CLI, see Architecture) takes `--host`/`-o` (default `localhost`) and
+  `--port`/`-p` (default `50051`) for the single `panoseti_grpc` server to stream images from. That server
+  can be an edge DAQ node (single-machine dev) or a headnode/gateway that fans in multiple edge nodes
+  server-side (see [panoseti_grpc's CLAUDE.md](../panoseti_grpc/CLAUDE.md#unified-server) for the
+  `role="edge"` vs `role="gateway"` distinction) — `pseti-gui` doesn't need to know or care which; it just
+  opens one `AioDaqDataClient(host, port)` and calls `stream_images()`. `start_grpc_clicked()` in
+  `mainwin.py` doesn't pass `--host`/`--port`, so it always connects to `localhost:50051`; run
+  `python -m pseti_gui.grpc_process --host ... --port ...` directly for anything else.
 
-There used to also be a `configs/panoseti_config.json` for a `verbose` flag gating whether
-`grpc_process.py`'s captured stdout/stderr got printed — removed; `grpc_stdout`/`grpc_stderr` in
-`mainwin.py` now print unconditionally, so `MainWin.__init__` takes no config-path argument at all.
+There used to also be a `configs/panoseti_config.json` (a `verbose` flag) and `configs/grpc_config.json`
+(the `host`/`port` above, plus dead `daq_config_path`/`net_config_path`/`hp_io_cfg_path` fields from an
+older multi-node client design) — both removed; `grpc_stdout`/`grpc_stderr` in `mainwin.py` print
+unconditionally now, and `host`/`port` moved to `grpc_process.py`'s own CLI options.
 
 **Prerequisite, not a config file:** the `pseti` CLI itself must be installed and resolvable on the `PATH`
 of whatever environment launches `pseti-gui` — see Architecture for `uv tool install --editable` and the
@@ -62,12 +68,13 @@ The GUI process (`MainWin`) never talks gRPC directly. Instead:
    `pseti-gui` launches from.
 2. **Image streaming** runs in a separate child process (`start_grpc_clicked` launches
    `python -m pseti_gui.grpc_process` via `QProcess`) because `AioDaqDataClient` is asyncio-based and the
-   main window runs the Qt event loop. This child process (`grpc_process.py`'s `DaqDataBackend`) owns a
-   single-target `AioDaqDataClient(host, port)` (per `configs/grpc_config.json`), writes each incoming frame
-   into a `multiprocessing.shared_memory.SharedMemory` block, and notifies the GUI process over a Unix
-   domain socket at `/tmp/panoseti_meta.sock`. It does **not** call `init_hp_io` — it only attaches to a
-   stream that's already running (started by `pseti start` or a server with `init_from_default = true`);
-   see [panoseti_grpc's CLAUDE.md](../panoseti_grpc/CLAUDE.md#daq-data-service) for who's responsible for
+   main window runs the Qt event loop. `grpc_process.py` is itself a small Typer CLI (`--host`/`-o`,
+   `--port`/`-p`, `--mode`/`-m`); its `DaqDataBackend` owns a single-target `AioDaqDataClient(host, port)`,
+   writes each incoming frame into a `multiprocessing.shared_memory.SharedMemory` block, and notifies the
+   GUI process over a Unix domain socket at `/tmp/panoseti_meta.sock`. It does **not** call `init_hp_io` —
+   it only attaches to a stream that's already running (started by `pseti start` or a server with
+   `init_from_default = true`); see
+   [panoseti_grpc's CLAUDE.md](../panoseti_grpc/CLAUDE.md#daq-data-service) for who's responsible for
    initialization.
 
 ### IPC protocol over the UDS socket

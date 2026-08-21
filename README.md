@@ -27,11 +27,12 @@ This GUI is based on [panoseti software](https://github.com/panoseti/panoseti) a
     ```
     Use `--editable` so the installed `pseti` keeps resolving its config/state directories from your actual
     `panoseti` checkout (see [CLAUDE.md](CLAUDE.md) for why).
-5. set the config file  
-    `configs/grpc_config.json` points the image-streaming backend at a single running `panoseti_grpc`
-    server (`host`/`port`) — an edge DAQ node for single-machine dev, or a headnode/gateway that fans in
-    multiple edge nodes server-side. The stream must already be initialized (e.g. via `pseti start`, or a
-    server with `init_from_default = true`) — this GUI only attaches to it.
+5. (optional) point the image-streaming backend at a non-default `panoseti_grpc` server  
+    The GUI's "Start gRPC" button connects to `localhost:50051` by default. To stream from elsewhere — an
+    edge DAQ node, or a headnode/gateway that fans in multiple edge nodes server-side — run
+    `python -m pseti_gui.grpc_process --host <host> --port <port>` directly instead of using the button.
+    The stream must already be initialized (e.g. via `pseti start`, or a server with
+    `init_from_default = true`) — this GUI only attaches to it.
 # Start GUI
 There are two ways to start the GUI:
 1. run it inside the repo with uv

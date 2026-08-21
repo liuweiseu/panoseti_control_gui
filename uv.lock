@@ -574,13 +574,14 @@ wheels = [
 
 [[package]]
 name = "pseti-gui"
-version = "0.1.1"
+version = "0.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "numpy" },
     { name = "panoseti-grpc" },
     { name = "pyqt6" },
     { name = "pyqtgraph" },
+    { name = "typer" },
 ]
 
 [package.metadata]
@@ -589,6 +590,7 @@ requires-dist = [
     { name = "panoseti-grpc", specifier = ">=0.4.17" },
     { name = "pyqt6" },
     { name = "pyqtgraph" },
+    { name = "typer" },
 ]
 
 [[package]]
