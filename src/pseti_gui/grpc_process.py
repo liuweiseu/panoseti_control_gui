@@ -8,6 +8,8 @@ import logging
 import socket
 
 import typer
+from rich.console import Console
+from rich.logging import RichHandler
 from panoseti_grpc.daq_data.client import AioDaqDataClient
 import signal
 
@@ -26,6 +28,14 @@ class DaqDataBackend(object):
     def __init__(self, host: str, port: int, mode: str) -> None:
         # create logger
         self.logger = get_logger('pseti_gui.grpc_process', log_dir='/var/log/panoseti')
+        # This process's stdout is a pipe to the parent QProcess, not a real
+        # terminal -- get_logger()'s RichHandler would otherwise auto-detect
+        # that and print plain, uncolored text. mainwin.py's grpc_stdout()
+        # just relays these bytes verbatim to its own (real) terminal, so
+        # force color here to match mainwin.py's own log output.
+        for handler in self.logger.handlers:
+            if isinstance(handler, RichHandler):
+                handler.console = Console(force_terminal=True)
         self.logger.info('********************************************')
         self.logger.info('PANOSETI gRPC process started.')
         self.logger.info('********************************************')

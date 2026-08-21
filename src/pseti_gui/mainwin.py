@@ -201,12 +201,14 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
     def grpc_stdout(self):
         # we get an image every time when this function is called
+        # text already ends in '\n' (grpc_process's own Rich handler
+        # terminates every line) -- print() would otherwise add a second one.
         text =  self.grpc_process.readAllStandardOutput().data().decode()
-        print(text)
+        print(text, end='')
 
     def grpc_stderr(self):
         text =  self.grpc_process.readAllStandardError().data().decode()
-        print(text)
+        print(text, end='')
     
     def grpc_finished(self, exitCode, exitStatus):
         if exitStatus == QProcess.ExitStatus.NormalExit and exitCode == 0:
