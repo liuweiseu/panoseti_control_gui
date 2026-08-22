@@ -1,4 +1,4 @@
-from PyQt6.QtCore import QProcess
+from PyQt6.QtCore import QProcess, QProcessEnvironment
 from PyQt6.QtWidgets import QLabel, QMainWindow
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import QSocketNotifier
@@ -29,13 +29,24 @@ class MainWin(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.actiondata_config.triggered.connect(self.open_data_config)
+        # Both child processes' stdout/stderr are pipes, not a real terminal,
+        # so their own Rich console can't query a terminal width and falls
+        # back to a hardcoded 80 columns -- wrapping log lines far short of
+        # this pane's actual width. Rich (via shutil.get_terminal_size())
+        # honors the COLUMNS/LINES env vars before falling back, so set them
+        # wide here instead of touching the panoseti/panoseti_grpc loggers.
+        wide_console_env = QProcessEnvironment.systemEnvironment()
+        wide_console_env.insert('COLUMNS', '200')
+        wide_console_env.insert('LINES', '50')
         # Process for panoseti software
         self.ps_process = QProcess(self)
+        self.ps_process.setProcessEnvironment(wide_console_env)
         self.ps_process.readyReadStandardOutput.connect(self.ps_stdout)
         self.ps_process.readyReadStandardError.connect(self.ps_stderr)
         self.ps_process.finished.connect(self.ps_finished)
         # Process for panoseti grpc
         self.grpc_process = QProcess(self)
+        self.grpc_process.setProcessEnvironment(wide_console_env)
         self.grpc_process.readyReadStandardOutput.connect(self.grpc_stdout)
         self.grpc_process.readyReadStandardError.connect(self.grpc_stderr)
         self.grpc_process.finished.connect(self.grpc_finished)
