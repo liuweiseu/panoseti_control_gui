@@ -1,6 +1,6 @@
 [project]
 name = "pseti-gui"
-version = "0.2.0"
+version = "0.2.1"
 requires-python = ">=3.14"
 dependencies = [
     "pyqt6",
@@ -11,7 +11,7 @@ dependencies = [
 ]
 
 [project.scripts]
-pseti-gui = "pseti_gui.app:main"
+pseti-gui = "pseti_gui.app:app"
 
 [build-system]
 requires = ["hatchling"]
