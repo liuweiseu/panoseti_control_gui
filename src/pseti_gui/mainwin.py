@@ -301,7 +301,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.run_pseti('cfg', 'reboot')
 
     def marocconfig_clicked(self):
-        self.run_pseti('cfg', 'maroc-config')
+        self.run_pseti('cfg', 'maroc-config', '--non-interactive')
 
     def maskconfig_clicked(self):
         self.run_pseti('cfg', 'mask-config')
@@ -316,10 +316,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.run_pseti('uids')
 
     def startdaq_clicked(self):
-        self.run_pseti('start')
+        self.run_pseti('start', '--yes')
 
     def stopdaq_clicked(self):
-        self.run_pseti('stop')
+        self.run_pseti('stop', '--yes')
 
     def plot_data(self, data):
         mid = data['module_id']
