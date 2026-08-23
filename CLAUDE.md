@@ -116,7 +116,8 @@ the `PSETI_GUI_WINDOW_CONFIG` env var if set, otherwise the packaged default at
 }
 ```
 
-`load_window_config()` validates that every `row`/`col` is inside the `rows`×`cols` grid and that no two
+`title` is optional per window — an entry that omits it gets the literal string `"None"` as its title
+(`_DEFAULT_TITLE` in `window_config.py`). `load_window_config()` validates that every `row`/`col` is inside the `rows`×`cols` grid and that no two
 windows share a `module_id` or a `(row, col)` position, raising `ValueError` (fail fast at startup) if not.
 `MainWin` sizes `static_label`/`plot_widgets`/`timers`/`imgs`/`qttexts` to `rows * cols` and builds a
 placeholder in every cell up front (`set_placeholder`/`show_plot` index cells as `row * cols + col`, not a

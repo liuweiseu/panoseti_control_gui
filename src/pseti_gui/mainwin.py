@@ -11,7 +11,7 @@ import socket
 
 from pseti_gui.mainwin_ui import Ui_MainWindow
 from pseti_gui.data_config_win import DataConfigWin, DataConfigOp
-from pseti_gui.window_config import load_window_config
+from pseti_gui.window_config import load_window_config, DEFAULT_TITLE
 from pseti_gui.square_grid import SquareGridContainer
 import asyncio, signal
 from multiprocessing import shared_memory, resource_tracker
@@ -190,6 +190,10 @@ class MainWin(QMainWindow, Ui_MainWindow):
         program = sys.executable
         args = ['-u', '-m', 'pseti_gui.grpc_process', '-m', 'ph1024']
         self.grpc_process.start(program, args)
+        # Show every window immediately with a zero-valued image and the
+        # default title -- per-module title/data get filled in as each
+        # module_id's first real frame arrives via plot_data().
+        self.init_all_plots_zero()
 
     def stop_grpc_clicked(self):
         self.logger.info('Stop PANOSETI gPRC process.')
@@ -215,6 +219,32 @@ class MainWin(QMainWindow, Ui_MainWindow):
         # re-enable the notificer
         self.server_notifier.setEnabled(True)
         self.grpc_process_exit = True
+        # grpc_process is fully stopped (waitForFinished above already
+        # returned) so no more frames can arrive; safe to revert every
+        # window back to its default placeholder image.
+        self.reset_all_plots()
+
+    def init_all_plots_zero(self):
+        """Show every window as a zero-valued image with the default title,
+        before any real per-module frame has arrived."""
+        zero_data = np.zeros((32, 32))
+        for r in range(self.rows):
+            for c in range(self.cols):
+                self.show_plot(r, c, {
+                    'image_array': zero_data,
+                    'frame_number': 0,
+                    'name': DEFAULT_TITLE,
+                })
+
+    def reset_all_plots(self):
+        """Revert every window back to the default placeholder image."""
+        for r in range(self.rows):
+            for c in range(self.cols):
+                i = r * self.cols + c
+                self.plot_widgets[i] = None
+                self.imgs[i] = None
+                self.qttexts[i] = None
+                self.set_placeholder(r, c)
 
     def _get_dytpe_from_mode(self, mode):
         if mode == 'ph1024' or mode == 'ph256':

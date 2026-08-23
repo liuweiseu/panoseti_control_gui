@@ -7,6 +7,7 @@ from pathlib import Path
 
 _ENV_VAR = "PSETI_GUI_WINDOW_CONFIG"
 _DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent / "configs" / "window_config.json"
+DEFAULT_TITLE = "None"
 
 
 @dataclass(frozen=True)
@@ -53,7 +54,7 @@ def load_window_config() -> WindowConfig:
         module_id = int(entry["module_id"])
         row = int(entry["row"])
         col = int(entry["col"])
-        title = str(entry["title"])
+        title = str(entry["title"]) if "title" in entry else _DEFAULT_TITLE
 
         if not (0 <= row < rows and 0 <= col < cols):
             raise ValueError(
