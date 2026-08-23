@@ -12,6 +12,7 @@ import socket
 from pseti_gui.mainwin_ui import Ui_MainWindow
 from pseti_gui.data_config_win import DataConfigWin, DataConfigOp
 from pseti_gui.window_config import load_window_config
+from pseti_gui.square_grid import SquareGridContainer
 import asyncio, signal
 from multiprocessing import shared_memory, resource_tracker
 
@@ -78,6 +79,17 @@ class MainWin(QMainWindow, Ui_MainWindow):
             f"Loaded window config from {self.window_config.path} "
             f"({self.rows}x{self.cols} grid, {len(self.window_config.slots)} module(s) mapped)"
         )
+        # The .ui's view_layout ships 4 hardcoded view0-3_widget placeholders
+        # for a fixed 2x2 grid. Drop them and replace with a SquareGridContainer
+        # that lays out an arbitrary rows x cols grid, resizing cells to stay
+        # square and fill the available area (see square_grid.py).
+        for i in reversed(range(self.view_layout.count())):
+            item = self.view_layout.takeAt(i)
+            w = item.widget()
+            if w is not None:
+                w.deleteLater()
+        self.view_container = SquareGridContainer(self.rows, self.cols)
+        self.view_layout.addWidget(self.view_container, 0, 0)
         # add static figure by default
         self.static_label = [None] * num_plots
         for r in range(self.rows):
@@ -144,12 +156,13 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def set_placeholder(self, r, c):
         i = r * self.cols + c
         pixmap = QPixmap(str(FIGURE_DIR / "placeholder.png"))
-        pixmap = pixmap.scaled(350, 350) 
         label = QLabel()
         label.setPixmap(pixmap)
+        # SquareGridContainer resizes this label's geometry to the current
+        # square cell size; scaledContents stretches the pixmap to match.
         label.setScaledContents(True)
         self.static_label[i] = label
-        self.view_layout.addWidget(self.static_label[i], r,c,1,1)
+        self.view_container.add_widget(label, r, c)
     # ---------------------------------------------------------------------------
     # Low level APIs
     # ---------------------------------------------------------------------------
@@ -237,13 +250,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def show_plot(self, r, c, data):
         i = r * self.cols + c
         if self.static_label[i] is not None:
-            self.view_layout.removeWidget(self.static_label[i])
-            self.static_label[i].deleteLater()
             self.static_label[i] = None
             # create obj
             plot_widget = pg.PlotWidget()
             self.plot_widgets[i] = plot_widget
-            self.view_layout.addWidget(plot_widget, r, c, 1, 1)
+            # replaces the placeholder QLabel occupying this cell
+            self.view_container.add_widget(plot_widget, r, c)
             # create random data for default viewer
             rdata = np.random.rand(32, 32)
             h, w = rdata.shape
