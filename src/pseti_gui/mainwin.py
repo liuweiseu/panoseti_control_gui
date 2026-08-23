@@ -11,12 +11,11 @@ import socket
 
 from pseti_gui.mainwin_ui import Ui_MainWindow
 from pseti_gui.data_config_win import DataConfigWin, DataConfigOp
+from pseti_gui.window_config import load_window_config
 import asyncio, signal
 from multiprocessing import shared_memory, resource_tracker
 
 from panoseti_grpc.telemetry.logger import get_logger
-
-NUM_PLOTS = 4
 
 SOCK_PATH = "/tmp/panoseti_meta.sock"
 FIGURE_DIR = Path(__file__).resolve().parent / "figure"
@@ -68,25 +67,30 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.shm = None
         self.shm_name = None
         self.img = None
+        # window grid layout: dimensions + per-module_id (title, row, col),
+        # loaded from PSETI_GUI_WINDOW_CONFIG or the packaged default -- see
+        # pseti_gui/window_config.py.
+        self.window_config = load_window_config()
+        self.rows = self.window_config.rows
+        self.cols = self.window_config.cols
+        num_plots = self.rows * self.cols
+        self.logger.info(
+            f"Loaded window config from {self.window_config.path} "
+            f"({self.rows}x{self.cols} grid, {len(self.window_config.slots)} module(s) mapped)"
+        )
         # add static figure by default
-        self.static_label = [None] * NUM_PLOTS
-        for r in range(2):
-            for c in range(2):
+        self.static_label = [None] * num_plots
+        for r in range(self.rows):
+            for c in range(self.cols):
                 self.set_placeholder(r, c)
-        self.plot_widgets = [None] * NUM_PLOTS
-        self.timers = [None] * NUM_PLOTS
-        self.imgs = [None] * NUM_PLOTS
-        self.qttexts = [None] * NUM_PLOTS
+        self.plot_widgets = [None] * num_plots
+        self.timers = [None] * num_plots
+        self.imgs = [None] * num_plots
+        self.qttexts = [None] * num_plots
         self.shutdown_event = None
         self.setup_signal_functions()
-        # use hard-coded name here for temp use
-        # TODO: imporve this part
-        self.telescope_info = [{'Simulation': [0, 0]}] * 1024
-        self.telescope_info[250] = {'PTI': [0, 0]}
-        self.telescope_info[252] = {'Fern': [0, 1]}
-        self.telescope_info[253] = {'Winter': [1, 0]}
-        self.telescope_info[254] = {'Gattini': [1, 1]}
-    
+        self._unmapped_module_ids_warned = set()
+
     # ---------------------------------------------------------------------------
     # signal functions for socket
     # ---------------------------------------------------------------------------
@@ -138,7 +142,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     # Set placeholder
     # ---------------------------------------------------------------------------
     def set_placeholder(self, r, c):
-        i = r * 2 + c
+        i = r * self.cols + c
         pixmap = QPixmap(str(FIGURE_DIR / "placeholder.png"))
         pixmap = pixmap.scaled(350, 350) 
         label = QLabel()
@@ -231,7 +235,7 @@ class MainWin(QMainWindow, Ui_MainWindow):
     # plot figures
     # ---------------------------------------------------------------------------
     def show_plot(self, r, c, data):
-        i = r * 2 + c
+        i = r * self.cols + c
         if self.static_label[i] is not None:
             self.view_layout.removeWidget(self.static_label[i])
             self.static_label[i].deleteLater()
@@ -323,12 +327,17 @@ class MainWin(QMainWindow, Ui_MainWindow):
 
     def plot_data(self, data):
         mid = data['module_id']
-        self.logger.debug(f"telescipe ID: {self.telescope_info[mid]}")
-        for k, v in self.telescope_info[mid].items():
-            name = k
-            loc = v
-        data['name'] = name
-        self.show_plot(loc[0], loc[1], data)
+        slot = self.window_config.slots.get(mid)
+        if slot is None:
+            if mid not in self._unmapped_module_ids_warned:
+                self.logger.warning(
+                    f"module_id {mid} is not in the window config "
+                    f"({self.window_config.path}); dropping its frames."
+                )
+                self._unmapped_module_ids_warned.add(mid)
+            return
+        data['name'] = slot.title
+        self.show_plot(slot.row, slot.col, data)
 
     def closeEvent(self, event):
         # call stop_grpc to stop grpc process

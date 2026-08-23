@@ -25,8 +25,8 @@ There are no automated tests or CI in this repo — verify changes by running th
 
 ## Configuration
 
-There are no config files left in this repo (the old `configs/` directory is gone). Everything is either a
-CLI argument or resolved on `PATH`:
+Most things are either a CLI argument or resolved on `PATH`; the one exception is the image-window grid
+layout (see [Telescope/module mapping](#telescopemodule-mapping) below), which is a JSON config file:
 
 - **`grpc_process.py`** (Typer CLI, see Architecture) takes `--host`/`-o` (default `localhost`) and
   `--port`/`-p` (default `50051`) for the single `panoseti_grpc` server to stream images from. That server
@@ -100,11 +100,32 @@ Shutdown is `SIGINT`-driven, not a clean RPC: `stop_grpc_clicked()` sends `SIGIN
 
 ### Telescope/module mapping
 
-`MainWin.telescope_info` maps `module_id` → `{display_name: [grid_row, grid_col]}` for the 2×2 image grid
-(`NUM_PLOTS = 4`, `show_plot()`/`plot_data()`). This is currently **hardcoded** in `__init__` (module 250 =
-PTI, 252 = Fern, 253 = Winter, 254 = Gattini) rather than derived from `obs_config.json` (see the
-`# TODO: improve this part` comment) — there's no `obs_config.json` path wired into `pseti-gui` to derive it
-from even if that TODO were done. When adding a new site/module, update `telescope_info` here.
+The image-window grid (dimensions + which `module_id` shows in which cell, with what title) is driven by
+`pseti_gui/window_config.py`'s `load_window_config()`, called once in `MainWin.__init__`. Path resolution:
+the `PSETI_GUI_WINDOW_CONFIG` env var if set, otherwise the packaged default at
+`src/pseti_gui/configs/window_config.json` (today's 2×2 layout: module 250 = PTI, 252 = Fern, 253 = Winter,
+254 = Gattini). The file shape is:
+
+```json
+{
+  "rows": 2,
+  "cols": 2,
+  "windows": [
+    {"module_id": 250, "title": "PTI", "row": 0, "col": 0}
+  ]
+}
+```
+
+`load_window_config()` validates that every `row`/`col` is inside the `rows`×`cols` grid and that no two
+windows share a `module_id` or a `(row, col)` position, raising `ValueError` (fail fast at startup) if not.
+`MainWin` sizes `static_label`/`plot_widgets`/`timers`/`imgs`/`qttexts` to `rows * cols` and builds a
+placeholder in every cell up front (`set_placeholder`/`show_plot` index cells as `row * cols + col`, not a
+hardcoded `* 2`). `plot_data()` looks up the incoming frame's `module_id` in `window_config.slots`; a
+`module_id` with no entry logs one `warning` (deduped via `_unmapped_module_ids_warned`, not repeated per
+frame) and the frame is dropped — it does not derive from `obs_config.json`, there's no `obs_config.json`
+path wired into `pseti-gui`. To change the layout (grid size, titles, or which modules are shown), edit
+`src/pseti_gui/configs/window_config.json` or point `PSETI_GUI_WINDOW_CONFIG` at a different file — no code
+changes needed.
 
 ### UI files: regenerate, don't hand-edit
 
