@@ -1,0 +1,10 @@
+{
+  "rows": 2,
+  "cols": 2,
+  "windows": [
+    {"module_id": 250, "title": "PTI", "row": 0, "col": 0},
+    {"module_id": 252, "title": "Fern", "row": 0, "col": 1},
+    {"module_id": 253, "title": "Winter", "row": 1, "col": 0},
+    {"module_id": 254, "title": "Gattini", "row": 1, "col": 1}
+  ]
+}
