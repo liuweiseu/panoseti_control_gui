@@ -1,35 +1,55 @@
-from PyQt6.QtWidgets import QDialog, QWidget
-#from data_config_win import Ui_DataConfigWin
-from src.data_config_ui import Ui_Form
+from PyQt6.QtWidgets import QFileDialog, QMainWindow, QMessageBox, QWidget
+from PyQt6.QtGui import QAction
+from PyQt6.QtCore import QSettings
+from pseti_gui.data_config_ui import Ui_Form
 
-import logging
 import json
-from pathlib import Path
-from utils.utils import make_rich_logger
+from panoseti_grpc.telemetry.logger import get_logger
 
-class DataConfigWin(QWidget):
+class DataConfigWin(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setWindowTitle('Data Config')
+        central = QWidget(self)
         self.ui = Ui_Form()
-        self.ui.setupUi(self)
+        self.ui.setupUi(central)
+        self.setCentralWidget(central)
+        file_menu = self.menuBar().addMenu('&File')
+        self.action_open = QAction('&Open...', self)
+        file_menu.addAction(self.action_open)
+        # Ui_Form.setupUi() calls central.resize(640, 393) (baked into the
+        # generated code from the .ui file's Form geometry), but that resize
+        # doesn't propagate to the QMainWindow wrapping it -- without this the
+        # window opens at Qt's small default size and needs manual resizing.
+        self.resize(central.width(), central.height() + self.menuBar().sizeHint().height())
+
+_LAST_PATH_SETTINGS_KEY = 'data_config/last_path'
 
 class DataConfigOp(object):
-    def __init__(self, win, src_config='configs/data_config.json'):
-        self.logger = make_rich_logger('data_config_gen.log', logging.WARNING, mode='a')
+    def __init__(self, win):
+        self.logger = get_logger('pseti_gui.data_config_gen', log_dir='/var/log/panoseti')
         self.logger.info('********************************************')
         self.logger.info('Data Config Gen started.')
         self.logger.info('********************************************')
         self.win = win
         self.ui = win.ui
-        self.src_config = src_config
-        if self.src_config is not None:
-            self.logger.info(f'Loading {src_config}...')
-            fpath = Path(self.src_config)
-            if fpath.exists():
-                self.load_config()
-        else:
-            self.logger.info(f'No default data_config.json...')
+        self.src_config = None
+        # Persists across app restarts (relies on app.py setting the Qt
+        # organization/application name so QSettings() can resolve a store).
+        self.settings = QSettings()
         self.setup_signal_functions()
+        # Restore the last-opened data_config.json, if any -- best effort:
+        # the file may have since been moved/deleted/edited into something
+        # invalid, in which case we just fall back to an empty form instead
+        # of failing to open the Data Config window at all.
+        last_path = self.settings.value(_LAST_PATH_SETTINGS_KEY, '', type=str)
+        if last_path:
+            self.src_config = last_path
+            try:
+                self.load_config()
+            except Exception as e:
+                self.logger.warning(f'Could not auto-load last data_config.json ({last_path}): {e}')
+                self.src_config = None
     
     # ------------------------------------------------------------------------
     # Low level APIs
@@ -317,12 +337,32 @@ class DataConfigOp(object):
             self.set_ph_group_frames_status(False)
     
     def on_ok_clicked(self):
+        output_path = self.get_config_output_dir()
+        reply = QMessageBox.question(
+            self.win,
+            'Confirm Save',
+            f'This will write the new config to:\n\n{output_path}\n\n'
+            'If this is not the file you meant to update, click Cancel and '
+            'use File > Open... to load the correct file first.',
+            QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel,
+            QMessageBox.StandardButton.Cancel,
+        )
+        if reply != QMessageBox.StandardButton.Ok:
+            return
         self.collect_config()
         self.win.close()
 
     def on_cancel_clicked(self):
         self.win.close()
-        
+
+    def on_open_clicked(self):
+        last_path = self.settings.value(_LAST_PATH_SETTINGS_KEY, '', type=str)
+        path, _ = QFileDialog.getOpenFileName(self.win, 'Open Data Config', last_path, 'JSON Files (*.json);;All Files (*)')
+        if path:
+            self.src_config = path
+            self.settings.setValue(_LAST_PATH_SETTINGS_KEY, path)
+            self.load_config()
+
     # ------------------------------------------------------------------------
     # Setup signal function
     # ------------------------------------------------------------------------
@@ -332,4 +372,5 @@ class DataConfigOp(object):
         self.ui.ph_any_trigger_enable.clicked.connect(self.AnyTrigger_StatusChanged)
         self.ui.data_config_button.accepted.connect(self.on_ok_clicked)
         self.ui.data_config_button.rejected.connect(self.on_cancel_clicked)
+        self.win.action_open.triggered.connect(self.on_open_clicked)
     
