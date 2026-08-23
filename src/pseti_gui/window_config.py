@@ -5,8 +5,8 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
-_ENV_VAR = "PSETI_GUI_WINDOW_CONFIG"
-_DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent / "configs" / "window_config.json"
+_ENV_VAR = "PSETI_WINDOW_CONFIG_FILE"
+DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent / "configs" / "window_config.json"
 DEFAULT_TITLE = "None"
 
 
@@ -30,13 +30,13 @@ def _resolve_config_path() -> Path:
     env_path = os.getenv(_ENV_VAR)
     if env_path:
         return Path(env_path)
-    return _DEFAULT_CONFIG_PATH
+    return DEFAULT_CONFIG_PATH
 
 
 def load_window_config() -> WindowConfig:
     """Load the image-window grid layout (dimensions + per-module title/position).
 
-    Path resolution: `PSETI_GUI_WINDOW_CONFIG` env var if set, otherwise the
+    Path resolution: `PSETI_WINDOW_CONFIG_FILE` env var if set, otherwise the
     package's bundled default (today's 2x2 PTI/Fern/Winter/Gattini layout).
     """
     path = _resolve_config_path()
@@ -54,7 +54,7 @@ def load_window_config() -> WindowConfig:
         module_id = int(entry["module_id"])
         row = int(entry["row"])
         col = int(entry["col"])
-        title = str(entry["title"]) if "title" in entry else _DEFAULT_TITLE
+        title = str(entry["title"]) if "title" in entry else DEFAULT_TITLE
 
         if not (0 <= row < rows and 0 <= col < cols):
             raise ValueError(

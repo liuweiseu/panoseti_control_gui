@@ -102,7 +102,7 @@ Shutdown is `SIGINT`-driven, not a clean RPC: `stop_grpc_clicked()` sends `SIGIN
 
 The image-window grid (dimensions + which `module_id` shows in which cell, with what title) is driven by
 `pseti_gui/window_config.py`'s `load_window_config()`, called once in `MainWin.__init__`. Path resolution:
-the `PSETI_GUI_WINDOW_CONFIG` env var if set, otherwise the packaged default at
+the `PSETI_WINDOW_CONFIG_FILE` env var if set, otherwise the packaged default at
 `src/pseti_gui/configs/window_config.json` (today's 2×2 layout: module 250 = PTI, 252 = Fern, 253 = Winter,
 254 = Gattini). The file shape is:
 
@@ -117,7 +117,8 @@ the `PSETI_GUI_WINDOW_CONFIG` env var if set, otherwise the packaged default at
 ```
 
 `title` is optional per window — an entry that omits it gets the literal string `"None"` as its title
-(`_DEFAULT_TITLE` in `window_config.py`). `load_window_config()` validates that every `row`/`col` is inside the `rows`×`cols` grid and that no two
+(`DEFAULT_TITLE` in `window_config.py`, also used by `mainwin.py`'s `init_all_plots_zero()` — see
+Architecture). `load_window_config()` validates that every `row`/`col` is inside the `rows`×`cols` grid and that no two
 windows share a `module_id` or a `(row, col)` position, raising `ValueError` (fail fast at startup) if not.
 `MainWin` sizes `static_label`/`plot_widgets`/`timers`/`imgs`/`qttexts` to `rows * cols` and builds a
 placeholder in every cell up front (`set_placeholder`/`show_plot` index cells as `row * cols + col`, not a
@@ -125,8 +126,11 @@ hardcoded `* 2`). `plot_data()` looks up the incoming frame's `module_id` in `wi
 `module_id` with no entry logs one `warning` (deduped via `_unmapped_module_ids_warned`, not repeated per
 frame) and the frame is dropped — it does not derive from `obs_config.json`, there's no `obs_config.json`
 path wired into `pseti-gui`. To change the layout (grid size, titles, or which modules are shown), edit
-`src/pseti_gui/configs/window_config.json` or point `PSETI_GUI_WINDOW_CONFIG` at a different file — no code
-changes needed.
+`src/pseti_gui/configs/window_config.json` or point `PSETI_WINDOW_CONFIG_FILE` at a different file — no code
+changes needed. `pseti-gui --config-template` (in `app.py`) copies the packaged default
+(`window_config.DEFAULT_CONFIG_PATH`) to `./window_config.json` in the current directory as a starting
+point to customize and point `PSETI_WINDOW_CONFIG_FILE` at; it refuses to overwrite an existing file of
+that name rather than clobbering it, and exits without launching the GUI.
 
 ### UI files: regenerate, don't hand-edit
 
