@@ -14,7 +14,6 @@ from pseti_gui.window_config import DEFAULT_CONFIG_PATH
 VER = f'V{version("pseti-gui")}'
 
 app = typer.Typer(
-    add_completion=False,
     no_args_is_help=False,
     context_settings={"help_option_names": ["-h", "--help"]},
 )

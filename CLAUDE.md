@@ -130,7 +130,10 @@ path wired into `pseti-gui`. To change the layout (grid size, titles, or which m
 changes needed. `pseti-gui --config-template` (in `app.py`) copies the packaged default
 (`window_config.DEFAULT_CONFIG_PATH`) to `./window_config.json` in the current directory as a starting
 point to customize and point `PSETI_WINDOW_CONFIG_FILE` at; it refuses to overwrite an existing file of
-that name rather than clobbering it, and exits without launching the GUI.
+that name rather than clobbering it, and exits without launching the GUI. `app.py`'s `typer.Typer()` also
+gets shell-completion (`--install-completion`/`--show-completion`) and `-h` as a `--help` alias for free,
+matching `pseti`/`pseti-grpc`'s CLIs — `-h`/`--help` via `context_settings={"help_option_names": [...]}`;
+completion via not passing `add_completion=False` (its default is `True`).
 
 ### UI files: regenerate, don't hand-edit
 
