@@ -36,7 +36,7 @@ def _version_callback(value: bool) -> None:
 def _config_template_callback(value: bool) -> None:
     if not value:
         return
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     dest = Path.cwd() / f"pseti_gui_config_{timestamp}"
     if dest.exists():
         print(f"Refusing to overwrite existing directory: {dest}")
@@ -49,7 +49,7 @@ def _config_template_callback(value: bool) -> None:
 def _env_template_callback(value: bool) -> None:
     if not value:
         return
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     dest = Path.cwd() / f".env_gui_{timestamp}"
     if dest.exists():
         print(f"Refusing to overwrite existing file: {dest}")

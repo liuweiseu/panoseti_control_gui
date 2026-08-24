@@ -138,7 +138,7 @@ path wired into `pseti-gui`. To change the layout (grid size, titles, or which m
 `src/pseti_gui/configs/window_config.json` or point `PSETI_WINDOW_CONFIG_FILE` at a different file — no code
 changes needed. `pseti-gui --config-template` (in `app.py`) copies the whole packaged `configs/` directory
 (`window_config.json` + `grpc_config.json`) to `./pseti_gui_config_<timestamp>` in the current directory
-(`CONFIGS_DIR = Path(__file__).resolve().parent / "configs"`; timestamp via `datetime.now().strftime("%Y%m%d_%H%M%S")`,
+(`CONFIGS_DIR = Path(__file__).resolve().parent / "configs"`; timestamp via `datetime.now().strftime("%Y%m%d%H%M%S")`,
 second-precision) as a starting point to customize and point `PSETI_WINDOW_CONFIG_FILE`/`PSETI_GUI_GRPC_CONFIG_FILE`
 at; it refuses to overwrite an existing directory of that exact name rather than clobbering it (`shutil.copytree`,
 no `dirs_exist_ok`), and exits without launching the GUI. `app.py`'s `typer.Typer()` also
