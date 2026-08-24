@@ -136,10 +136,12 @@ hardcoded `* 2`). `plot_data()` looks up the incoming frame's `module_id` in `wi
 frame) and the frame is dropped — it does not derive from `obs_config.json`, there's no `obs_config.json`
 path wired into `pseti-gui`. To change the layout (grid size, titles, or which modules are shown), edit
 `src/pseti_gui/configs/window_config.json` or point `PSETI_WINDOW_CONFIG_FILE` at a different file — no code
-changes needed. `pseti-gui --config-template` (in `app.py`) copies the packaged default
-(`window_config.DEFAULT_CONFIG_PATH`) to `./window_config.json` in the current directory as a starting
-point to customize and point `PSETI_WINDOW_CONFIG_FILE` at; it refuses to overwrite an existing file of
-that name rather than clobbering it, and exits without launching the GUI. `app.py`'s `typer.Typer()` also
+changes needed. `pseti-gui --config-template` (in `app.py`) copies the whole packaged `configs/` directory
+(`window_config.json` + `grpc_config.json`) to `./pseti_gui_config_<timestamp>` in the current directory
+(`CONFIGS_DIR = Path(__file__).resolve().parent / "configs"`; timestamp via `datetime.now().strftime("%Y%m%d_%H%M%S")`,
+second-precision) as a starting point to customize and point `PSETI_WINDOW_CONFIG_FILE`/`PSETI_GUI_GRPC_CONFIG_FILE`
+at; it refuses to overwrite an existing directory of that exact name rather than clobbering it (`shutil.copytree`,
+no `dirs_exist_ok`), and exits without launching the GUI. `app.py`'s `typer.Typer()` also
 gets shell-completion (`--install-completion`/`--show-completion`) and `-h` as a `--help` alias for free,
 matching `pseti`/`pseti-grpc`'s CLIs — `-h`/`--help` via `context_settings={"help_option_names": [...]}`;
 completion via not passing `add_completion=False` (its default is `True`).

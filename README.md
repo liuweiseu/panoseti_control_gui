@@ -45,28 +45,27 @@ uv tool install --editable .   # install as a standalone command that tracks you
 ```
 
 # Configuration
+Generate a starting point for both config files at once:
+```
+pseti-gui --config-template   # writes ./pseti_gui_config_<timestamp>/{window_config,grpc_config}.json
+```
 1. (optional) customize the image-window grid  
     `pseti-gui` shows a fixed 2x2 grid (PTI/Fern/Winter/Gattini) out of the box, sized to fill the display
-    area with square cells. To change the grid size or which module shows where, generate a template and
-    edit it:
+    area with square cells. To change the grid size or which module shows where, edit
+    `window_config.json` in the generated directory, then point `pseti-gui` at it:
     ```
-    pseti-gui --config-template   # writes ./window_config.json
-    ```
-    then point `pseti-gui` at your copy:
-    ```
-    export PSETI_WINDOW_CONFIG_FILE=/path/to/window_config.json
+    export PSETI_WINDOW_CONFIG_FILE=/path/to/pseti_gui_config_<timestamp>/window_config.json
     ```
 2. (optional) point the image-streaming backend at a non-default `panoseti_grpc` server  
     The "Start Visualization" button connects to `localhost:50051` by default. To point it elsewhere — an
     edge DAQ node, or a headnode/gateway that fans in multiple edge nodes server-side — edit
-    `grpc_config.json`'s `host`/`port`:
+    `grpc_config.json`'s `host`/`port` in the generated directory:
     ```
     {"host": "<host>", "port": <port>}
     ```
-    and either overwrite `src/pseti_gui/configs/grpc_config.json` in place, or point `pseti-gui` at your own
-    copy:
+    then point `pseti-gui` at it:
     ```
-    export PSETI_GUI_GRPC_CONFIG_FILE=/path/to/grpc_config.json
+    export PSETI_GUI_GRPC_CONFIG_FILE=/path/to/pseti_gui_config_<timestamp>/grpc_config.json
     ```
     Alternatively, run `python -m pseti_gui.grpc_process --host <host> --port <port> --mode <mode>` directly
     instead of using the button (`--mode` is one of `mov8`/`mov16`/`ph256`/`ph1024`, default `ph1024`) —
