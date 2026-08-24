@@ -135,6 +135,14 @@ gets shell-completion (`--install-completion`/`--show-completion`) and `-h` as a
 matching `pseti`/`pseti-grpc`'s CLIs — `-h`/`--help` via `context_settings={"help_option_names": [...]}`;
 completion via not passing `add_completion=False` (its default is `True`).
 
+`pseti_gui/env_loader.py`'s `load_pseti_gui_env()` (mirroring `panoseti`'s `control.utils.env_loader` and
+`panoseti_grpc`'s `util.env_loader`) auto-loads a `.env` file via `python-dotenv` before `app.py`'s module
+body does anything else that might read an env var (in particular, before `MainWin.__init__` calls
+`load_window_config()`) — a plain `KEY=value` line in `.env` reaches `os.environ` this way, unlike `source`
+in a shell, which only sets a shell-local variable a child process never sees. Path resolution: the
+`PSETI_GUI_ENV_FILE` env var if set, otherwise `.env` in the current working directory; see `.env.example`
+for the one variable it's currently useful for (`PSETI_WINDOW_CONFIG_FILE`).
+
 ### UI files: regenerate, don't hand-edit
 
 `src/pseti_gui/mainwin_ui.py` and `data_config_ui.py` are generated from `ui/mainwin.ui` and

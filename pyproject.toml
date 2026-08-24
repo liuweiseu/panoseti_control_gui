@@ -8,6 +8,7 @@ dependencies = [
     "numpy",
     "panoseti-grpc>=0.4.17",
     "typer",
+    "python-dotenv",
 ]
 
 [project.scripts]

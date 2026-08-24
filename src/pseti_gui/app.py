@@ -8,8 +8,13 @@ import typer
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
 
+from pseti_gui.env_loader import load_pseti_gui_env
 from pseti_gui.mainwin import MainWin
 from pseti_gui.window_config import DEFAULT_CONFIG_PATH
+
+# Load .env before anything below (e.g. MainWin's load_window_config()) reads
+# an env var it might set, such as PSETI_WINDOW_CONFIG_FILE.
+load_pseti_gui_env()
 
 VER = f'V{version("pseti-gui")}'
 
