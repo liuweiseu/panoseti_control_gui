@@ -151,8 +151,12 @@ completion via not passing `add_completion=False` (its default is `True`).
 body does anything else that might read an env var (in particular, before `MainWin.__init__` calls
 `load_window_config()`) — a plain `KEY=value` line in `.env` reaches `os.environ` this way, unlike `source`
 in a shell, which only sets a shell-local variable a child process never sees. Path resolution: the
-`PSETI_GUI_ENV_FILE` env var if set, otherwise `.env` in the current working directory; see `.env.example`
-for the one variable it's currently useful for (`PSETI_WINDOW_CONFIG_FILE`).
+`PSETI_GUI_ENV_FILE` env var if set, otherwise `.env` in the current working directory; see
+`src/pseti_gui/.env.example` for the variables it's currently useful for (`PSETI_WINDOW_CONFIG_FILE`,
+`PSETI_GUI_GRPC_CONFIG_FILE`) — it lives inside the package (not the repo root) so it's still present after
+a non-editable install, same reasoning as `configs/`. `pseti-gui --env-template` copies it to
+`./.env_gui_<timestamp>` (same timestamped-copy, refuse-to-overwrite pattern as `--config-template`); rename
+the copy to `.env` (or point `PSETI_GUI_ENV_FILE` at it) to have it actually loaded.
 
 ### UI files: regenerate, don't hand-edit
 

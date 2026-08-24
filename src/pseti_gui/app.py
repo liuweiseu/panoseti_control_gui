@@ -19,6 +19,7 @@ load_pseti_gui_env()
 VER = f'V{version("pseti-gui")}'
 
 CONFIGS_DIR = Path(__file__).resolve().parent / "configs"
+ENV_EXAMPLE_PATH = Path(__file__).resolve().parent / ".env.example"
 
 app = typer.Typer(
     no_args_is_help=False,
@@ -45,6 +46,19 @@ def _config_template_callback(value: bool) -> None:
     raise typer.Exit()
 
 
+def _env_template_callback(value: bool) -> None:
+    if not value:
+        return
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    dest = Path.cwd() / f".env_gui_{timestamp}"
+    if dest.exists():
+        print(f"Refusing to overwrite existing file: {dest}")
+        raise typer.Exit(code=1)
+    shutil.copyfile(ENV_EXAMPLE_PATH, dest)
+    print(f"Wrote .env template to {dest}")
+    raise typer.Exit()
+
+
 @app.command()
 def main(
     version_opt: Annotated[
@@ -67,6 +81,19 @@ def main(
                 "PSETI_GUI_GRPC_CONFIG_FILE at them before launching pseti-gui."
             ),
             callback=_config_template_callback,
+            is_eager=True,
+        ),
+    ] = False,
+    env_template_opt: Annotated[
+        bool,
+        typer.Option(
+            "--env-template",
+            help=(
+                "Copy the packaged .env.example to ./.env_gui_<timestamp> and exit. "
+                "Rename it to .env (or point PSETI_GUI_ENV_FILE at it) to have "
+                "pseti-gui load it automatically."
+            ),
+            callback=_env_template_callback,
             is_eager=True,
         ),
     ] = False,

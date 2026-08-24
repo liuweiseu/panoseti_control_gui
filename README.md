@@ -75,8 +75,9 @@ pseti-gui --config-template   # writes ./pseti_gui_config_<timestamp>/{window_co
 
 # Start GUI
 Run `pseti-gui -h` (or `--help`) to see all CLI options, including `--version`, `--config-template` (see
-Configuration above), and shell completion (`--install-completion`/`--show-completion`, same as
-`pseti`/`pseti-grpc`).
+Configuration above), `--env-template` (writes `./.env_gui_<timestamp>` — rename it to `.env`, or point
+`PSETI_GUI_ENV_FILE` at it, to have `pseti-gui` load it automatically), and shell completion
+(`--install-completion`/`--show-completion`, same as `pseti`/`pseti-grpc`).
 
 Once the image-streaming backend ("Start Visualization" button) is running, its stdout/stderr are printed
 directly to the terminal `pseti-gui` was launched from; every window shows a zero-valued image until its
