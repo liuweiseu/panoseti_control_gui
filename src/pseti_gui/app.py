@@ -1,5 +1,6 @@
 import shutil
 import sys
+from datetime import datetime
 from importlib.metadata import version
 from pathlib import Path
 from typing import Annotated
@@ -8,10 +9,17 @@ import typer
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
 
+from pseti_gui.env_loader import load_pseti_gui_env
 from pseti_gui.mainwin import MainWin
-from pseti_gui.window_config import DEFAULT_CONFIG_PATH
+
+# Load .env before anything below (e.g. MainWin's load_window_config()) reads
+# an env var it might set, such as PSETI_WINDOW_CONFIG_FILE.
+load_pseti_gui_env()
 
 VER = f'V{version("pseti-gui")}'
+
+CONFIGS_DIR = Path(__file__).resolve().parent / "configs"
+ENV_EXAMPLE_PATH = Path(__file__).resolve().parent / ".env.example"
 
 app = typer.Typer(
     no_args_is_help=False,
@@ -28,12 +36,26 @@ def _version_callback(value: bool) -> None:
 def _config_template_callback(value: bool) -> None:
     if not value:
         return
-    dest = Path.cwd() / DEFAULT_CONFIG_PATH.name
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    dest = Path.cwd() / f"pseti_gui_config_{timestamp}"
+    if dest.exists():
+        print(f"Refusing to overwrite existing directory: {dest}")
+        raise typer.Exit(code=1)
+    shutil.copytree(CONFIGS_DIR, dest)
+    print(f"Wrote config template directory to {dest}")
+    raise typer.Exit()
+
+
+def _env_template_callback(value: bool) -> None:
+    if not value:
+        return
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    dest = Path.cwd() / f".env_gui_{timestamp}"
     if dest.exists():
         print(f"Refusing to overwrite existing file: {dest}")
         raise typer.Exit(code=1)
-    shutil.copyfile(DEFAULT_CONFIG_PATH, dest)
-    print(f"Wrote default window config template to {dest}")
+    shutil.copyfile(ENV_EXAMPLE_PATH, dest)
+    print(f"Wrote .env template to {dest}")
     raise typer.Exit()
 
 
@@ -53,11 +75,25 @@ def main(
         typer.Option(
             "--config-template",
             help=(
-                "Generate a window_config.json template in the current directory. "
-                "Edit it to customize the image-window grid, then point the "
-                "PSETI_WINDOW_CONFIG_FILE env var at it before launching pseti-gui."
+                "Copy the packaged configs/ directory (window_config.json, "
+                "grpc_config.json) to ./pseti_gui_config_<timestamp> and exit. "
+                "Edit the files inside, then point PSETI_WINDOW_CONFIG_FILE / "
+                "PSETI_GUI_GRPC_CONFIG_FILE at them before launching pseti-gui."
             ),
             callback=_config_template_callback,
+            is_eager=True,
+        ),
+    ] = False,
+    env_template_opt: Annotated[
+        bool,
+        typer.Option(
+            "--env-template",
+            help=(
+                "Copy the packaged .env.example to ./.env_gui_<timestamp> and exit. "
+                "Rename it to .env (or point PSETI_GUI_ENV_FILE at it) to have "
+                "pseti-gui load it automatically."
+            ),
+            callback=_env_template_callback,
             is_eager=True,
         ),
     ] = False,
