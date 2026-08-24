@@ -57,10 +57,20 @@ uv tool install --editable .   # install as a standalone command that tracks you
     export PSETI_WINDOW_CONFIG_FILE=/path/to/window_config.json
     ```
 2. (optional) point the image-streaming backend at a non-default `panoseti_grpc` server  
-    The "Start Visualization" button always connects to `localhost:50051`. To stream from elsewhere — an
-    edge DAQ node, or a headnode/gateway that fans in multiple edge nodes server-side — run
-    `python -m pseti_gui.grpc_process --host <host> --port <port> --mode <mode>` directly instead of using
-    the button (`--mode` is one of `mov8`/`mov16`/`ph256`/`ph1024`, default `ph1024`).
+    The "Start Visualization" button connects to `localhost:50051` by default. To point it elsewhere — an
+    edge DAQ node, or a headnode/gateway that fans in multiple edge nodes server-side — edit
+    `grpc_config.json`'s `host`/`port`:
+    ```
+    {"host": "<host>", "port": <port>}
+    ```
+    and either overwrite `src/pseti_gui/configs/grpc_config.json` in place, or point `pseti-gui` at your own
+    copy:
+    ```
+    export PSETI_GUI_GRPC_CONFIG_FILE=/path/to/grpc_config.json
+    ```
+    Alternatively, run `python -m pseti_gui.grpc_process --host <host> --port <port> --mode <mode>` directly
+    instead of using the button (`--mode` is one of `mov8`/`mov16`/`ph256`/`ph1024`, default `ph1024`) —
+    this bypasses `grpc_config.json` entirely.
     The stream must already be initialized (e.g. via `pseti start`, or a server with
     `init_from_default = true`) — this GUI only attaches to it.
 

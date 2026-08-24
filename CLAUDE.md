@@ -9,9 +9,9 @@ calibration) and live-viewing detector images. It is a thin control-panel front 
 [`panoseti`](../panoseti) (every control button shells out to the `pseti` CLI resolved on `PATH` — see
 Architecture) and [`panoseti_grpc`](../panoseti_grpc) (the `AioDaqDataClient` used to stream images, imported
 directly as a dependency). `pseti-gui` itself carries no reference to where either sibling repo's source
-lives, and has no config files of its own — it only needs `pseti` on `PATH` and, optionally, the host/port
-of the `panoseti_grpc` server to stream images from (CLI args to `grpc_process.py`, default
-`localhost:50051`).
+lives — it only needs `pseti` on `PATH` and, optionally, the host/port of the `panoseti_grpc` server to
+stream images from (see Configuration: `grpc_config.json` for the "Start Visualization" button, or CLI args
+to `grpc_process.py` for a manual invocation).
 
 ## Common Commands
 
@@ -25,22 +25,31 @@ There are no automated tests or CI in this repo — verify changes by running th
 
 ## Configuration
 
-Most things are either a CLI argument or resolved on `PATH`; the one exception is the image-window grid
-layout (see [Telescope/module mapping](#telescopemodule-mapping) below), which is a JSON config file:
-
 - **`grpc_process.py`** (Typer CLI, see Architecture) takes `--host`/`-o` (default `localhost`) and
   `--port`/`-p` (default `50051`) for the single `panoseti_grpc` server to stream images from. That server
   can be an edge DAQ node (single-machine dev) or a headnode/gateway that fans in multiple edge nodes
   server-side (see [panoseti_grpc's CLAUDE.md](../panoseti_grpc/CLAUDE.md#unified-server) for the
   `role="edge"` vs `role="gateway"` distinction) — `pseti-gui` doesn't need to know or care which; it just
-  opens one `AioDaqDataClient(host, port)` and calls `stream_images()`. `start_grpc_clicked()` in
-  `mainwin.py` doesn't pass `--host`/`--port`, so it always connects to `localhost:50051`; run
-  `python -m pseti_gui.grpc_process --host ... --port ...` directly for anything else.
+  opens one `AioDaqDataClient(host, port)` and calls `stream_images()`.
 
-There used to also be a `configs/panoseti_config.json` (a `verbose` flag) and `configs/grpc_config.json`
-(the `host`/`port` above, plus dead `daq_config_path`/`net_config_path`/`hp_io_cfg_path` fields from an
-older multi-node client design) — both removed; `grpc_stdout`/`grpc_stderr` in `mainwin.py` print
-unconditionally now, and `host`/`port` moved to `grpc_process.py`'s own CLI options.
+- **`start_grpc_clicked()`** in `mainwin.py` (the "Start Visualization" button) gets its `--host`/`--port`
+  from `pseti_gui/grpc_config.py`'s `load_grpc_config()`, the same packaged-default-plus-env-var-override
+  pattern as `window_config.py`: the `PSETI_GUI_GRPC_CONFIG_FILE` env var if set, otherwise
+  `src/pseti_gui/configs/grpc_config.json` (packaged default: `{"host": "localhost", "port": 50051}`). The
+  env var is deliberately `PSETI_GUI_*`, not `PSETI_GRPC_*` — that prefix is already used by
+  `panoseti_grpc`'s own server-side config env vars (`PSETI_GRPC_DAQ_CONFIG`, `PSETI_GRPC_NETWORK_CONFIG`,
+  `PSETI_GRPC_ENV_FILE`), an unrelated package's settings; reusing it here would be exactly the kind of
+  confusing collision that got `PSETI_GRPC_DATA_CONFIG` renamed to `PSETI_GRPC_DAQ_CONFIG` in that repo. A
+  manual `python -m pseti_gui.grpc_process --host ... --port ...` invocation is unaffected by this file —
+  its own `--host`/`--port` flags/defaults are independent of `grpc_config.json`.
+
+- **`window_config.json`** — see [Telescope/module mapping](#telescopemodule-mapping) below.
+
+There used to also be a `configs/panoseti_config.json` (a `verbose` flag) and an older `configs/grpc_config.json`
+(dead `daq_config_path`/`net_config_path`/`hp_io_cfg_path` fields from an older multi-node client design) —
+both removed; `grpc_stdout`/`grpc_stderr` in `mainwin.py` print unconditionally now. The current
+`grpc_config.json` (see above) is a from-scratch reintroduction limited to `host`/`port`, not a restore of
+the old file's schema.
 
 **Prerequisite, not a config file:** the `pseti` CLI itself must be installed and resolvable on the `PATH`
 of whatever environment launches `pseti-gui` — see Architecture for `uv tool install --editable` and the
