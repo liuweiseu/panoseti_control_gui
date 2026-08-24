@@ -12,6 +12,7 @@ import socket
 from pseti_gui.mainwin_ui import Ui_MainWindow
 from pseti_gui.data_config_win import DataConfigWin, DataConfigOp
 from pseti_gui.window_config import load_window_config, DEFAULT_TITLE
+from pseti_gui.grpc_config import load_grpc_config
 from pseti_gui.square_grid import SquareGridContainer
 import asyncio, signal
 from multiprocessing import shared_memory, resource_tracker
@@ -188,7 +189,17 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.logger.info('Start PANOSETI gPRC process.')
         self.grpc_process_exit = False
         program = sys.executable
-        args = ['-u', '-m', 'pseti_gui.grpc_process', '-m', 'ph1024']
+        grpc_config = load_grpc_config()
+        self.logger.info(
+            f"Loaded grpc config from {grpc_config.path} "
+            f"(host={grpc_config.host}, port={grpc_config.port})"
+        )
+        args = [
+            '-u', '-m', 'pseti_gui.grpc_process',
+            '--host', grpc_config.host,
+            '--port', str(grpc_config.port),
+            '-m', 'ph1024',
+        ]
         self.grpc_process.start(program, args)
         # Show every window immediately with a zero-valued image and the
         # default title -- per-module title/data get filled in as each
