@@ -1,6 +1,6 @@
 [project]
 name = "pseti-gui"
-version = "0.3.2"
+version = "0.4.2"
 requires-python = ">=3.14"
 dependencies = [
     "pyqt6",
@@ -9,6 +9,7 @@ dependencies = [
     "panoseti-grpc>=0.4.17",
     "typer",
     "python-dotenv",
+    "rich",
 ]
 
 [project.scripts]

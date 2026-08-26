@@ -90,8 +90,7 @@ def main(
             "--env-template",
             help=(
                 "Copy the packaged .env.example to ./.env_gui_<timestamp> and exit. "
-                "Rename it to .env (or point PSETI_GUI_ENV_FILE at it) to have "
-                "pseti-gui load it automatically."
+                "Point PSETI_GUI_ENV_FILE at the generated file to load it."
             ),
             callback=_env_template_callback,
             is_eager=True,
