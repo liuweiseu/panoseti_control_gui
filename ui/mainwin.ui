@@ -73,7 +73,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_11">
        <item row="6" column="0" colspan="3">
-        <widget class="QPlainTextEdit" name="console_output">
+        <widget class="QTextEdit" name="console_output">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>4</horstretch>
@@ -82,9 +82,6 @@
          </property>
          <property name="readOnly">
           <bool>true</bool>
-         </property>
-         <property name="maximumBlockCount">
-          <number>1000</number>
          </property>
         </widget>
        </item>

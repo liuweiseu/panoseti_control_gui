@@ -1,6 +1,6 @@
 from PyQt6.QtCore import QProcess, QProcessEnvironment
 from PyQt6.QtWidgets import QLabel, QMainWindow
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtGui import QPixmap, QTextCursor
 from PyQt6.QtCore import QSocketNotifier
 
 import json, os, sys
@@ -15,6 +15,7 @@ from pseti_gui.window_config import load_window_config, DEFAULT_TITLE
 from pseti_gui.grpc_config import load_grpc_config
 from pseti_gui.square_grid import SquareGridContainer
 from pseti_gui.terminal_launcher import open_terminal_with_command
+from pseti_gui.ansi_html import AnsiToHtml
 import asyncio, signal
 from multiprocessing import shared_memory, resource_tracker
 
@@ -40,6 +41,15 @@ class MainWin(QMainWindow, Ui_MainWindow):
         wide_console_env = QProcessEnvironment.systemEnvironment()
         wide_console_env.insert('COLUMNS', '200')
         wide_console_env.insert('LINES', '50')
+        # Rich (used throughout panoseti/panoseti_grpc for CLI output) disables
+        # its own ANSI color codes when it detects stdout isn't a real
+        # terminal, which is always true for a QProcess pipe -- FORCE_COLOR
+        # overrides that detection so console_output can show the same colors
+        # a user would see running `pseti` directly in a terminal (see
+        # append_log()/ansi_html.py, which decodes those codes back into
+        # HTML for the QTextEdit).
+        wide_console_env.insert('FORCE_COLOR', '1')
+        self._console_html = AnsiToHtml()
         # Process for panoseti software
         self.ps_process = QProcess(self)
         self.ps_process.setProcessEnvironment(wide_console_env)
@@ -184,7 +194,31 @@ class MainWin(QMainWindow, Ui_MainWindow):
             self.append_log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
 
     def append_log(self, text):
-        self.console_output.appendPlainText(text.rstrip())
+        html = self._console_html.convert(text)
+        if not html:
+            return
+        cursor = self.console_output.textCursor()
+        cursor.movePosition(QTextCursor.MoveOperation.End)
+        if not self.console_output.document().isEmpty():
+            cursor.insertBlock()
+        cursor.insertHtml(html)
+        self.console_output.setTextCursor(cursor)
+        self.console_output.ensureCursorVisible()
+        self._trim_console_output()
+
+    def _trim_console_output(self, max_blocks=1000):
+        # QTextEdit has no setMaximumBlockCount() (that's QPlainTextEdit-only)
+        # -- console_output switched to QTextEdit for append_log()'s colored
+        # HTML, so this replicates the same "don't grow forever" behavior by
+        # hand.
+        doc = self.console_output.document()
+        excess = doc.blockCount() - max_blocks
+        if excess <= 0:
+            return
+        cursor = QTextCursor(doc)
+        cursor.movePosition(QTextCursor.MoveOperation.Start)
+        cursor.movePosition(QTextCursor.MoveOperation.NextBlock, QTextCursor.MoveMode.KeepAnchor, excess)
+        cursor.removeSelectedText()
 
     def start_grpc_clicked(self, mode='ph1024'):
         self.logger.info('Start PANOSETI gPRC process.')
