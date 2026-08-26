@@ -28,6 +28,22 @@ _PRE_STYLE = (
     "font-family:Menlo,'DejaVu Sans Mono',Consolas,'Courier New',monospace;"
 )
 
+# Rich renders `[green]`/`[bold green]` (used throughout panoseti/control's
+# CLI for success/OK/running status) as #008000 regardless of terminal color
+# depth. On this console pane's actual background that reads as too bright/
+# hard to read, so it's remapped to a calmer, darker green that still reads
+# clearly as "green" without the harshness. Keyed on Rich's hex so it only
+# touches this one color -- red/yellow/etc. stay at Rich's defaults.
+_COLOR_OVERRIDES = {
+    "008000": "1b5e20",
+}
+
+
+def _apply_color_overrides(html_fragment: str) -> str:
+    for old, new in _COLOR_OVERRIDES.items():
+        html_fragment = html_fragment.replace(f"#{old}", f"#{new}")
+    return html_fragment
+
 
 class AnsiToHtml:
     """Stateful ANSI-to-HTML converter; reuses one Rich Console/decoder.
@@ -59,4 +75,5 @@ class AnsiToHtml:
         match = _CODE_BLOCK_RE.search(raw_html)
         inner = match.group(1) if match else text
         inner = inner.rstrip("\n")
+        inner = _apply_color_overrides(inner)
         return f'<pre style="{_PRE_STYLE}">{inner}</pre>'
