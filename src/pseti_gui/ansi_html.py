@@ -29,13 +29,17 @@ _PRE_STYLE = (
 )
 
 # Rich renders `[green]`/`[bold green]` (used throughout panoseti/control's
-# CLI for success/OK/running status) as #008000 regardless of terminal color
-# depth. On this console pane's actual background that reads as too bright/
-# hard to read, so it's remapped to a calmer, darker green that still reads
-# clearly as "green" without the harshness. Keyed on Rich's hex so it only
-# touches this one color -- red/yellow/etc. stay at Rich's defaults.
+# CLI for success/OK/running status) as #008000, and its RichHandler-based
+# loggers (panoseti_grpc.telemetry.logger, used for the "INFO [Foo] ..."
+# lines this console pane mostly shows) auto-highlight IPv4/IPv6 addresses
+# via `repr.ipv4`/`repr.ipv6`, which resolve to bright_green = #00ff00 -- a
+# pure, fully-saturated green that's genuinely too bright/hard to read (this
+# is the one actually visible on IP addresses in the console pane). Both are
+# remapped to the same calmer, darker green; other colors stay at Rich's
+# defaults.
 _COLOR_OVERRIDES = {
     "008000": "1b5e20",
+    "00ff00": "1b5e20",
 }
 
 
