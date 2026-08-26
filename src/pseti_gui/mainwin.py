@@ -14,6 +14,7 @@ from pseti_gui.data_config_win import DataConfigWin, DataConfigOp
 from pseti_gui.window_config import load_window_config, DEFAULT_TITLE
 from pseti_gui.grpc_config import load_grpc_config
 from pseti_gui.square_grid import SquareGridContainer
+from pseti_gui.terminal_launcher import open_terminal_with_command
 import asyncio, signal
 from multiprocessing import shared_memory, resource_tracker
 
@@ -372,11 +373,39 @@ class MainWin(QMainWindow, Ui_MainWindow):
     def getuid_clicked(self):
         self.run_pseti('uids')
 
+    def validate_clicked(self):
+        self.run_pseti('val')
+
+    def health_clicked(self):
+        self.run_pseti('health', '--skip-containers')
+
     def startdaq_clicked(self):
         self.run_pseti('start', '--yes')
 
     def stopdaq_clicked(self):
         self.run_pseti('stop', '--yes')
+
+    def xfr_start_clicked(self):
+        self.run_pseti('xfr', 'start')
+
+    def xfr_stop_clicked(self):
+        self.run_pseti('xfr', 'stop')
+
+    def xfr_status_clicked(self):
+        self.run_pseti('xfr', 'stat')
+
+    def xfr_monitor_clicked(self):
+        # `pseti stat --watch` redraws in place with ANSI cursor-repositioning
+        # escape codes (Rich's Live view) -- that renders as garbage inside
+        # console_output (a plain QPlainTextEdit), so it needs a real
+        # terminal emulator window instead of going through run_pseti()/
+        # ps_process like the other buttons in this group.
+        self.logger.info('Opening transfer monitor terminal (pseti stat --watch).')
+        try:
+            open_terminal_with_command(['pseti', 'stat', '--watch'])
+        except RuntimeError as e:
+            self.logger.error(str(e))
+            self.append_log(f"Error: {e}")
 
     def plot_data(self, data):
         mid = data['module_id']
@@ -417,6 +446,12 @@ class MainWin(QMainWindow, Ui_MainWindow):
         self.cal_ph.clicked.connect(self.calbrateph_clicked)
         self.show_baselines.clicked.connect(self.showbaselines_clicked)
         self.get_uid.clicked.connect(self.getuid_clicked)
+        self.validate.clicked.connect(self.validate_clicked)
+        self.health.clicked.connect(self.health_clicked)
         self.start_daq.clicked.connect(self.startdaq_clicked)
         self.stop_daq.clicked.connect(self.stopdaq_clicked)
+        self.xfr_start.clicked.connect(self.xfr_start_clicked)
+        self.xfr_stop.clicked.connect(self.xfr_stop_clicked)
+        self.xfr_status.clicked.connect(self.xfr_status_clicked)
+        self.xfr_monitor.clicked.connect(self.xfr_monitor_clicked)
 
